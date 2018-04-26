@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<assets>
+    <asset
+        type = "int"
+        name = "art"
+        path = "int/art.jpg"
+        pixmapformat = "ARGB8888">
+    </asset>
+    <asset
+        type = "ter"
+        name = "lev1"
+        path = "ter/lev1.png"
+        pixmapformat = "ARGB8888">
+    </asset>
+    <asset
+        type = "ter"
+        name = "lev2"
+        path = "ter/lev2.png"
+        pixmapformat = "ARGB8888">
+    </asset>
+    <asset
+        type = "ter"
+        name = "lev3"
+        path = "ter/lev3.png"
+        pixmapformat = "ARGB8888">
+    </asset>
+    <asset
+        type = "int"
+        name = "button"
+        path = "int/button.png"
+        pixmapformat = "ARGB8888">
+    </asset>
+</assets>
