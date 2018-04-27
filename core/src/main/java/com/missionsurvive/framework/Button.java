@@ -1,5 +1,7 @@
 package com.missionsurvive.framework;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.missionsurvive.commands.Command;
 import com.missionsurvive.framework.TouchControl;
 
 /**
@@ -8,16 +10,13 @@ import com.missionsurvive.framework.TouchControl;
 
 public interface Button {
 
-    public int isTouching(TouchControl touchControl);
+    public boolean onClick(boolean onClick);
 
-    public void touch();
-
-    public void drawButton();
+    public void drawButton(SpriteBatch batch);
 
     //drawing button inside list of buttons: it disappears beyond list borders.
-    public void drawButton(int offsetStartX, int offsetStartY, int offsetWidth, int offsetHeight);
-
-    public void setObject(Object object);
+    public void drawButton(SpriteBatch batch,
+                           int offsetStartX, int offsetStartY, int offsetWidth, int offsetHeight);
 
     public int getStartX();
 
@@ -30,4 +29,6 @@ public interface Button {
     public void setStartX(int x);
 
     public void setStartY(int y);
+
+    public void setCommand(Command command);
 }

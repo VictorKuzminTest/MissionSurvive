@@ -1,15 +1,22 @@
 package com.missionsurvive.framework.impl;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.missionsurvive.commands.Command;
 import com.missionsurvive.framework.Button;
+import com.missionsurvive.framework.Observer;
 import com.missionsurvive.framework.TouchControl;
+import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.utils.Assets;
 
 /**
  * Created by kuzmin on 25.04.18.
  */
 
-public class ActionButton implements Button{
+public class ActionButton implements Button, Observer{
+
+    private Texture texture;
+    private Command command;
 
     private int screenX;
     private int screenY;
@@ -17,8 +24,6 @@ public class ActionButton implements Button{
     private int buttonWidth;
     private int buttonHeight;
     private int actionParameter;
-
-    private Texture texture;
 
     public ActionButton(String assetName, int screenX, int screenY, int srcX, int srcY, int buttonWidth, int buttonHeight, String action){
         this.screenX = screenX;
@@ -30,9 +35,6 @@ public class ActionButton implements Button{
 
         if(assetName != null){
             texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
-        }
-        else{
-            texture = Assets.getTextures()[Assets.getWhichTexture("button")];
         }
 
         if(action != null){
@@ -65,48 +67,58 @@ public class ActionButton implements Button{
     }
 
     @Override
-    public int isTouching(TouchControl touchControl) {
-        return 0;
-    }
-
-    @Override
-    public void touch() {
+    public void update() {
 
     }
 
     @Override
-    public void drawButton() {
-
+    public void setCommand(Command command) {
+        this.command = command;
     }
 
     @Override
-    public void drawButton(int offsetStartX, int offsetStartY, int offsetWidth, int offsetHeight) {
-
+    public boolean onClick(boolean onClick) {
+        if(onClick){
+            if(command != null){
+                command.execute(null);
+            }
+        }
+        return onClick;
     }
 
     @Override
-    public void setObject(Object object) {
+    public void drawButton(SpriteBatch batch) {
+        batch.begin();
+        batch.draw(texture, -240 + screenX,
+                -160 + GeoHelper.transformCanvasYCoordToGL(screenY, 320, buttonHeight),
+                buttonWidth, buttonHeight);
+        batch.end();
+    }
+
+    @Override
+    public void drawButton(SpriteBatch batch, int offsetStartX, int offsetStartY,
+                           int offsetWidth, int offsetHeight) {
 
     }
 
     @Override
     public int getStartX() {
-        return 0;
+        return screenX;
     }
 
     @Override
     public int getStartY() {
-        return 0;
+        return screenY;
     }
 
     @Override
     public int getButtonWidth() {
-        return 0;
+        return buttonWidth;
     }
 
     @Override
     public int getButtonHeight() {
-        return 0;
+        return buttonHeight;
     }
 
     @Override

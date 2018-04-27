@@ -45,7 +45,7 @@ public class TestScreen implements Screen {
     public TestScreen(MSGame game){
         this.game = game;
         //gameCam = new OrthographicCamera(); //default ortho camera
-        gameCam = new ParallaxCamera(480, 320);
+        gameCam = new ParallaxCamera(480, 320); //extends OrthographicCamera
         gamePort = new StretchViewport(480, 320, gameCam);
         //gamePort = new FitViewport(480, 320, gameCam);  don't use this view port
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);

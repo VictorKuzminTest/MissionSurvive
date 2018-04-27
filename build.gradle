@@ -68,10 +68,14 @@ project(":android") {
 project(":core") {
     apply plugin: "java"
 
+    sourceSets.main.java.srcDirs = ["src/main/java/"]
+    sourceSets.test.java.srcDirs = ["src/test/java/"]
+    sourceSets.test.resources.srcDirs = ["src/test/res/"]
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        
+        testCompile "junit:junit:4.12"
+        testCompile "org.mockito:mockito-core:2.2.7"
     }
 }
 
