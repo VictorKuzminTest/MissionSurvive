@@ -98,7 +98,12 @@ public class ActionButton implements Button, Observer{
     @Override
     public void drawButton(SpriteBatch batch, int offsetStartX, int offsetStartY,
                            int offsetWidth, int offsetHeight) {
-
+        batch.begin();
+        batch.draw(texture, -240 + screenX + offsetStartX,
+                -160 + GeoHelper.transformCanvasYCoordToGL(screenY + offsetStartY, 320, buttonHeight + offsetHeight),
+                srcX + offsetStartX, srcY + offsetStartY,
+                buttonWidth + offsetWidth, buttonHeight + offsetHeight);
+        batch.end();
     }
 
     @Override
@@ -123,11 +128,12 @@ public class ActionButton implements Button, Observer{
 
     @Override
     public void setStartX(int x) {
-
+        screenX += x;
     }
 
     @Override
     public void setStartY(int y) {
-
+        screenY += y;
     }
+
 }

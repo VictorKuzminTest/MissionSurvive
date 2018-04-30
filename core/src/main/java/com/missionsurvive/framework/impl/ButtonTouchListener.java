@@ -32,9 +32,7 @@ public class ButtonTouchListener implements Listener{
         buttons.add((Button)observer);
     }
 
-    /**
-     * Tracking touch events: touchDown, touchDragged, touchUp.
-     */
+    @Override
     public void trackEvents(float scaleX, float scaleY){
         if(Gdx.input.justTouched()){
             lastX = Gdx.input.getX(0) * scaleX;

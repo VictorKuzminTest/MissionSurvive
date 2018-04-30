@@ -42,6 +42,6 @@ public class MapEditorTest {
      * loading map from file external storage.
      */
     public void loadMapCommand(){
-        loadCommand.execute("level5");
+        loadCommand.execute("level1.txt");
     }
 }

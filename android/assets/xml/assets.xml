@@ -3,7 +3,7 @@
     <asset
         type = "int"
         name = "art"
-        path = "int/art.jpg"
+        path = "int/art.png"
         pixmapformat = "ARGB8888">
     </asset>
     <asset

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.missionsurvive.MSGame;
+import com.missionsurvive.framework.impl.ListButtons;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.ParallaxBackground;
 import com.missionsurvive.map.ParallaxCamera;
@@ -47,22 +48,31 @@ public class ButtonsTestScreen implements Screen {
 
     public void update(float delta){
         buttonsTest.touchButtons(scaleX, scaleY);
+        buttonsTest.touchLists(scaleX, scaleY);
     }
 
     @Override
     public void render(float delta) {
         update(delta);
-        drawButtons();
-    }
-
-    public void drawButtons(){
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         game.getSpriteBatch().setProjectionMatrix(gameCam.combined);
+        drawButtons();
+        drawListButtons();
+    }
 
+    public void drawButtons(){
         int buttonsCount = buttonsTest.getButtons().size();
         for(int i = 0; i < buttonsCount; i++){
             buttonsTest.getButtons().get(i).drawButton(game.getSpriteBatch());
+        }
+    }
+
+    public void drawListButtons(){
+        ListButtons rootList = buttonsTest.getListsButtons();
+        int numLists = rootList.getLists().size();
+        for(int i = 0; i < numLists; i++){
+            rootList.getLists().get(i).drawButtons(game.getSpriteBatch());
         }
     }
 

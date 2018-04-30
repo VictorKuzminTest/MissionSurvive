@@ -1,9 +1,12 @@
 package com.missionsurvive.framework.impl;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.commands.Command;
 import com.missionsurvive.framework.Button;
+import com.missionsurvive.framework.Listener;
+import com.missionsurvive.framework.Observer;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.utils.Assets;
 
@@ -13,23 +16,35 @@ import java.util.ArrayList;
  * Created by kuzmin on 27.04.18.
  */
 
-public class ListButtons {
+public class ListButtons implements Observer{
 
     //Название списка. Поскольку мы будем добавлять элементы списка из сценария программно,
     //нам нужно знать что и в какой список добавляем.
     private String name;
     private Texture texture;
+    private String layout;
+    private ArrayList<Button> buttons = new ArrayList<Button>();
+    //We are using composite pattern (GOF) to keeping track of list of buttons on the control panel:
+    private ArrayList<ListButtons> lists = new ArrayList<ListButtons>();
+    private Listener listener;
 
     private int startX;  //listing startX
     private int startY;   //listing startY
     private int listingWidth;
     private int listingHeight;
     private int spaceBetweenButtons; //space between buttons in pixels
-    private String layout;
-    private int listingOffsetX, listingOffsetY;
     private int srcBgX, srcBgY; //откуда начинается отрисовка asset для background.
 
-    private ArrayList<Button> buttons = new ArrayList<Button>();
+    /**
+     * Constructor for root lists, which contain other list of buttons.
+     * @param name
+     */
+    public ListButtons(String name, Listener listener){
+        if(name != null){
+            this.name = name;
+        }
+        this.listener = listener;
+    }
 
     public ListButtons(String name, String assetName, int spaceBetweenButtons,
                        int startX, int startY, int srcBgX, int srcBgY,
@@ -38,9 +53,6 @@ public class ListButtons {
         this.startY = startY;
         this.listingWidth = listingWidth;
         this.listingHeight = listingHeight;
-
-        listingOffsetX = this.startX; //initialization of listing offset
-        listingOffsetY = this.startY;
 
         this.name = name;
         this.layout = layout;
@@ -74,11 +86,11 @@ public class ListButtons {
             startY = this.startY + row * (buttonHeight + spaceBetweenButtons);
         }
 
-        buttons.add(new ActionButton(assetName,
-                startX, startY, assetStartX, assetStartY, buttonWidth, buttonHeight, action));
+        Button button = new ActionButton(assetName,
+                startX, startY, assetStartX, assetStartY, buttonWidth, buttonHeight, action);
+        buttons.add(button);
         buttons.get(buttons.size() - 1).setCommand(command);
     }
-
 
     public void drawButtons(SpriteBatch batch){
         if(texture != null){
@@ -138,12 +150,17 @@ public class ListButtons {
         return this.startY - buttonStartY;
     }
 
+    @Override
+    public void update() {
 
-    //public int touchButtons(List<TouchEvent> touchEvents, ListButtons listButtons, TouchControl touchControl, Game game, ControlScenario controlScenario, Object object){
-    //    return touchControl.getTouchListButtonEvents(touchEvents, listButtons, touchControl, game, controlScenario, object);
-    //}
+    }
 
-    public void scrollButtons(int distanceX, int distanceY){ //скроллинг кнопок внутри листинга.
+    /**
+     * Scrolling buttons inside the listing.
+     * @param distanceX delta distance x
+     * @param distanceY delta distance y
+     */
+    public void scrollButtons(int distanceX, int distanceY){
         int len = buttons.size();
         for(int whichButton = 0; whichButton < len; whichButton++){
             Button button = buttons.get(whichButton);
@@ -155,6 +172,15 @@ public class ListButtons {
 
     public ArrayList<Button> getButtons(){
         return buttons;
+    }
+
+
+    public void addList(ListButtons listButtons){
+        lists.add(listButtons);
+    }
+
+    public ArrayList<ListButtons> getLists(){
+        return lists;
     }
 
     public void clearList(){
@@ -173,12 +199,18 @@ public class ListButtons {
         return startY;
     }
 
-    public int getListingWidth(){
+    public int getListWidth(){
         return listingWidth;
     }
 
-    public int getListingHeight(){
+    public int getListHeight(){
         return listingHeight;
     }
+
+    public Listener getListener(){
+        return listener;
+    }
+
+
 
 }
