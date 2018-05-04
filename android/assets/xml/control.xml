@@ -92,7 +92,7 @@
         </button>-->
     </controlPanel>
 
-    <!--<controlPanel screen = "MapEditorScreen"
+    <!--<controlPanel screen = "PlatformerSceenTest"
         name = "mapEditorControls">
 
         <button

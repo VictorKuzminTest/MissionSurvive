@@ -25,9 +25,14 @@ public class ActionButton implements Button, Observer{
     private int buttonHeight;
     private int actionParameter;
 
+    private float screenXHelper; //helps to accumulate float values (it is used in list of buttons)
+    private float screenYHelper;
+
     public ActionButton(String assetName, int screenX, int screenY, int srcX, int srcY, int buttonWidth, int buttonHeight, String action){
         this.screenX = screenX;
         this.screenY = screenY;
+        screenXHelper = screenX;
+        screenYHelper = screenY;
         this.srcX = srcX;
         this.srcY = srcY;
         this.buttonWidth = buttonWidth;
@@ -39,7 +44,7 @@ public class ActionButton implements Button, Observer{
 
         if(action != null){
             if(action.equalsIgnoreCase("MapScreen")) actionParameter = 1;
-            if(action.equalsIgnoreCase("MapEditorScreen")) actionParameter = 2;
+            if(action.equalsIgnoreCase("ScrollerSceenTest")) actionParameter = 2;
 
             if(action.equalsIgnoreCase("lev1")) actionParameter = 3;
             if(action.equalsIgnoreCase("lev2")) actionParameter = 4;
@@ -127,13 +132,15 @@ public class ActionButton implements Button, Observer{
     }
 
     @Override
-    public void setStartX(int x) {
-        screenX += x;
+    public void setStartX(float x) {
+        screenXHelper += x;
+        screenX = (int)screenXHelper;
     }
 
     @Override
-    public void setStartY(int y) {
-        screenY += y;
+    public void setStartY(float y) {
+        screenYHelper += y;
+        screenY = (int)screenYHelper;
     }
 
 }

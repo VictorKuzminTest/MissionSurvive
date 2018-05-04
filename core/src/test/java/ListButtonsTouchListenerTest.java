@@ -78,14 +78,14 @@ public class ListButtonsTouchListenerTest {
         listener.getTouchDownEvent(touchDownX, touchDownY);
 
         //2 pixels less then min threshold requires to start scrolling:
-        int deltaX = ListButtonsTouchListener.SCROLLING_THRESHOLD - 2;
-        int deltaY = 0;
-        listener.getTouchDraggedEvent(deltaX, deltaY);
+        int thresholdX = ListButtonsTouchListener.SCROLLING_THRESHOLD - 2;
+        int thresholdY = 0;
+        listener.getTouchDraggedEvent(thresholdX, thresholdY, 0, 0);
 
         assertFalse(listener.isScrolling());
 
-        deltaX = ListButtonsTouchListener.SCROLLING_THRESHOLD + 1;
-        listener.getTouchDraggedEvent(deltaX, deltaY);
+        thresholdX = ListButtonsTouchListener.SCROLLING_THRESHOLD + 1;
+        listener.getTouchDraggedEvent(thresholdX, thresholdY, 0, 0);
 
         assertTrue(listener.isScrolling());
     }

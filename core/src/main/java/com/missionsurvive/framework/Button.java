@@ -26,9 +26,9 @@ public interface Button {
 
     public int getButtonHeight();
 
-    public void setStartX(int x);
+    public void setStartX(float x);
 
-    public void setStartY(int y);
+    public void setStartY(float y);
 
     public void setCommand(Command command);
 }

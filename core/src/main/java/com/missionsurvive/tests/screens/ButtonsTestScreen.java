@@ -1,4 +1,4 @@
-package com.missionsurvive.tests;
+package com.missionsurvive.tests.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -15,6 +15,7 @@ import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.ParallaxBackground;
 import com.missionsurvive.map.ParallaxCamera;
 import com.missionsurvive.map.ParallaxLayer;
+import com.missionsurvive.tests.ButtonsTest;
 import com.missionsurvive.utils.Assets;
 
 /**

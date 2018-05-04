@@ -21,7 +21,11 @@ public class MapEditor {
     private MapLayers layers;
     private TiledMapTileLayer foreground;
     private TextureRegion lev3;
+    private ScrollMap scrollLevel1Map;
+    private MapTer[][] mapTers;
 
+    private int tileWidth = 16;
+    private int tileHeight = 16;
     private int worldWidth;
     private int worldHeight;
 
@@ -181,9 +185,30 @@ public class MapEditor {
         //-game.getCurrentScreen().setMap(); //set new map to screen.                                                 //+
     }
 
+    public void horizontScroll(int x){}
+
+    public void verticalScroll(int y){}
+
+    public ScrollMap getScrollLevel1Map(){
+        return scrollLevel1Map;
+    }
+
+    public void autoScrollX(float delta){}
 
     public TiledMap getMap(){
         return map;
+    }
+
+    public MapTer[][] getLevel1Ter(){
+        return mapTers;
+    }
+
+    public int getTileWidth(){
+        return tileWidth;
+    }
+
+    public int getTileHeight(){
+        return tileHeight;
     }
 
 }

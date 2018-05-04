@@ -160,7 +160,7 @@ public class ListButtons implements Observer{
      * @param distanceX delta distance x
      * @param distanceY delta distance y
      */
-    public void scrollButtons(int distanceX, int distanceY){
+    public void scrollButtons(float distanceX, float distanceY){
         int len = buttons.size();
         for(int whichButton = 0; whichButton < len; whichButton++){
             Button button = buttons.get(whichButton);

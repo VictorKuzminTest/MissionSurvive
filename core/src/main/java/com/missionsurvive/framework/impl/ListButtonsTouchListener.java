@@ -20,6 +20,7 @@ public class ListButtonsTouchListener implements Listener {
     private ListButtons currentList;
 
     private float lastX, lastY;
+    private float downX, downY; //using to track the threshold of scrolling the list
 
     private boolean scrolling;
 
@@ -33,6 +34,8 @@ public class ListButtonsTouchListener implements Listener {
         if(Gdx.input.justTouched()){
             lastX = Gdx.input.getX(0) * scaleX;
             lastY =  Gdx.input.getY(0) * scaleY;
+            downX = lastX;
+            downY = lastY;
             getTouchDownEvent((int)lastX, (int)lastY);
         }
         else{
@@ -41,7 +44,9 @@ public class ListButtonsTouchListener implements Listener {
                 lastY =  Gdx.input.getY(0) * scaleY;
                 float deltaX = Gdx.input.getDeltaX(0) * scaleX;
                 float deltaY =  Gdx.input.getDeltaY(0) * scaleY;
-                getTouchDraggedEvent((int)deltaX, (int)deltaY);
+                float thresholdX = downX - lastX;
+                float thresholdY = downY - lastY;
+                getTouchDraggedEvent((int)thresholdX, (int)thresholdY, deltaX, deltaY);
             }
             else{
                 getTouchUpEvent((int)lastX, (int)lastY);
@@ -66,13 +71,15 @@ public class ListButtonsTouchListener implements Listener {
     /**
      * If The list it is not currently scrolling, we check for scrolling threshold from previous touch event.
      * Else, we just're just scrolling this list.
-     * @param deltaX
-     * @param deltaY
+     * @param thresholdX threshold x coord to check
+     * @param thresholdY threshold y coord to check
+     * @param deltaX delta x for scrolling
+     * @param deltaY delta y for scrolling
      */
-    public void getTouchDraggedEvent(int deltaX, int deltaY) {
+    public void getTouchDraggedEvent(int thresholdX, int thresholdY, float deltaX, float deltaY) {
         if(currentList != null){
             if(!scrolling){
-                if(Math.abs(deltaX) > SCROLLING_THRESHOLD || Math.abs(deltaY) > SCROLLING_THRESHOLD) {
+                if(Math.abs(thresholdX) > SCROLLING_THRESHOLD || Math.abs(thresholdY) > SCROLLING_THRESHOLD) {
                     scrolling = true;
                 }
             }
