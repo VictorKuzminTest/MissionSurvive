@@ -40,7 +40,7 @@ public class ListButtonsTouchListenerTest {
         fillListWithButtons((ListButtons) listTwo);
 
         listener = new ListButtonsTouchListener();
-        rootList = new ListButtons("root", listener);
+        rootList = new ListButtons(listener);
 
         listener.attach(listOne);
         listener.attach(listTwo);
@@ -52,7 +52,7 @@ public class ListButtonsTouchListenerTest {
         for(int row = 0; row < numRowsInList; row++){
             for(int col = 0; col < numColsInList; col++){
                 listButtons.addNewButton(null, col, row, col * listButtonWidth, row * listButtonHeight,
-                        listButtonWidth, listButtonHeight, null, new OnClickButtonLogCommand(row, col));
+                        listButtonWidth, listButtonHeight, new OnClickButtonLogCommand(row, col));
             }
         }
     }

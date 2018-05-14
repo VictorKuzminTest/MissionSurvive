@@ -1,6 +1,7 @@
 package com.missionsurvive.scenarios;
 
 import com.missionsurvive.framework.TouchControl;
+import com.missionsurvive.map.Map;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.Bot;
@@ -73,7 +74,7 @@ public class PlatformerScenario implements Scenario {
     }
 
     @Override
-    public void update(MapTer[][] level1Ter, MapEditor mapEditor, int worldWidth, int worldHeight, TouchControl touchControl, float deltaTime) {
+    public void update(Map map, TouchControl touchControl, float deltaTime) {
 
     }
 

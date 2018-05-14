@@ -70,7 +70,7 @@ public class Helicopter implements Bot{
         frames = FRAMES_FLYING;
 
         this.mapEditor = mapEditor;
-        hitbox = new Hitbox(null, worldX, worldY, 0, 0, 0, 0);
+        hitbox = new Hitbox(worldX, worldY, 0, 0, 0, 0);
         setAnimation();
         rocketLauncher = new Helicopter.RocketLauncher();
         if(assetName != null){

@@ -77,7 +77,7 @@ public class Fireball implements Weapon{
 
         speed = 8;
         deltaSpread = 4;
-        hitbox = new Hitbox(null, x, y, 9, 9, 4, 4);
+        hitbox = new Hitbox(x, y, 9, 9, 4, 4);
 
         int actions[] = new int[2];
         actions[Fireball.FRAMES_MOVING] = 5;

@@ -4,8 +4,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.XML;
 import com.missionsurvive.framework.impl.AndroidXML;
+import com.missionsurvive.screens.MainMenuScreen;
 import com.missionsurvive.tests.screens.ButtonsTestScreen;
+import com.missionsurvive.tests.screens.TestScreen;
 import com.missionsurvive.utils.Assets;
+import com.missionsurvive.utils.Controls;
 
 public class MSGame extends Game {
 	public static final int SCREEN_WIDTH = 480;
@@ -21,9 +24,14 @@ public class MSGame extends Game {
 		batch = new SpriteBatch();
         xmlParser = new AndroidXML();
         Assets.setMapAssets(this);
+		Controls.setControls(this);
+		Assets.setGame(this);
 
+		//test screens:
 		//setScreen(new TestScreen(this));
-		setScreen(new ButtonsTestScreen(this));
+		//setScreen(new ButtonsTestScreen(this));
+
+		setScreen(new MainMenuScreen(this));
 	}
 
 	@Override

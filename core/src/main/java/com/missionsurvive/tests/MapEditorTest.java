@@ -1,7 +1,7 @@
 package com.missionsurvive.tests;
 
-import com.missionsurvive.commands.Command;
-import com.missionsurvive.commands.Load;
+import com.missionsurvive.scenarios.commands.Command;
+import com.missionsurvive.scenarios.commands.Load;
 import com.missionsurvive.map.MapEditor;
 
 /**

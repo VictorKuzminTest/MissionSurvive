@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by kuzmin on 23.04.18.
  */
 
-public class MapEditor {
+public class MapEditor implements Map{
 
     private TiledMap map;
     private ArrayList<TextureRegion[][]> tilesets = new ArrayList<TextureRegion[][]>();
@@ -62,6 +62,7 @@ public class MapEditor {
         layers.add(foreground);
     }
 
+    @Override
     public void addNewTileset(String asset, int tileWidth, int tileHeight){
         Texture texture = Assets.getTextures()[Assets.getWhichTexture(asset)];
         TextureRegion[][] tileset;
@@ -185,8 +186,10 @@ public class MapEditor {
         //-game.getCurrentScreen().setMap(); //set new map to screen.                                                 //+
     }
 
-    public void horizontScroll(int x){}
+    @Override
+    public void horizontScroll(float delta, int x){}
 
+    @Override
     public void verticalScroll(int y){}
 
     public ScrollMap getScrollLevel1Map(){
@@ -199,6 +202,7 @@ public class MapEditor {
         return map;
     }
 
+    @Override
     public MapTer[][] getLevel1Ter(){
         return mapTers;
     }
@@ -211,4 +215,8 @@ public class MapEditor {
         return tileHeight;
     }
 
+    @Override
+    public ScrollMap getScrollMap() {
+        return scrollLevel1Map;
+    }
 }

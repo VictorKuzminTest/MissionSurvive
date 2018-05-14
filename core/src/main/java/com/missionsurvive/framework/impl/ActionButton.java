@@ -2,10 +2,10 @@ package com.missionsurvive.framework.impl;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.missionsurvive.commands.Command;
+import com.missionsurvive.MSGame;
+import com.missionsurvive.scenarios.commands.Command;
 import com.missionsurvive.framework.Button;
 import com.missionsurvive.framework.Observer;
-import com.missionsurvive.framework.TouchControl;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.utils.Assets;
 
@@ -23,12 +23,12 @@ public class ActionButton implements Button, Observer{
     private int srcX, srcY;
     private int buttonWidth;
     private int buttonHeight;
-    private int actionParameter;
 
     private float screenXHelper; //helps to accumulate float values (it is used in list of buttons)
     private float screenYHelper;
 
-    public ActionButton(String assetName, int screenX, int screenY, int srcX, int srcY, int buttonWidth, int buttonHeight, String action){
+    public ActionButton(String assetName, int screenX, int screenY, int srcX, int srcY,
+                        int buttonWidth, int buttonHeight, Command command){
         this.screenX = screenX;
         this.screenY = screenY;
         screenXHelper = screenX;
@@ -42,7 +42,9 @@ public class ActionButton implements Button, Observer{
             texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
         }
 
-        if(action != null){
+        this.command = command;
+
+        /*if(action != null){
             if(action.equalsIgnoreCase("MapScreen")) actionParameter = 1;
             if(action.equalsIgnoreCase("ScrollerSceenTest")) actionParameter = 2;
 
@@ -68,7 +70,7 @@ public class ActionButton implements Button, Observer{
             if(action.equalsIgnoreCase("sloMo")) actionParameter = 22;
             if(action.equalsIgnoreCase("newMap")) actionParameter = 23;
             if(action.equalsIgnoreCase("scrollMap")) actionParameter = 24;
-        }
+        }*/
     }
 
     @Override
@@ -94,8 +96,9 @@ public class ActionButton implements Button, Observer{
     @Override
     public void drawButton(SpriteBatch batch) {
         batch.begin();
-        batch.draw(texture, -240 + screenX,
-                -160 + GeoHelper.transformCanvasYCoordToGL(screenY, 320, buttonHeight),
+        batch.draw(texture, MSGame.SCREEN_OFFSET_X + screenX,
+                MSGame.SCREEN_OFFSET_Y + GeoHelper.transformCanvasYCoordToGL(screenY,
+                        MSGame.SCREEN_HEIGHT, buttonHeight),
                 buttonWidth, buttonHeight);
         batch.end();
     }
@@ -104,8 +107,9 @@ public class ActionButton implements Button, Observer{
     public void drawButton(SpriteBatch batch, int offsetStartX, int offsetStartY,
                            int offsetWidth, int offsetHeight) {
         batch.begin();
-        batch.draw(texture, -240 + screenX + offsetStartX,
-                -160 + GeoHelper.transformCanvasYCoordToGL(screenY + offsetStartY, 320, buttonHeight + offsetHeight),
+        batch.draw(texture, MSGame.SCREEN_OFFSET_X + screenX + offsetStartX,
+                MSGame.SCREEN_OFFSET_Y + GeoHelper.transformCanvasYCoordToGL(screenY + offsetStartY,
+                        MSGame.SCREEN_HEIGHT, buttonHeight + offsetHeight),
                 srcX + offsetStartX, srcY + offsetStartY,
                 buttonWidth + offsetWidth, buttonHeight + offsetHeight);
         batch.end();

@@ -1,6 +1,6 @@
 package com.missionsurvive.tests.commands;
 
-import com.missionsurvive.commands.Command;
+import com.missionsurvive.scenarios.commands.Command;
 import com.missionsurvive.framework.Button;
 
 /**

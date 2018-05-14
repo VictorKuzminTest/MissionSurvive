@@ -1,5 +1,6 @@
 package com.missionsurvive.framework.impl;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.Decorator;
 import com.missionsurvive.objs.GameObject;
 
@@ -19,9 +20,9 @@ public class BlinkingDecorator extends Decorator {
     }
 
     @Override
-    public void drawObject(Graphics g, Pixmap[] pixmaps) {
+    public void drawObject(SpriteBatch batch) {
         if(blink){
-            super.drawObject(g, pixmaps);
+            super.drawObject(batch);
         }
     }
 

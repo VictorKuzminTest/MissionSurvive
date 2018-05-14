@@ -84,7 +84,7 @@ public class L6B implements Bot {
         this.worldX = worldX;
         this.worldY = worldY;
         movingVector = new Vector2(SPEED_MOVING, SPEED_ATTACKING);
-        hitbox = new Hitbox(null, worldX, worldY, 50, 50, 0, 0);
+        hitbox = new Hitbox(worldX, worldY, 50, 50, 0, 0);
         this.mapEditor = mapEditor;
         directionX = DIRECTION_LEFT;
         hitpoints = 0;

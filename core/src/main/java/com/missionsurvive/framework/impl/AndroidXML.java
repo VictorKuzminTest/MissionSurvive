@@ -19,8 +19,10 @@ public class AndroidXML implements XML {
 
     @Override
     public String getAttrValue(XmlReader.Element element, String attrKey) {
-        String value;
-        value = element.getAttribute(attrKey);
+        String value = null;
+        if(element.hasAttribute(attrKey)){
+            value = element.getAttribute(attrKey);
+        }
         return value;
     }
 

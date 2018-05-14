@@ -1,8 +1,7 @@
 package com.missionsurvive.framework;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.missionsurvive.commands.Command;
-import com.missionsurvive.framework.TouchControl;
+import com.missionsurvive.scenarios.commands.Command;
 
 /**
  * Created by kuzmin on 25.04.18.

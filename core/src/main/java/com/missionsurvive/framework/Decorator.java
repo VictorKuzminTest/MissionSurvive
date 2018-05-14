@@ -1,5 +1,6 @@
 package com.missionsurvive.framework;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.objs.GameObject;
 
 /**
@@ -14,8 +15,8 @@ public abstract class Decorator {
         this.decoratedObject = decoratedObject;
     }
 
-    public void drawObject(Graphics g, Pixmap[] pixmaps) {
-        decoratedObject.drawObject(g, pixmaps, 0, 0, 0, 0);
+    public void drawObject(SpriteBatch batch) {
+        decoratedObject.drawObject(batch, 0, 0, 0, 0);
     }
 
 

@@ -1,16 +1,17 @@
-package com.missionsurvive.scenarios;
+package com.missionsurvive.scenarios.controlscenarios;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.missionsurvive.framework.TouchControl;
+import com.missionsurvive.framework.ControlPanel;
 import com.missionsurvive.map.MapTer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kuzmin on 04.05.18.
  */
 
-public class MapEditorCS implements ControlScenario{
+public class MapEditorCS implements ControlScenario {
 
     public static final int REMOVE_TILE = -1;
     public static final int PUT_TILE = 0;
@@ -23,37 +24,40 @@ public class MapEditorCS implements ControlScenario{
     private  boolean isTouchingPanels;
 
     public MapEditorCS(){
-        setControlPanels(object);
+        /*setControlPanels(object);
         ListingScenario.addButtonsToList("lev1", 0, null);
-        ListingScenario.addButtonsToList("iconseditor", 1, object);
+        ListingScenario.addButtonsToList("iconseditor", 1, object);*/
     }
 
 
 
-    public void setControlPanels(){
+    /*public void setControlPanels(){
         for(int whichPanel = 0; whichPanel < Controls.controlPanels.length; whichPanel++){
             if(Controls.controlPanels[whichPanel].getScreen().equalsIgnoreCase("MapEditorScreen")) listOfPanels.add(Controls.controlPanels[whichPanel]);
         }
         listOfPanels.get(0).setActivated(true);
+    }*/
+
+    @Override
+    public void onTouchPanels(float scaleX, float scaleY) {
+
     }
 
-
-
     public void drawPanels(SpriteBatch batch){
-        int numPanels = listOfPanels.size();
+        /*int numPanels = listOfPanels.size();
         for(int whichPanel = 0; whichPanel < numPanels; whichPanel++){
             ControlPanel controlPanel = listOfPanels.get(whichPanel);
             if(controlPanel.isActivated() == true) controlPanel.drawPanel(g);
-        }
+        }*/
     }
 
-    public void touchPanels(TouchControl touchControl, List<TouchEvent> touchEvents, Object object){
+    /*public void onTouchPanels(float scaleX, float scaleY){
         int numPanels = listOfPanels.size();
         for(int whichPanel = 0; whichPanel < numPanels; whichPanel++){
             ControlPanel controlPanel = listOfPanels.get(whichPanel);
             if(controlPanel.isActivated() == true) controlPanel.touchButtons(game, this, touchControl, touchEvents, object);
         }
-    }
+    }*/
 
     @Override
     public boolean isTouchingPanels(){
@@ -66,7 +70,7 @@ public class MapEditorCS implements ControlScenario{
     }
 
 
-    @Override
+    /*@Override
     public void action(Game game, Player player, Object object, int actionParameter) {
         if(actionParameter == 0){ //просто касаемся участков карты.
             if(object != null){
@@ -271,7 +275,7 @@ public class MapEditorCS implements ControlScenario{
                 }
             }
         }
-    }
+    }*/
 
 
     /**
@@ -279,7 +283,7 @@ public class MapEditorCS implements ControlScenario{
      * @param action
      * @param mapObject
      */
-    public void editMapTerList(int action, MapObject mapObject){
+    /*public void editMapTerList(int action, MapObject mapObject){
         int len = mapTerArrayList.size();
         switch (action){
             case REMOVE_TILE:
@@ -323,14 +327,13 @@ public class MapEditorCS implements ControlScenario{
                 break;
         }
         mapTerArrayList.clear();
-    }
+    }*/
 
 
     /**
      * Puts bot to chosen MapTers.
-     * @param bot
      */
-    public void putBot(int bot, int direction){
+    /*public void putBot(int bot, int direction){
         Scenario scenario = Assets.getGame().getCurrentScreen().getScenario();
         if(scenario instanceof PlatformerScenario){
             int len = mapTerArrayList.size();
@@ -341,7 +344,7 @@ public class MapEditorCS implements ControlScenario{
             }
             mapTerArrayList.clear();
         }
-    }
+    }*/
 
 
     @Override

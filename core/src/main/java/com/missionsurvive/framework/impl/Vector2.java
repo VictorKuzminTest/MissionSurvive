@@ -80,36 +80,4 @@ public class Vector2 extends Vector {
         this.y *= scalar;
         return this;
     }
-
-    public float len() {
-        return FloatMath.sqrt(x * x + y * y);
-    }
-
-    public Vector2 nor() {
-        float len = len();
-        if (len != 0) {
-            this.x /= len;
-            this.y /= len;
-        }
-        return this;
-    }
-
-    public float angle() {
-        float angle = (float) Math.atan2(y, x) * TO_DEGREES;
-        if (angle < 0)
-            angle += 360;
-        return angle;
-    }
-
-
-    public float dist(Vector2 other) {
-        float distX = this.x - other.x;
-        float distY = this.y - other.y;
-        return FloatMath.sqrt(distX * distX + distY * distY);
-    }
-    public float dist(float x, float y) {
-        float distX = this.x - x;
-        float distY = this.y - y;
-        return FloatMath.sqrt(distX * distX + distY * distY);
-    }
 }

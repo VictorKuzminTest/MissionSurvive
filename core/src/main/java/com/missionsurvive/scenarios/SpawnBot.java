@@ -38,7 +38,7 @@ public class SpawnBot implements  Spawn{
 
     @Override
     public void spawnBot(MapEditor mapEditor, float deltaTime){
-        switch (whichBot) {
+        /*switch (whichBot) {
             case ZOMBIE:
                 spawnZombie(mapEditor, deltaTime, col * 16, (row + 1) * 16 - 70);
                 break;
@@ -97,11 +97,11 @@ public class SpawnBot implements  Spawn{
                 break;
             default:
                 break;
-        }
+        }*/
     }
 
-    public void spawnPowerUp(Game game, MapEditor mapEditor){
-        if(direction == PowerUp.DIRECTION_EAST){
+    public void spawnPowerUp(MapEditor mapEditor){
+        /*if(direction == PowerUp.DIRECTION_EAST){
             if(whichBot == POWER_UP_LIFE){
                 game.getCurrentScreen().getScenario().addBot(new PowerUp("cuadcopter", mapEditor,
                                 col * 16 - 480, row * 16, PowerUp.POWER_LIFE, direction),
@@ -124,12 +124,12 @@ public class SpawnBot implements  Spawn{
                                 col * 16, row * 16 + 320, PowerUp.POWER_GUN, direction),
                         0);
             }
-        }
+        }*/
     }
 
 
     public void spawnZombie(MapEditor mapEditor, float deltaTime, int x, int y){
-        if(isFirstTimeSpawn){
+        /*if(isFirstTimeSpawn){
             checkAndAddZombie(game, mapEditor, x, y);
         }
         else {
@@ -138,17 +138,17 @@ public class SpawnBot implements  Spawn{
                 spawnTickTime -= spawnTick;
                 checkAndAddZombie(game, mapEditor, x, y);
             }
-        }
+        }*/
     }
 
 
 
-    public void checkAndAddZombie(Game game, MapEditor mapEditor, int x, int y){
-        if(game.getCurrentScreen().getScenario().getBots(ZOMBIE).size() < PlatformerScenario.MAX_NUM_ZOMBIES){
+    public void checkAndAddZombie(MapEditor mapEditor, int x, int y){
+        /*if(game.getCurrentScreen().getScenario().getBots(ZOMBIE).size() < PlatformerScenario.MAX_NUM_ZOMBIES){
             game.getCurrentScreen().getScenario().addBot(new Enemy("zsuit", mapEditor, x , y, direction),
                     ZOMBIE);
             isFirstTimeSpawn = false;
-        }
+        }*/
     }
 
     @Override

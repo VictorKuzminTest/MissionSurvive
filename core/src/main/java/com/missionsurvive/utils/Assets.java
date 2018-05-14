@@ -26,8 +26,6 @@ public class Assets {
     public static void setMapAssets(MSGame game){
         xml = game.getXMLParser();
 
-        thisGame = game;
-
         XmlReader.Element root = xml.getRoot("xml/assets.xml");
         XmlReader.Element[] assets = xml.getChildNodes(root, "asset");
         int assetsCount = assets.length;
@@ -43,12 +41,17 @@ public class Assets {
             name = xml.getAttrValue(assets[i], "name");
 
             textures[i] = new Texture(path);
+            textures[i].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             texNames[i] = name;
         }
     }
 
     public static Texture[] getTextures(){
         return textures;
+    }
+
+    public static void setGame(MSGame game){
+        thisGame = game;
     }
 
     public static Game getGame(){

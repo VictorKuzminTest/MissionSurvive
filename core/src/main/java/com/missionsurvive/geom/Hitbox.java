@@ -6,8 +6,6 @@ package com.missionsurvive.geom;
 
 public class Hitbox {
 
-    private Paint paint; //this is for drawing hitbox if needed (for modeling collisions, for example).
-
     private int hitboxWidth;
     private int hitboxHeight;
     /**
@@ -19,20 +17,7 @@ public class Hitbox {
     private int centerX, centerY, top, bottom, left, right;
     private int offsetX, offsetY; //XY offset for hitbox (offset from sprite coordinates on screen).
 
-
-    /**
-     * for testing.
-     */
-    public Hitbox(Paint paint, int x, int y, int hitboxWidth, int hitboxHeight, int offsetX, int offsetY){
-        this.paint = paint;
-        setHitbox(x, y, hitboxWidth, hitboxHeight, offsetX, offsetY);
-    }
-
     public Hitbox(int x, int y, int hitboxWidth, int hitboxHeight, int offsetX, int offsetY){
-        paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2.0f);
-
         setHitbox(x, y, hitboxWidth, hitboxHeight, offsetX, offsetY);
     }
 
@@ -99,9 +84,5 @@ public class Hitbox {
 
     public int getHalfHeight(){
         return halfHeight;
-    }
-
-    public Paint getPaint(){
-        return paint;
     }
 }

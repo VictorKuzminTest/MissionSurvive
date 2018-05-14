@@ -1,6 +1,6 @@
 package com.missionsurvive.tests;
 
-import com.missionsurvive.commands.Command;
+import com.missionsurvive.scenarios.commands.Command;
 import com.missionsurvive.framework.Button;
 import com.missionsurvive.framework.Listener;
 import com.missionsurvive.framework.Observer;
@@ -65,7 +65,7 @@ public class ButtonsTest {
         fillListWithButtons((ListButtons) listTwo);
 
         Listener listener = new ListButtonsTouchListener();
-        rootList = new ListButtons("root", listener);
+        rootList = new ListButtons(listener);
 
         listener.attach(listOne);
         listener.attach(listTwo);
@@ -77,7 +77,7 @@ public class ButtonsTest {
         for(int row = 0; row < numRowsInList; row++){
             for(int col = 0; col < numColsInList; col++){
                 listButtons.addNewButton("lev1", col, row, col * listButtonWidth, row * listButtonHeight,
-                        listButtonWidth, listButtonHeight, null, new OnClickButtonLogCommand(row, col));
+                        listButtonWidth, listButtonHeight, new OnClickButtonLogCommand(row, col));
             }
         }
     }

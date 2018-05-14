@@ -3,6 +3,7 @@ package com.missionsurvive.scenarios;
 import com.missionsurvive.framework.TouchControl;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.geom.Hitbox;
+import com.missionsurvive.map.Map;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.Blockage;
@@ -54,10 +55,8 @@ public class ScrollerScenario implements Scenario {
         newObstacles(screenX, screenY);
     }
 
-
     @Override
-    public void update(MapTer[][] level1Ter, MapEditor mapEditor, int worldWidth, int worldHeight,
-                       TouchControl touchControl, float deltaTime) {
+    public void update(Map map, TouchControl touchControl, float deltaTime) {
         if(moto != null){
             if(!moto.isDead()){
                 scrollerScreen.updateObstacleBlinking(deltaTime);
@@ -72,8 +71,9 @@ public class ScrollerScenario implements Scenario {
                         obstacle.moving();
                     }
                 }
-                setObstacles(deltaTime);
-                mapEditor.autoScrollX(deltaTime);
+                setObstacles(deltaTime, map);
+
+                map.horizontScroll(deltaTime, 3);
             }
             updateMoto(touchControl, deltaTime);
 
@@ -144,7 +144,7 @@ public class ScrollerScenario implements Scenario {
 
         springBoard = new Springboard(new Hitbox(475, startScreenY + 112, obstacleWidth, obstacleHeight, 5, 5),
                 "springBoard", screenX, screenY,
-                spriteWidth, spriteHeight, 114); //112 - tear with railing height.
+                spriteWidth, spriteHeight, 114);
 
         tearLeft2 = new Tear(new Hitbox(475, startScreenY + 112 + spriteHeight, obstacleWidth, obstacleHeight, -3, 5),
                 "springBoard", screenX, screenY, spriteWidth, spriteHeight, 196);
@@ -212,7 +212,7 @@ public class ScrollerScenario implements Scenario {
         tear.add(tearRight3);
     }
 
-    public void setObstacles(float deltaTime){
+    public void setObstacles(float deltaTime, Map map){
         obstacleTickTime += deltaTime;
 
         while(obstacleTickTime > obstacleTick) {
@@ -268,7 +268,7 @@ public class ScrollerScenario implements Scenario {
                         switchScene++;
                         break;
                     case PlaceObstacle.TEAR:
-                        placeTear(scrollerScreen);
+                        placeTear(scrollerScreen, map);
                         switchScene++;
                         break;
                     case PlaceObstacle.ROCKET:
@@ -305,7 +305,6 @@ public class ScrollerScenario implements Scenario {
         }
     }
 
-
     public void setCurrentSection(){
         switch (switchSection){
             case 0: currentSection = section1;
@@ -331,20 +330,22 @@ public class ScrollerScenario implements Scenario {
         }
     }
 
-
-    public void placeTear(ScrollerScreen scrollerScreen){
+    public void placeTear(ScrollerScreen scrollerScreen, Map map){
         if(!springBoard.isPlaced()){
-            int startCol = scrollerScreen.getMapEditor().getScrollLevel1Map().getEndColOffset() + 28;
+            int startCol = map.getScrollMap().getEndColOffset() + 5;
             scrollerScreen.setNoStartCol(startCol);
-            scrollerScreen.setNoEndCol(startCol + 65);
+            scrollerScreen.setNoEndCol(startCol + 13);
 
-            tearLeft1.placeObstacle(900, startScreenY);
-            springBoard.placeObstacle(900, startScreenY + 112 - 1); //112 - tear with railing height.
-            tearLeft2.placeObstacle(900, startScreenY + 112 + spriteHeight - 2);
+            //73 - tileWidth, 13 - num tiles to fly, minus 20 pxs - to place (fit) springboard to a target tile:
+            int startScreenX = startCol * 73 - map.getScrollMap().getWorldOffsetX() - 20;
+            int endScreenX = (startCol + 13) * 73 - map.getScrollMap().getWorldOffsetX();
+            tearLeft1.placeObstacle(startScreenX , startScreenY);
+            springBoard.placeObstacle(startScreenX, startScreenY + 112 - 1); //112 - tear with railing height.
+            tearLeft2.placeObstacle(startScreenX, startScreenY + 112 + spriteHeight - 2);
 
-            tearRight1.placeObstacle(1845, startScreenY);
-            tearRight2.placeObstacle(1845, startScreenY + 112 - 1);
-            tearRight3.placeObstacle(1845, startScreenY + 112 + spriteHeight - 2);
+            tearRight1.placeObstacle(endScreenX, startScreenY);
+            tearRight2.placeObstacle(endScreenX, startScreenY + 112 - 1);
+            tearRight3.placeObstacle(endScreenX, startScreenY + 112 + spriteHeight - 2);
 
             obstacleTickTime = 0;
         }
@@ -374,7 +375,6 @@ public class ScrollerScenario implements Scenario {
         }
         return carY;
     }
-
 
     public ArrayList<Obstacle> getObstacles(){
         return obstacles;
@@ -440,7 +440,6 @@ public class ScrollerScenario implements Scenario {
         newObstacles(500, 220);
     }
 
-
     /**
      * The class helps to set obstacles.
      */
@@ -471,7 +470,6 @@ public class ScrollerScenario implements Scenario {
             this.isRandom = isRandom;
         }
     }
-
 
     public void setSection1(){
         /*section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 900));
@@ -602,7 +600,7 @@ public class ScrollerScenario implements Scenario {
     }
 
     public void setSection4(){
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 5.0f, 900));
+        /*section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 5.0f, 900));*/
         section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 1.0f, 900));
         section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.0f, 900));
 

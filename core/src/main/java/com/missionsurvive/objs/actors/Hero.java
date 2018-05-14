@@ -115,7 +115,7 @@ public class Hero implements GameObject {
     public Hero(String assetName, int x, int y, int direction){
         //offsetX (20) and offsetY (17) I calculated approximately:
         // (spriteHeight(Width) - hitboxHeight(Width)) / 2.
-        hitbox = new Hitbox(null, x, y, 10, 48, 20, 17);
+        hitbox = new Hitbox(x, y, 10, 48, 20, 17);
         setHero(x, y, direction);
     }
 
@@ -490,7 +490,7 @@ public class Hero implements GameObject {
         if(isHorizontalScroll){
             if(direction == DIRECTION_RIGHT){
                 if(hitbox.getCenterX() > mapEditor.getScrollLevel1Map().getScreenWidth() - (mapEditor.getScrollLevel1Map().getScreenWidth() / 2)){
-                    mapEditor.horizontScroll(movingVector.getX());
+                    mapEditor.horizontScroll(0, movingVector.getX());
                 }
                 else{
                     x += movingVector.getX();

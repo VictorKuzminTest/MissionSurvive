@@ -30,4 +30,142 @@
         path = "int/button.png"
         pixmapformat = "ARGB8888">
     </asset>
+    <asset
+        type = "cast"
+        name = "hero"
+        path = "cast/hero.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "motorcycle"
+        path = "cast/motorcycle.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "zombie"
+        path = "cast/zombie.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "zgirl"
+        path = "cast/zgirl.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "zsuit"
+        path = "cast/zsuit.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "shotgunzombie"
+        path = "cast/shotgunzombie.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "helicopter"
+        path = "cast/helicopter.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "boss"
+        path = "cast/boss.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "l3b"
+        path = "cast/l3b.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "l6b"
+        path = "cast/l6b.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "bullet"
+        path = "cast/bullet.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "fireball"
+        path = "cast/fireball.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "rocket"
+        path = "cast/rocket.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "explosion"
+        path = "cast/explosion.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "powerup"
+        path = "cast/powerup.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "cuadcopter"
+        path = "cast/cuadcopter.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "ter"
+        name = "ocean"
+        path = "ter/ocean.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "ter"
+        name = "cars"
+        path = "ter/cars.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "ter"
+        name = "springboard"
+        path = "ter/springboard.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "ter"
+        name = "bridge"
+        path = "ter/bridge.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "ter"
+        name = "wreckage"
+        path = "ter/wreckage.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "int"
+        name = "iconseditor"
+        path = "int/iconseditor.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "int"
+        name = "digits"
+        path = "int/digits.png"
+        pixmapformat = "ARGB4444">
+    </asset>
 </assets>

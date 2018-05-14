@@ -1,6 +1,11 @@
 package com.missionsurvive.framework.impl;
 
 import com.missionsurvive.framework.Physics;
+import com.missionsurvive.framework.Vector;
+import com.missionsurvive.geom.GeoHelper;
+import com.missionsurvive.map.MapTer;
+import com.missionsurvive.map.ScrollMap;
+import com.missionsurvive.objs.actors.Hero;
 
 /**
  * Created by kuzmin on 03.05.18.
@@ -18,10 +23,10 @@ public class HeroPhysics implements Physics {
                 vectStartX, vectStartY,
                 vector.getX(), vector.getY(), tileSize);
         switch (isAction){
-            case HeroNew.ACTION_JUMPING:
+            case Hero.ACTION_JUMPING:
                 calculateWhenJumpingOrFalling(mapTer, scrollMap, vectStartX, vectStartY, vector, tileSize);
                 break;
-            case HeroNew.ACTION_RUNNING:
+            case Hero.ACTION_RUNNING:
                 calculateWhenRunning(mapTer, scrollMap, vectStartX, vectStartY,  vector, tileSize);
                 break;
         }

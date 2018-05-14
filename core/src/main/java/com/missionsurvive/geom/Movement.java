@@ -1,5 +1,8 @@
 package com.missionsurvive.geom;
 
+import com.missionsurvive.map.MapEditor;
+import com.missionsurvive.map.MapTer;
+
 /**
  * Created by kuzmin on 03.05.18.
  */

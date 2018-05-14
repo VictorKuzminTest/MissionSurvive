@@ -1,12 +1,19 @@
 package com.missionsurvive.framework.impl;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.missionsurvive.MSGame;
+import com.missionsurvive.geom.GeoHelper;
+import com.missionsurvive.utils.Assets;
 
 /**
  * Created by kuzmin on 04.05.18.
  */
 
 public class Icon {
+
+    private Texture texture;
+
     private int x;
     private int y;
     private int assetStartX;
@@ -14,7 +21,6 @@ public class Icon {
     private int assetWidth;
     private int assetHeight;
 
-    private Pixmap pixmap;
     private String iconName;
 
     public Icon(String iconName, String assetName, int x, int y, int srcX, int srcY, int width, int height){
@@ -27,25 +33,28 @@ public class Icon {
         this.iconName = iconName;
 
         if(assetName != null){
-            this.pixmap = Assets.pixmaps[Assets.getWhichPixmap(assetName)];
+            texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
         }
     }
 
-
     public void drawIcon(SpriteBatch batch){
-		/*g.drawPixmap(pixmap, x, y,
-				1 + assetStartX * (assetWidth + 2), 1 + assetStartY * (assetHeight + 2),
-				assetWidth, assetHeight, null);*/
+        batch.begin();
+        batch.draw(texture, MSGame.SCREEN_OFFSET_X + x,
+                MSGame.SCREEN_OFFSET_Y + GeoHelper.transformCanvasYCoordToGL(y,
+                        MSGame.SCREEN_HEIGHT, assetHeight),
+                assetStartX, assetStartY,
+                assetWidth, assetHeight);
+        batch.end();
     }
 
-    public void drawIcon(Graphics g, int offsetStartX, int offsetStartY, int offsetWidth, int offsetHeight){
+    public void drawIcon(SpriteBatch batch, int offsetStartX, int offsetStartY, int offsetWidth, int offsetHeight){
 		/*g.drawPixmap(pixmap, x, y,
 				assetStartX + offsetStartX, assetStartY + offsetStartY,
 				assetWidth + offsetWidth, assetHeight + offsetHeight, null);*/
     }
 
-    public void drawIconRect(Graphics g, int color, int x, int y, int iconWidth, int iconHeight){
-        g.drawRect(x, y, iconWidth, iconHeight, color, null);
+    public void drawIconRect(SpriteBatch batch, int color, int x, int y, int iconWidth, int iconHeight){
+        /*g.drawRect(x, y, iconWidth, iconHeight, color, null);*/
     }
 
     public String getIconName(){

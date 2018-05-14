@@ -10,13 +10,11 @@ public class ScrollMap {
 
     private int tileWidth;
     private int tileHeight;
-    private int sizeToDivideWidth;
-    private int sizeToDivideHeight;
     private int endRowOffset;  //номер строки, которой заканчивается отрисовка тайлов.
     private int maxRowsToDraw;  //сколько строк тайлов мы должны отрисовать.
     private int startRowOffset;  //сколько строк тайлов мы должны отрисовать.
     private int endColOffset;  //Номер колонки, которой заканчивается отрисовка тайлов.
-    private int maxColToDraw;   //сколько колонок тайлов мы должны отрисовать.
+    private int maxColsToDraw;   //сколько колонок тайлов мы должны отрисовать.
     private int startColOffset;   //колонка, с которой начинается отрисовка тайлов.
     private int numCols;
     private int worldOffsetX;
@@ -30,7 +28,6 @@ public class ScrollMap {
     private int extremeLeftScreen;  //крайнее левое положение экрана.
     private int extremeUpScreen;  //Крайнее верхнее положение экрана.
 
-
     public ScrollMap(int tileWidth, int tileHeight, int numRows, int numCols, boolean isRounded){
 
         this.numRows = numRows;   //worldHeight.
@@ -41,9 +38,6 @@ public class ScrollMap {
 
         this.tileHeight = tileHeight;
         this.tileWidth = tileWidth;    //Декартова.
-
-        sizeToDivideWidth = tileWidth - 1;
-        sizeToDivideHeight = tileHeight - 1;
 
         if(!isRounded){  //if tile map is not rounded.
             extremeLeftScreen = numCols * tileWidth - numCols * this.tileWidth;  //крайнее левое положение экрана.
@@ -58,22 +52,22 @@ public class ScrollMap {
             extremeDownScreen = numRows * tileHeight;
         }
 
-        maxRowsToDraw = screenHeight / sizeToDivideHeight + 2;
-        maxColToDraw = screenWidth / sizeToDivideWidth + 2;
+        maxRowsToDraw = screenHeight / tileHeight + 2;
+        maxColsToDraw = screenWidth / tileWidth + 2;
         startRowOffset = 0;
         startColOffset = 0;
-        endRowOffset = screenHeight / sizeToDivideHeight + 1;
+        endRowOffset = screenHeight / tileHeight + 1;
         if(endRowOffset >= numRows) endRowOffset = numRows;
-        endColOffset = screenWidth / sizeToDivideWidth + 1;
+        endColOffset = screenWidth / tileWidth + 1;
         if(endColOffset >= numCols) endColOffset = numCols;
         worldOffsetX = 0;
         worldOffsetY = 0;
     }
 
-
     public int getStartRowOffset(){
         return startRowOffset;
     }
+
     public int getEndRowOffset(){
         return endRowOffset;
     }
@@ -114,35 +108,32 @@ public class ScrollMap {
         setRoundColOffset();
     }
 
-
     public void setRoundColOffset(){
-        startColOffset = worldOffsetX / sizeToDivideWidth;
-        endColOffset = startColOffset + maxColToDraw;
+        startColOffset = worldOffsetX / tileWidth;
+        endColOffset = startColOffset + maxColsToDraw;
     }
 
     public void setRoundRowOffset(){
-        startRowOffset = worldOffsetY / sizeToDivideHeight;
+        startRowOffset = worldOffsetY / tileHeight;
         endRowOffset = startRowOffset + maxRowsToDraw;
     }
 
-
     public void setColOffset(){ //Оффсет  колонки с тайлами, с которой начнем прорисовку тайлов и которой закончим.
-        endColOffset = maxColToDraw + getWorldOffsetX() / sizeToDivideWidth;
+        endColOffset = maxColsToDraw + getWorldOffsetX() / tileHeight;
 
         if(endColOffset > numCols){
             endColOffset = numCols;
         }
 
-        startColOffset = endColOffset - maxColToDraw;
+        startColOffset = endColOffset - maxColsToDraw;
 
         if(startColOffset < 0){ //Проверка на то, чтобы индекс не выходил за границы массива.
             startColOffset = 0;
         }
     }
 
-
     public void setRowOffset(){ //Оффсет  строки с тайлами, с которой начнем прорисовку тайлов и которой закончим.
-        endRowOffset = maxRowsToDraw + getWorldOffsetY() / sizeToDivideHeight;
+        endRowOffset = maxRowsToDraw + getWorldOffsetY() / tileHeight;
 
         if(endRowOffset > numRows){
             endRowOffset = numRows;
@@ -173,20 +164,18 @@ public class ScrollMap {
          * This method sets "extremes" back to its initial values (suppose if we changed them before through method setExtremesForEditing(...)).
          */
         if(!isRounded){  //Если ограниченный, т.е. не круговая tilemap.
-            extremeLeftScreen = numCols * sizeToDivideWidth - numCols * sizeToDivideWidth;  //крайнее левое положение экрана.
-            extremeRightScreen = numCols * sizeToDivideWidth - screenWidth;  //Крайнее правое положение экрана.
+            extremeLeftScreen = numCols * tileWidth - numCols * tileWidth;  //крайнее левое положение экрана.
+            extremeRightScreen = numCols * tileWidth - screenWidth;  //Крайнее правое положение экрана.
             extremeUpScreen  = 0;
-            extremeDownScreen = numRows * sizeToDivideHeight - screenHeight; //Крайнее нижнее положение экрана.
+            extremeDownScreen = numRows * tileHeight - screenHeight; //Крайнее нижнее положение экрана.
         }
         else{ //Если круговая.
-            extremeLeftScreen = (numCols * sizeToDivideWidth) * (-1);
-            extremeRightScreen = numCols * sizeToDivideWidth;
-            extremeUpScreen  = (numRows * sizeToDivideHeight) * (-1);
-            extremeDownScreen = numRows * sizeToDivideHeight;
+            extremeLeftScreen = (numCols * tileWidth) * (-1);
+            extremeRightScreen = numCols * tileWidth;
+            extremeUpScreen  = (numRows * tileHeight) * (-1);
+            extremeDownScreen = numRows * tileHeight;
         }
     }
-
-
 
     public int getWorldOffsetX(){
         return worldOffsetX;
@@ -200,10 +189,9 @@ public class ScrollMap {
         return maxRowsToDraw;
     }
 
-    public int getMaxColToDraw(){
-        return maxColToDraw;
+    public int getMaxColsToDraw(){
+        return maxColsToDraw;
     }
-
 
     public int getNumRows(){
         return numRows;
@@ -216,6 +204,7 @@ public class ScrollMap {
     public int getTileWidth(){
         return tileWidth;
     }
+
     public void setTileWidth(int tileWidth){
         this.tileWidth = tileWidth;
     }

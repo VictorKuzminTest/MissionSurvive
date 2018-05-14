@@ -1,9 +1,8 @@
 package com.missionsurvive.framework.impl;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.missionsurvive.commands.Command;
+import com.missionsurvive.scenarios.commands.Command;
 import com.missionsurvive.framework.Button;
 import com.missionsurvive.framework.Listener;
 import com.missionsurvive.framework.Observer;
@@ -26,7 +25,7 @@ public class ListButtons implements Observer{
     private ArrayList<Button> buttons = new ArrayList<Button>();
     //We are using composite pattern (GOF) to keeping track of list of buttons on the control panel:
     private ArrayList<ListButtons> lists = new ArrayList<ListButtons>();
-    private Listener listener;
+    private Listener listener; //listens to other lists
 
     private int startX;  //listing startX
     private int startY;   //listing startY
@@ -36,13 +35,10 @@ public class ListButtons implements Observer{
     private int srcBgX, srcBgY; //откуда начинается отрисовка asset для background.
 
     /**
-     * Constructor for root lists, which contain other list of buttons.
-     * @param name
+     * Constructor for root lists, which contains other lists of buttons.
+     * @param listener
      */
-    public ListButtons(String name, Listener listener){
-        if(name != null){
-            this.name = name;
-        }
+    public ListButtons(Listener listener){
         this.listener = listener;
     }
 
@@ -68,8 +64,7 @@ public class ListButtons implements Observer{
 
     public void addNewButton(String assetName,
                              int col, int row, int assetStartX, int assetStartY,
-                             int buttonWidth, int buttonHeight,
-                             String action, Command command){
+                             int buttonWidth, int buttonHeight, Command command){
         int startX;
         int startY;
 
@@ -87,9 +82,18 @@ public class ListButtons implements Observer{
         }
 
         Button button = new ActionButton(assetName,
-                startX, startY, assetStartX, assetStartY, buttonWidth, buttonHeight, action);
+                startX, startY, assetStartX, assetStartY, buttonWidth, buttonHeight, command);
         buttons.add(button);
-        buttons.get(buttons.size() - 1).setCommand(command);
+    }
+
+    /**
+     * Method for root list of buttons.
+     */
+    public void drawLists(SpriteBatch batch){
+        int listsCount = lists.size();
+        for(int i = 0; i < listsCount; i++){
+            lists.get(i).drawButtons(batch);
+        }
     }
 
     public void drawButtons(SpriteBatch batch){

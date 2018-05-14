@@ -1,10 +1,12 @@
 package com.missionsurvive.framework;
 
+import com.badlogic.gdx.Gdx;
+import com.missionsurvive.MSGame;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.map.ScrollMap;
 import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.objs.actors.Moto;
-import com.missionsurvive.scenarios.ControlScenario;
+import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 import com.missionsurvive.scenarios.PlatformerScenario;
 
 /**
@@ -37,32 +39,30 @@ public class TouchControl {
     private boolean isMapTouchedDown = false;
     private float jumpingTick = 0.9f, jumpingTickTime = 0;
 
-    public TouchControl(){
+    private float motoX, motoY;
+    private float scaleX, scaleY;
 
+    public TouchControl(float scaleX, float scaleY){
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
     }
 
-
     public void motorControl(float deltaTime, Moto moto){
-
-        /*int len = touchEvents.size();
-        for(int touchEvent = 0; touchEvent < len; touchEvent++){
-            TouchEvent event = touchEvents.get(touchEvent);
-
-            switch(event.type){
-                case TouchEvent.TOUCH_DOWN:{
-                    moto.setDestination(deltaTime, event.x, event.y);
-                    break;
-                }
-                case TouchEvent.TOUCH_DRAGGED:{
-                    moto.setDestination(deltaTime, event.x, event.y);
-                    break;
-                }
-                case TouchEvent.TOUCH_UP:{
-                    moto.stop();
-                    break;
-                }
+        if(Gdx.input.justTouched()){
+            motoX = Gdx.input.getX(0) * scaleX;
+            motoY =  Gdx.input.getY(0) * scaleY;
+            moto.setDestination(deltaTime, (int)motoX, (int)motoY);
+        }
+        else{
+            if(Gdx.input.isTouched(0)){
+                motoX = Gdx.input.getX(0) * scaleX;
+                motoY =  Gdx.input.getY(0) * scaleY;
+                moto.setDestination(deltaTime, (int)motoX, (int)motoY);
             }
-        }*/
+            else{
+                moto.stop();
+            }
+        }
     }
 
 
@@ -71,7 +71,7 @@ public class TouchControl {
 
         if(hero.isAction() < Hero.ACTION_DYING){
 
-            countJumpingTime(hero, null, deltaTime);
+            /*countJumpingTime(hero, null, deltaTime);*/
 
             /*int len = touchEvents.size();
             for(int touchEvent = 0; touchEvent < len; touchEvent++){
@@ -185,7 +185,7 @@ public class TouchControl {
     }
 
 
-    public void countJumpingTime(Hero hero, TouchEvent touchEvent, float deltaTime){
+    /*public void countJumpingTime(Hero hero, TouchEvent touchEvent, float deltaTime){
         if(isMapTouchedDown) {
             jumpingTickTime += deltaTime;
         }
@@ -216,7 +216,7 @@ public class TouchControl {
                 }
             }
         }
-    }
+    }*/
 
 
     public MapTer touchMap(MapTer[][] mapTer, ScrollMap scrollMap, int numRows, int numCols){

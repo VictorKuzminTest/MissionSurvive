@@ -8,22 +8,22 @@ public class MapTer {
 
     private int row, col;
     private int tileWidth, tileHeight;
+    private int srcX, srcY;
 
     private boolean blocked;
     private boolean isEditing; //переменная, указывающая на то, редактируется ли данный  тайл в данный момент. Нужна для отрисовки editingTileRect.
     private boolean isLadder;
 
     /**
-     * This constrauctor was made for testing. Here we can assign any tile size we want.
-     * @param row
-     * @param col
-     * @param tileSize
+     * This constructor was made for testing. Here we can assign any tile size we want.
      */
-    public MapTer(int row, int col, int tileSize){
+    public MapTer(int col, int row, int srcX, int srcY, int tileWidth, int tileHeight){
         this.row = row;
         this.col = col;
-        this.tileWidth = tileSize;
-        this.tileHeight = tileSize;
+        this.srcX = srcX;
+        this.srcY = srcY;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
     }
 
     public MapTer(int row, int col){
@@ -56,6 +56,14 @@ public class MapTer {
 
     public int getCol(){
         return col;
+    }
+
+    public int getSrcX(){
+        return srcX;
+    }
+
+    public int getSrcY(){
+        return srcY;
     }
 
     public int getTop(ScrollMap scrollMap){

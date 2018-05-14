@@ -104,7 +104,7 @@ public class Obstacle implements GameObject{
         this.screenX = screenX;
         this.screenY = screenY;
 
-        if(obstacleId == BLOCKAGE) Sounds.carwhish.play(0.65f);
+        /*if(obstacleId == BLOCKAGE) Sounds.carwhish.play(0.65f);*/
     }
 
     public int getScreenX(){

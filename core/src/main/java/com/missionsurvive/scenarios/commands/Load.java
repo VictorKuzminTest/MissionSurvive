@@ -1,4 +1,4 @@
-package com.missionsurvive.commands;
+package com.missionsurvive.scenarios.commands;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -7,7 +7,7 @@ import com.missionsurvive.map.MapEditor;
 /**
  * Created by kuzmin on 23.04.18.
  */
-public class Load implements Command{
+public class Load implements com.missionsurvive.scenarios.commands.Command {
 
     private MapEditor mapEditor;
 

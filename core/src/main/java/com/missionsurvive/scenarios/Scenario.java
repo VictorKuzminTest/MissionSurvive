@@ -2,6 +2,7 @@ package com.missionsurvive.scenarios;
 
 import com.badlogic.gdx.Game;
 import com.missionsurvive.framework.TouchControl;
+import com.missionsurvive.map.Map;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.Bot;
@@ -14,8 +15,7 @@ import java.util.List;
 
 public interface Scenario {
 
-    public abstract void update(MapTer[][] level1Ter, MapEditor mapEditor, int worldWidth, int worldHeight,
-                                TouchControl touchControl, float deltaTime);
+    public abstract void update(Map map, TouchControl touchControl, float deltaTime);
 
     public abstract void collideObject();
 

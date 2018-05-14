@@ -2,6 +2,9 @@ package com.missionsurvive.framework.impl;
 
 import com.missionsurvive.framework.Animation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by kuzmin on 03.05.18.
  */
@@ -9,7 +12,6 @@ import com.missionsurvive.framework.Animation;
 public class Animation2 implements Animation {
 
     private List<Animation> animation;
-    private float[] frameVertices;
 
     private int assetX;
     private int assetY;
@@ -21,39 +23,6 @@ public class Animation2 implements Animation {
         this.assetX = assetX;
         this.assetY = assetY;
         animation = new ArrayList<Animation>();
-
-        setActionFrame(assetX, assetY, spriteWidth, spriteHeight,
-                pixmap.getWidth(), pixmap.getHeight());
-    }
-
-    /**
-     * vertices.setVertices(new float[]{
-     0, 0, 0, 1,
-     480, 0, 1, 1,
-     480, 320, 1, 0,
-     0, 320, 0, 0}, 0, 16);
-     * @param srcX
-     * @param srcY
-     * @param srcWidth
-     * @param srcHeight
-     * @param pixmapWidth
-     * @param pixmapHeight
-     */
-    public void setActionFrame(float srcX, float srcY, float srcWidth, float srcHeight,
-                               float pixmapWidth, float pixmapHeight){
-        frameVertices = new float[8];
-
-        frameVertices[0] = srcX / pixmapWidth;
-        frameVertices[1] = (srcY + srcHeight) / pixmapHeight;
-
-        frameVertices[2] = (srcX + srcWidth) / pixmapWidth;
-        frameVertices[3] = (srcY + srcHeight) / pixmapHeight;
-
-        frameVertices[4] = (srcX + srcWidth) / pixmapWidth;
-        frameVertices[5] = srcY / pixmapHeight;
-
-        frameVertices[6] = srcX / pixmapWidth;
-        frameVertices[7] = srcY / pixmapHeight;
     }
 
     @Override
@@ -107,10 +76,5 @@ public class Animation2 implements Animation {
     @Override
     public List<Animation> getChildren() {
         return animation;
-    }
-
-    @Override
-    public float[] getRectVertices() {
-        return frameVertices;
     }
 }

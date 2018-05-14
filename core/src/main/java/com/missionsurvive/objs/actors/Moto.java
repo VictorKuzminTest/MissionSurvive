@@ -10,6 +10,7 @@ import com.missionsurvive.geom.Hitbox;
 import com.missionsurvive.objs.GameObject;
 import com.missionsurvive.objs.Obstacle;
 import com.missionsurvive.scenarios.Scenario;
+import com.missionsurvive.scenarios.ScrollerScenario;
 import com.missionsurvive.utils.Assets;
 
 /**

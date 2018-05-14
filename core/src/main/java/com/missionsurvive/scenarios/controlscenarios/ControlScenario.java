@@ -1,7 +1,10 @@
-package com.missionsurvive.scenarios;
+package com.missionsurvive.scenarios.controlscenarios;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.missionsurvive.framework.ControlPanel;
 import com.missionsurvive.framework.TouchControl;
+
+import java.util.List;
 
 /**
  * Created by kuzmin on 04.05.18.
@@ -15,11 +18,9 @@ public interface ControlScenario {
 
     public void drawPanels(SpriteBatch batch);
 
-    public void touchPanels(TouchControl touchControl, Object object);
+    public void onTouchPanels(float scaleX, float scaleY);
 
     public void touchingPanels(boolean touch);
 
     public boolean isTouchingPanels();
-
-    public void action(Object object, int actionParameter);
 }

@@ -1,6 +1,7 @@
 package com.missionsurvive.objs;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.impl.ObjAnimation;
@@ -79,12 +80,14 @@ public class RocketL4 extends Obstacle {
 
             //draw shadow:
             batch.begin();
+            batch.setColor(1f, 1f, 1f, 0.5f);
             batch.draw(rocketTexture, MSGame.SCREEN_OFFSET_X + shadow.screenX,
                     MSGame.SCREEN_OFFSET_Y +
                             GeoHelper.transformCanvasYCoordToGL(shadow.screenY, MSGame.SCREEN_HEIGHT, shadow.spriteHeight),
                     1,
                     shadow.assetStartY,
                     shadow.spriteWidth, shadow.spriteHeight);
+            batch.setColor(1f, 1f, 1f, 1f);
             batch.end();
         }
         else{
