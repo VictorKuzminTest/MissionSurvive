@@ -18,9 +18,7 @@ public interface ControlScenario {
 
     public void drawPanels(SpriteBatch batch);
 
-    public void onTouchPanels(float scaleX, float scaleY);
+    public boolean onTouchPanels(float scaleX, float scaleY);
 
-    public void touchingPanels(boolean touch);
-
-    public boolean isTouchingPanels();
+    public void action(Object object);
 }

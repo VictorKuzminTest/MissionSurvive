@@ -1,13 +1,14 @@
 package com.missionsurvive.scenarios.commands;
 
 import com.badlogic.gdx.Screen;
+import com.missionsurvive.screens.PlatformerScreen;
 import com.missionsurvive.screens.ScrollerScreen;
 
 /**
  * Created by kuzmin on 08.05.18.
  */
 
-public class PlayProject implements  Command{
+public class PlayProjectCommand implements  Command{
 
     public static final int PLAY_SCROLLER = 0;
     public static final int PLAY_PLATFORMER = 1;
@@ -17,13 +18,18 @@ public class PlayProject implements  Command{
     public int playId = -1;
 
     @Override
-    public void execute(String data) {
+    public String execute(String key, String value) {
         switch (playId){
             case PLAY_SCROLLER:
                 ((ScrollerScreen)screen).setHeroControl(
                         getHeroControl(((ScrollerScreen)screen).isHeroControl()));
                 break;
+            case PLAY_PLATFORMER:
+                ((PlatformerScreen)screen).setHeroControl(
+                        getHeroControl(((PlatformerScreen)screen).isHeroControl()));
+                break;
         }
+        return null;
     }
 
     public boolean getHeroControl(boolean currentState){
@@ -39,6 +45,13 @@ public class PlayProject implements  Command{
         this.screen = screen;
         if(screen instanceof ScrollerScreen){
             playId = PLAY_SCROLLER;
+        }
+    }
+
+    public void setScreen(PlatformerScreen screen) {
+        this.screen = screen;
+        if(screen instanceof PlatformerScreen){
+            playId = PLAY_PLATFORMER;
         }
     }
 }

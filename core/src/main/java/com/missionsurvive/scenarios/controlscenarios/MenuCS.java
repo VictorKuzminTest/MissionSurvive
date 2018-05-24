@@ -46,7 +46,7 @@ public class MenuCS implements ControlScenario {
     }
 
     @Override
-    public void onTouchPanels(float scaleX, float scaleY) {
+    public boolean onTouchPanels(float scaleX, float scaleY) {
         int numPanels = listOfPanels.size();
         for(int whichPanel = 0; whichPanel < numPanels; whichPanel++){
             ControlPanel controlPanel = listOfPanels.get(whichPanel);
@@ -54,15 +54,11 @@ public class MenuCS implements ControlScenario {
                 controlPanel.onTouch(scaleX, scaleY);
             }
         }
-    }
-
-    @Override
-    public void touchingPanels(boolean touch) {
-
-    }
-
-    @Override
-    public boolean isTouchingPanels() {
         return false;
+    }
+
+    @Override
+    public void action(Object object) {
+
     }
 }

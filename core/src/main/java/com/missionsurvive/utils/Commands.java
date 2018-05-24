@@ -1,10 +1,18 @@
 package com.missionsurvive.utils;
 
 
+import com.missionsurvive.scenarios.commands.BlockLayersCommand;
 import com.missionsurvive.scenarios.commands.Command;
-import com.missionsurvive.scenarios.commands.PlayProject;
-import com.missionsurvive.scenarios.commands.PutPlayer;
+import com.missionsurvive.scenarios.commands.PlayProjectCommand;
+import com.missionsurvive.scenarios.commands.PutPlayerCommand;
+import com.missionsurvive.scenarios.commands.SaveLoadMapCommand;
+import com.missionsurvive.scenarios.commands.NewMapCommand;
+import com.missionsurvive.scenarios.commands.PutBotCommand;
+import com.missionsurvive.scenarios.commands.PutTileCommand;
+import com.missionsurvive.scenarios.commands.ShowPopupCommand;
+import com.missionsurvive.scenarios.commands.ShowLayerCommand;
 import com.missionsurvive.scenarios.commands.ToScreenCommand;
+import com.missionsurvive.scenarios.commands.WithTileCommand;
 
 /**
  * Created by kuzmin on 07.05.18.
@@ -18,14 +26,38 @@ public class Commands {
             if(action.equalsIgnoreCase("PlatformerScreen")){
                 return command = new ToScreenCommand(ToScreenCommand.TO_PLATFORMER_SCREEN);
             }
-            if(action.equalsIgnoreCase("ScrollerScreen")){
+            else if(action.equalsIgnoreCase("ScrollerScreen")){
                 return command = new ToScreenCommand(ToScreenCommand.TO_SCROLLER_SCREEN);
             }
-            if(action.equalsIgnoreCase("PlayProject")){
-                return command = new PlayProject();
+            else if(action.equalsIgnoreCase("PlayProjectCommand")){
+                return command = new PlayProjectCommand();
             }
-            if(action.equalsIgnoreCase("PutPlayer")){
-                return command = new PutPlayer();
+            else if(action.equalsIgnoreCase("PutPlayerCommand")){
+                return command = new PutPlayerCommand();
+            }
+            else if(action.equalsIgnoreCase("showLayer")){
+                return command = new ShowLayerCommand();
+            }
+            else if(action.equalsIgnoreCase("blockLayers")){
+                return command = new BlockLayersCommand();
+            }
+            else if(action.equalsIgnoreCase("withTileAction")){
+                return command = new WithTileCommand();
+            }
+            else if(action.equalsIgnoreCase("putTile")){
+                return new PutTileCommand();
+            }
+            else if(action.equalsIgnoreCase("showPopup")){
+                return new ShowPopupCommand();
+            }
+            else if(action.equalsIgnoreCase("putBot")){
+                return new PutBotCommand();
+            }
+            else if(action.equalsIgnoreCase("save_load_map")){
+                return new SaveLoadMapCommand();
+            }
+            else if(action.equalsIgnoreCase("newMap")){
+                return new NewMapCommand();
             }
         }
         return null;

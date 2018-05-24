@@ -24,10 +24,11 @@ public class OnClickButtonLogCommand implements Command{
 
     /**
      * If there is no button object attached, showing only row - col message through log.
-     * @param data
+     * @param key
+     * @param value
      */
     @Override
-    public void execute(String data) {
+    public String execute(String key, String value) {
         if(button != null){
             int endX = button.getStartX() + button.getButtonWidth();
             int endY = button.getStartY() + button.getButtonHeight();
@@ -39,5 +40,6 @@ public class OnClickButtonLogCommand implements Command{
         else{
             System.out.println("row = " + row + " col = " + col);
         }
+        return null;
     }
 }

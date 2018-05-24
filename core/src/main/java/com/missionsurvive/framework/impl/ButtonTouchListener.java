@@ -96,6 +96,7 @@ public class ButtonTouchListener implements Listener{
         currentButton = null;
     }
 
+    @Override
     public int getState(){
         return state;
     }

@@ -2,8 +2,8 @@ package com.missionsurvive.scenarios.controlscenarios;
 
 import com.badlogic.gdx.Screen;
 import com.missionsurvive.framework.impl.ListButtons;
-import com.missionsurvive.scenarios.commands.PlayProject;
-import com.missionsurvive.scenarios.commands.PutPlayer;
+import com.missionsurvive.scenarios.commands.PlayProjectCommand;
+import com.missionsurvive.scenarios.commands.PutPlayerCommand;
 import com.missionsurvive.screens.ScrollerScreen;
 import com.missionsurvive.utils.Commands;
 
@@ -21,12 +21,12 @@ public class ScrollerScreenListingBuilder implements ListingBuilder {
 
     @Override
     public void addButtons(ListButtons listButtons) {
-        PlayProject command = (PlayProject) Commands.getCommand("PlayProject");
+        PlayProjectCommand command = (PlayProjectCommand) Commands.getCommand("PlayProjectCommand");
         command.setScreen(scrollerScreen);
-        listButtons.addNewButton("iconseditor", 0, 1, 1, 1, 32, 32, command);
+        listButtons.addNewButton("iconseditor", 0, 1, 0, 0, 32, 32, command);
 
-        PutPlayer putPlayerCommand = (PutPlayer) Commands.getCommand("PutPlayer");
-        putPlayerCommand.setScreen(scrollerScreen);
-        listButtons.addNewButton("iconseditor", 0, 2, 1, 1 + 6 * 34, 32, 32, putPlayerCommand);
+        PutPlayerCommand putPlayerCommandCommand = (PutPlayerCommand) Commands.getCommand("PutPlayerCommand");
+        putPlayerCommandCommand.setScreen(scrollerScreen);
+        listButtons.addNewButton("iconseditor", 0, 2, 0, 32, 32, 32, putPlayerCommandCommand);
     }
 }

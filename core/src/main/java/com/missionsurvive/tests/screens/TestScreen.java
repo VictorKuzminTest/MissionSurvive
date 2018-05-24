@@ -33,7 +33,7 @@ public class TestScreen implements Screen {
     private TiledMapRenderer renderer;
     private BitmapFont font;
     private MapEditorTest mapEditorTest;
-    ParallaxBackground background;
+    private ParallaxBackground background;
 
     public TestScreen(MSGame game){
         this.game = game;
@@ -47,7 +47,7 @@ public class TestScreen implements Screen {
 
         font = new BitmapFont();
 
-        mapEditor = new MapEditor(300, 23);
+        mapEditor = new MapEditor(null, 300, 23);
         mapEditorTest = new MapEditorTest(mapEditor);
 
         //loadbasicTestMap();

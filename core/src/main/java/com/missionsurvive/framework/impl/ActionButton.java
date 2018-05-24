@@ -53,7 +53,7 @@ public class ActionButton implements Button, Observer{
             if(action.equalsIgnoreCase("lev3")) actionParameter = 5;
             if(action.equalsIgnoreCase("putPlayer")) actionParameter = 6;
             if(action.equalsIgnoreCase("putBot")) actionParameter = 7;
-            if(action.equalsIgnoreCase("PlayProject")) actionParameter = 8;
+            if(action.equalsIgnoreCase("PlayProjectCommand")) actionParameter = 8;
             if(action.equalsIgnoreCase("allLevelsTileset")) actionParameter = 9;
             if(action.equalsIgnoreCase("level1Tileset")) actionParameter = 10;
             if(action.equalsIgnoreCase("level2Tileset")) actionParameter = 11;
@@ -87,7 +87,7 @@ public class ActionButton implements Button, Observer{
     public boolean onClick(boolean onClick) {
         if(onClick){
             if(command != null){
-                command.execute(null);
+                command.execute(null, null);
             }
         }
         return onClick;

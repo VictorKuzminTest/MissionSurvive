@@ -213,12 +213,12 @@ public class HeroPhysics implements Physics {
 
     public int getRow(MapTer[][] map, ScrollMap scrollMap, int coordY, int tileHeight){
         return GeoHelper.checkRowCol((coordY + scrollMap.getWorldOffsetY())
-                / (tileHeight - 1), map.length);
+                / tileHeight, map.length);
     }
 
     public int getCol(MapTer[][] map, ScrollMap scrollMap, int coordX, int tileWidth){
         return GeoHelper.checkRowCol((coordX + scrollMap.getWorldOffsetX())
-                / (tileWidth - 1), map[0].length);
+                / tileWidth, map[0].length);
     }
 
 

@@ -15,4 +15,8 @@ public interface Map {
     public void verticalScroll(int y);
 
     public ScrollMap getScrollMap();
+
+    public void loadMap(String mapTerInString);
+
+    public String saveMap();
 }

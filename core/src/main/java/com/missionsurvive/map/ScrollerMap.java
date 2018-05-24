@@ -132,6 +132,9 @@ public class ScrollerMap implements Map{
     }
 
     @Override
+    public void loadMap(String mapTerInString) {}
+
+    @Override
     public void verticalScroll(int y) {
 
     }
@@ -139,5 +142,10 @@ public class ScrollerMap implements Map{
     @Override
     public ScrollMap getScrollMap() {
         return scrollMap;
+    }
+
+    @Override
+    public String saveMap() {
+        return null;
     }
 }

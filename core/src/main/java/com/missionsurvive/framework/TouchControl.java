@@ -2,6 +2,7 @@ package com.missionsurvive.framework;
 
 import com.badlogic.gdx.Gdx;
 import com.missionsurvive.MSGame;
+import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.map.ScrollMap;
 import com.missionsurvive.objs.actors.Hero;
@@ -15,8 +16,14 @@ import com.missionsurvive.scenarios.PlatformerScenario;
 
 public class TouchControl {
 
-    private int lastDownX;  //Последнее зафиксированная координата X пальца на экране в состоянии  down.
-    private int lastDownY;   //Последнее зафиксированная координата Y пальца на экране в состоянии  down.
+    public static final int EVENT_NONE = -1;
+    public static final int EVENT_DOWN = 0;
+    public static final int EVENT_DRAGGED = 1;
+    public static final int EVENT_UP = 2;
+
+    private int touchEvent;
+    private float lastDownX;  //Последнее зафиксированная координата X пальца на экране в состоянии  down.
+    private float lastDownY;   //Последнее зафиксированная координата Y пальца на экране в состоянии  down.
     private int distanceX;   //Вычисляемая дистанция по X на экране в зависимости от событий.
     private int distanceY;   //Вычисляемая дистанция по Y на экране в зависимости от событий.
 
@@ -66,12 +73,50 @@ public class TouchControl {
     }
 
 
-
+    /**
+     * In this method we also trace touch input events like EVENT_UP, because default (ligdx) framework
+     * doesn't provide this feature directly.
+     * @param platformerScenario
+     * @param hero
+     * @param deltaTime
+     */
     public void heroControl(PlatformerScenario platformerScenario, Hero hero, float deltaTime) {
 
         if(hero.isAction() < Hero.ACTION_DYING){
 
-            /*countJumpingTime(hero, null, deltaTime);*/
+            countJumpingTime(hero, EVENT_NONE, EVENT_NONE, EVENT_NONE, deltaTime);
+
+            if(Gdx.input.justTouched()){
+                touchEvent = EVENT_DOWN;
+                int logicX = (int)(Gdx.input.getX(0) * scaleX);
+                int logicY = (int)(Gdx.input.getY(0) * scaleY);
+                shoot(platformerScenario, hero, logicX, logicY);
+                moveHero(hero, logicX, logicY);
+                countJumpingTime(hero, EVENT_DOWN, logicX, logicY, 0);
+            }
+            else{
+                if(touchEvent != EVENT_NONE){
+                    if(Gdx.input.isTouched(0)){
+                        touchEvent = EVENT_DRAGGED;
+                        int logicX = (int)(Gdx.input.getX(0) * scaleX);
+                        int logicY = (int)(Gdx.input.getY(0) * scaleY);
+                        shoot(platformerScenario, hero, logicX, logicY);
+                        moveHero(hero, logicX, logicY);
+                        countJumpingTime(hero, EVENT_DRAGGED, logicX, logicY, 0);
+                    }
+                    else{
+                        if(touchEvent < EVENT_UP){
+                            touchEvent = EVENT_UP;
+                            stopActions(hero);
+                            countJumpingTime(hero, EVENT_UP,
+                                    (int)(Gdx.input.getX(0) * scaleX), (int)(Gdx.input.getY(0) * scaleY), 0);
+                        }
+                        else{
+                            touchEvent = EVENT_NONE;
+                        }
+                    }
+                }
+            }
 
             /*int len = touchEvents.size();
             for(int touchEvent = 0; touchEvent < len; touchEvent++){
@@ -185,11 +230,41 @@ public class TouchControl {
     }
 
 
-    /*public void countJumpingTime(Hero hero, TouchEvent touchEvent, float deltaTime){
+    public void countJumpingTime(Hero hero, int touchEvent,
+                                 int eventX, int eventY, float deltaTime){
         if(isMapTouchedDown) {
             jumpingTickTime += deltaTime;
         }
-        if(touchEvent != null){
+
+        switch(touchEvent){
+            case EVENT_DOWN:
+                isMapTouchedDown = true;
+                initEventToJumpX = eventX;
+                initEventToJumpY = eventY;
+                break;
+            case EVENT_DRAGGED:
+                while(jumpingTickTime > jumpingTick){
+                    jumpingTickTime = 0;
+
+                    initEventToJumpX = eventX;
+                    initEventToJumpY = eventY;
+                }
+                break;
+            case EVENT_UP:
+                isMapTouchedDown = false;
+                if(Math.abs(initEventToJumpY - eventY) > MIN_THRASHOLD_Y){
+                    if(Math.abs(initEventToJumpX - eventX) < MIN_THRASHOLD_X){
+                        hero.setJumpingVector(0, hero.getSpeedJumpingY());
+                    }
+                    else{
+                        hero.setJumpingVector(hero.getSpeedJumpingX(), hero.getSpeedJumpingY());
+                    }
+                    jumpHero(hero);
+                }
+                break;
+        }
+
+        /*if(touchEvent != null){
             if(touchEvent.type == TouchEvent.TOUCH_DOWN){
                 isMapTouchedDown = true;
                 initEventToJumpX = touchEvent.x;
@@ -215,82 +290,72 @@ public class TouchControl {
                     jumpHero(hero);
                 }
             }
-        }
-    }*/
+        }*/
+    }
 
 
     public MapTer touchMap(MapTer[][] mapTer, ScrollMap scrollMap, int numRows, int numCols){
         MapTer targetMapTer = null;
-        /*int len = touchEvents.size();
-        int tileWidth = 16;
-        int tileHeight = 16;
         int offsetX = scrollMap.getWorldOffsetX();
         int offsetY = scrollMap.getWorldOffsetY();
+        int tileWidth = 16;
+        int tileHeight = 16;
 
-        for(int touchEvent = 0; touchEvent < len; touchEvent++){
-            TouchEvent event = touchEvents.get(touchEvent);
-            if(event.type == TouchEvent.TOUCH_DOWN){
-                isMapTouchedDown = true;
+        if(Gdx.input.justTouched()){
+            isMapTouchedDown = true;
+            int row = GeoHelper.getSpatialGridCoord((int)(Gdx.input.getY(0) * scaleY),
+                    offsetY, numRows, tileHeight);
+            int col = GeoHelper.getSpatialGridCoord((int)(Gdx.input.getX(0) * scaleX),
+                    offsetX, numCols, tileWidth);
 
-                int row = GeoHelper.getSpatialGridCoord(event.y, offsetY, numRows, tileHeight);
-                int col = GeoHelper.getSpatialGridCoord(event.x, offsetX, numCols, tileWidth);
-
-                targetMapTer = mapTer[row][col];
-            }
-            if(event.type == TouchEvent.TOUCH_DRAGGED){
-
+            targetMapTer = mapTer[row][col];
+        }
+        else{
+            if(Gdx.input.isTouched(0)){
                 if(isMapTouchedDown){
-                    int row = GeoHelper.getSpatialGridCoord(event.y, offsetY, numRows, tileHeight);
-                    int col = GeoHelper.getSpatialGridCoord(event.x, offsetX, numCols, tileWidth);
+                    int row = GeoHelper.getSpatialGridCoord((int)(Gdx.input.getY(0) * scaleY),
+                            offsetY, numRows, tileHeight);
+                    int col = GeoHelper.getSpatialGridCoord((int)(Gdx.input.getX(0) * scaleX),
+                            offsetX, numCols, tileWidth);
 
                     targetMapTer = mapTer[row][col];
                 }
             }
-            if(event.type == TouchEvent.TOUCH_UP){
+            else{
                 isMapTouchedDown = false;
             }
-        }*/
+        }
         return targetMapTer;
     }
 
 
-    public void scrollMapLayers(ControlScenario controlScenario, ScrollMap level1Map, ScrollMap level2Map, ScrollMap level3Map){
-        /*int len = touchEvents.size();
-        for (int touchEvent = 0; touchEvent < len; touchEvent++) {
+    public void scrollMapLayer(ControlScenario controlScenario, ScrollMap scrollMap){
+        if(Gdx.input.justTouched()){
+            isMapTouchedDown = true;
+            lastDownX = Gdx.input.getX(0) * scaleX;
+            lastDownY = Gdx.input.getY(0) * scaleY;
+        }
+        else{
+            if(Gdx.input.isTouched(0)){
+                if(isMapTouchedDown){
 
-            TouchEvent event = touchEvents.get(touchEvent);
-            switch (event.type) {
-                case TouchEvent.TOUCH_DOWN: {
-                    isMapTouchedDown = true;
-                    lastDownX = event.x;
-                    lastDownY = event.y;
-                    break;
-                }
-                case TouchEvent.TOUCH_DRAGGED: {
-                    if(isMapTouchedDown){
-                        distanceX = (int) (lastDownX - event.x);
-                        distanceY = (int) (lastDownY - event.y);
+                    float eventX = Gdx.input.getX(0) * scaleX;
+                    float eventY = Gdx.input.getY(0) * scaleY;
 
-                        if (level1Map != null) {
-                            level1Map.setWorldOffset(distanceX, distanceY);
-                        }
-                        if (level2Map != null) {
-                            level2Map.setWorldOffset(distanceX, distanceY);
-                        }
-                        if (level3Map != null) {
-                            level3Map.setRoundWorldOffset(distanceX, distanceY);
-                        }
-                        lastDownX = event.x;
-                        lastDownY = event.y;
+                    distanceX = (int)(lastDownX - eventX);
+                    distanceY = (int)(lastDownY - eventY);
+
+                    if (scrollMap != null) {
+                        scrollMap.setWorldOffset(distanceX, distanceY);
                     }
-                    break;
-                }
-                case TouchEvent.TOUCH_UP: {
-                    isMapTouchedDown = false;
-                    break;
+                    lastDownX = eventX;
+                    lastDownY = eventY;
                 }
             }
-        }*/
+            else{
+                isMapTouchedDown = false;
+            }
+        }
     }
 
 }

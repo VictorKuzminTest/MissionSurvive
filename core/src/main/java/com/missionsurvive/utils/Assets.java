@@ -1,6 +1,8 @@
 package com.missionsurvive.utils;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.XmlReader;
@@ -21,7 +23,7 @@ public class Assets {
     private static Texture[] textures;
     private static String[] texNames; //array that contains names of textures.
     private static XML xml;
-    private static Game thisGame;
+    private static MSGame thisGame;
 
     public static void setMapAssets(MSGame game){
         xml = game.getXMLParser();
@@ -40,7 +42,7 @@ public class Assets {
             path = xml.getAttrValue(assets[i], "path");
             name = xml.getAttrValue(assets[i], "name");
 
-            textures[i] = new Texture(path);
+            textures[i] = new Texture(Gdx.files.internal(path), true);
             textures[i].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
             texNames[i] = name;
         }
@@ -54,7 +56,7 @@ public class Assets {
         thisGame = game;
     }
 
-    public static Game getGame(){
+    public static MSGame getGame(){
         return thisGame;
     }
 

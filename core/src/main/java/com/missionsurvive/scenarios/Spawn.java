@@ -8,7 +8,7 @@ import com.missionsurvive.map.MapEditor;
 
 public interface Spawn {
 
-    public void spawnBot(MapEditor mapEditor, float deltaTime);
+    public void spawnBot(Scenario scenario, MapEditor mapEditor, float deltaTime);
 
     public void setFirstTimeSpawn(boolean isFirstTimeSpawn);
 

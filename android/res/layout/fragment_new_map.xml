@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/newmap"
+    android:layout_gravity="center"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/textView_level_width"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Level width" />
+    <EditText
+        android:id="@+id/editText_level_width"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_level_width"
+        android:inputType="number" />
+    <TextView
+        android:id="@+id/textView_level_height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editText_level_width"
+        android:text="Level height" />
+    <EditText
+        android:id="@+id/editText_level_height"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView_level_height"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/button_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editText_level_height"
+        android:text="set map"/>
+    <Button
+        android:id="@+id/button_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editText_level_height"
+        android:layout_toRightOf="@id/button_ok"
+        android:layout_toEndOf="@id/button_ok"
+        android:text="cancel"/>
+
+
+
+</RelativeLayout>

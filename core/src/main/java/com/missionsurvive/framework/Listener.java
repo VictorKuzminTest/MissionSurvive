@@ -15,4 +15,6 @@ public interface Listener {
      * @param scaleY
      */
     public void trackEvents(float scaleX, float scaleY);
+
+    public int getState();
 }

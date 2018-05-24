@@ -1,6 +1,7 @@
 package com.missionsurvive.scenarios.commands;
 
 import com.missionsurvive.MSGame;
+import com.missionsurvive.screens.PlatformerScreen;
 import com.missionsurvive.screens.ScrollerScreen;
 import com.missionsurvive.utils.Assets;
 
@@ -20,13 +21,15 @@ public class ToScreenCommand implements  Command {
     }
 
     @Override
-    public void execute(String data) {
+    public String execute(String key, String value) {
         switch (screenId){
             case TO_PLATFORMER_SCREEN:
+                Assets.getGame().setScreen(new PlatformerScreen(Assets.getGame(), 300, 23));
                 break;
             case TO_SCROLLER_SCREEN:
-                Assets.getGame().setScreen(new ScrollerScreen((MSGame)Assets.getGame()));
+                Assets.getGame().setScreen(new ScrollerScreen(Assets.getGame()));
                 break;
         }
+        return null;
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.impl.ButtonTouchListener;
 import com.missionsurvive.framework.impl.Icon;
 import com.missionsurvive.framework.impl.ListButtons;
+import com.missionsurvive.framework.impl.ListButtonsTouchListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,11 +80,27 @@ public class ControlPanel {
         }
     }
 
-    public void onTouch(float scaleX, float scaleY){
+    /**
+     * We listen to touch events, then we check the state of events occurred.
+     * @param scaleX
+     * @param scaleY
+     * @return
+     */
+    public boolean onTouch(float scaleX, float scaleY){
         buttonTouchListener.trackEvents(scaleX, scaleY);
         if(rootList != null){
             rootList.getListener().trackEvents(scaleX, scaleY);
         }
+
+        if(buttonTouchListener.getState() != ButtonTouchListener.STATE_NONE){
+            return true;
+        }
+        if(rootList != null){
+            if(rootList.getListener().getState() != ListButtonsTouchListener.STATE_NONE){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void drawListsButtons(SpriteBatch batch){

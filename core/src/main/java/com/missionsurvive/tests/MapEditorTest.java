@@ -1,7 +1,7 @@
 package com.missionsurvive.tests;
 
 import com.missionsurvive.scenarios.commands.Command;
-import com.missionsurvive.scenarios.commands.Load;
+import com.missionsurvive.scenarios.commands.LoadFromExternalLibGdx;
 import com.missionsurvive.map.MapEditor;
 
 /**
@@ -18,7 +18,7 @@ public class MapEditorTest {
 
     public MapEditorTest(MapEditor mapEditor){
         this.mapEditor = mapEditor;
-        loadCommand = new Load(mapEditor);
+        loadCommand = new LoadFromExternalLibGdx(mapEditor);
     }
 
     /**
@@ -42,6 +42,6 @@ public class MapEditorTest {
      * loading map from file external storage.
      */
     public void loadMapCommand(){
-        loadCommand.execute("level1.txt");
+        loadCommand.execute(null, "level1.txt");
     }
 }

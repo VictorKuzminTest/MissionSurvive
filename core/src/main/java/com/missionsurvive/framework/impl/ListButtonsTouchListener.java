@@ -16,8 +16,13 @@ public class ListButtonsTouchListener implements Listener {
 
     public static final int SCROLLING_THRESHOLD = 5;
 
+    public static final int STATE_NONE = 0;
+    public static final int STATE_DOWN = 1;
+
     private ArrayList<ListButtons> lists = new ArrayList<ListButtons>();
     private ListButtons currentList;
+
+    private int state;
 
     private float lastX, lastY;
     private float downX, downY; //using to track the threshold of scrolling the list
@@ -40,13 +45,17 @@ public class ListButtonsTouchListener implements Listener {
         }
         else{
             if(Gdx.input.isTouched(0)){
-                lastX = Gdx.input.getX(0) * scaleX;
-                lastY =  Gdx.input.getY(0) * scaleY;
-                float deltaX = Gdx.input.getDeltaX(0) * scaleX;
-                float deltaY =  Gdx.input.getDeltaY(0) * scaleY;
-                float thresholdX = downX - lastX;
-                float thresholdY = downY - lastY;
+                float currentX = Gdx.input.getX(0) * scaleX;
+                float currentY = Gdx.input.getY(0) * scaleY;
+                float thresholdX = downX - currentX;
+                float thresholdY = downY - currentY;
+                float deltaX = currentX - lastX;
+                float deltaY = currentY - lastY;
+
                 getTouchDraggedEvent((int)thresholdX, (int)thresholdY, deltaX, deltaY);
+
+                lastX = currentX;
+                lastY = currentY;
             }
             else{
                 getTouchUpEvent((int)lastX, (int)lastY);
@@ -56,6 +65,7 @@ public class ListButtonsTouchListener implements Listener {
 
     public void getTouchDownEvent(int eventX, int eventY) {
         scrolling = false;
+        state = STATE_NONE;
         int numLists = lists.size();
         ListButtons list;
         for(int i = 0; i < numLists; i++){
@@ -63,6 +73,7 @@ public class ListButtonsTouchListener implements Listener {
             if(GeoHelper.inBoundsVolume(eventX, eventY, list.getStartX(), list.getStartY(),
                     list.getListWidth(), list.getListHeight())){
                 currentList = list;
+                state = STATE_DOWN;
                 return;
             }
         }
@@ -70,7 +81,7 @@ public class ListButtonsTouchListener implements Listener {
 
     /**
      * If The list it is not currently scrolling, we check for scrolling threshold from previous touch event.
-     * Else, we just're just scrolling this list.
+     * Else, we're just just scrolling this list.
      * @param thresholdX threshold x coord to check
      * @param thresholdY threshold y coord to check
      * @param deltaX delta x for scrolling
@@ -126,10 +137,16 @@ public class ListButtonsTouchListener implements Listener {
         }
         scrolling = false;
         currentList = null;
+        state = STATE_NONE;
     }
 
     public boolean isScrolling(){
         return scrolling;
+    }
+
+    @Override
+    public int getState(){
+        return state;
     }
 
 }

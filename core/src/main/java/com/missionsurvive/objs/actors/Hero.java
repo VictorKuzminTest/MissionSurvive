@@ -308,9 +308,9 @@ public class Hero implements GameObject {
     }
 
     public void calculateMapTerToResurrect(MapTer[][] map, ScrollMap scrollMap, int tileSize){
-        int row = GeoHelper.checkRowCol((getBottom() + scrollMap.getWorldOffsetY()) / (tileSize - 1),
+        int row = GeoHelper.checkRowCol((getBottom() + scrollMap.getWorldOffsetY()) / tileSize,
                 map.length);
-        int col = GeoHelper.checkRowCol((getCenterX() + scrollMap.getWorldOffsetX()) / (tileSize - 1),
+        int col = GeoHelper.checkRowCol((getCenterX() + scrollMap.getWorldOffsetX()) / tileSize,
                 map[0].length);
         mapterToResurrect = map[row][col];
     }

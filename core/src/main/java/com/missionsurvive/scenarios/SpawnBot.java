@@ -6,13 +6,15 @@ import com.missionsurvive.objs.Wreckage;
 import com.missionsurvive.objs.actors.Boss;
 import com.missionsurvive.objs.actors.Enemy;
 import com.missionsurvive.objs.actors.L3B;
+import com.missionsurvive.objs.actors.L6B;
 import com.missionsurvive.objs.actors.ShotgunZombie;
+import com.missionsurvive.screens.PlatformerScreen;
 
 /**
  * Created by kuzmin on 04.05.18.
  */
 
-public class SpawnBot implements  Spawn{
+public class SpawnBot implements Spawn{
 
     public static final int ZOMBIE = 1;
     public static final int SHOTGUN_ZOMBIE = 2;
@@ -37,15 +39,15 @@ public class SpawnBot implements  Spawn{
     }
 
     @Override
-    public void spawnBot(MapEditor mapEditor, float deltaTime){
-        /*switch (whichBot) {
+    public void spawnBot(Scenario scenario, MapEditor mapEditor, float deltaTime){
+        switch (whichBot) {
             case ZOMBIE:
-                spawnZombie(mapEditor, deltaTime, col * 16, (row + 1) * 16 - 70);
+                spawnZombie(scenario, mapEditor, deltaTime, col * 16 - 20, row * 16 - 70);
                 break;
             case SHOTGUN_ZOMBIE:
                 if(isFirstTimeSpawn){ //so we generate only one time
-                    game.getCurrentScreen().getScenario().addBot(
-                            new ShotgunZombie("shotgunzombie", mapEditor, col * 16, (row + 1) * 16 - 70,
+                    scenario.addBot(
+                            new ShotgunZombie("shotgunzombie", mapEditor, col * 16 - 20, row * 16 - 70,
                                     direction),
                             SHOTGUN_ZOMBIE);
                     isFirstTimeSpawn = false;
@@ -53,7 +55,7 @@ public class SpawnBot implements  Spawn{
                 break;
             case LEVEL_1_BOSS:
                 if(isFirstTimeSpawn){ //so we generate only one time
-                    game.getCurrentScreen().getScenario().addBot(
+                    scenario.addBot(
                             new Boss("boss", mapEditor, col * 16, row * 16),
                             LEVEL_1_BOSS);
                     isFirstTimeSpawn = false;
@@ -61,34 +63,34 @@ public class SpawnBot implements  Spawn{
                 break;
             case LEVEL_3_BOSS:
                 if(isFirstTimeSpawn){ //so we generate only one time
-                    game.getCurrentScreen().getScenario().addBot(
-                            new L3B("l3b", game, mapEditor, col * 16, row * 16),
+                    scenario.addBot(
+                            new L3B("l3b", mapEditor, col * 16, row * 16),
                             LEVEL_3_BOSS);
                     isFirstTimeSpawn = false;
                 }
                 break;
             case LEVEL_6_BOSS:
                 if(isFirstTimeSpawn){ //so we generate only one time
-                    game.getCurrentScreen().getScenario().addBot(new L6B(game, "l6b", mapEditor,
+                    scenario.addBot(new L6B("l6b", mapEditor,
                             col * 16, row * 16), LEVEL_6_BOSS);
                     isFirstTimeSpawn = false;
                 }
                 break;
             case POWER_UP_LIFE:
                 if(isFirstTimeSpawn){ //so we generate only one time
-                    spawnPowerUp(game, mapEditor);
+                    spawnPowerUp(scenario, mapEditor);
                     isFirstTimeSpawn = false;
                 }
                 break;
             case POWER_UP_GUN:
                 if(isFirstTimeSpawn){ //so we generate only one time
-                    spawnPowerUp(game, mapEditor);
+                    spawnPowerUp(scenario, mapEditor);
                     isFirstTimeSpawn = false;
                 }
                 break;
             case WRECKAGE:
                 if(isFirstTimeSpawn){ //so we generate only one time
-                    game.getCurrentScreen().getScenario().addBot(new Wreckage("wreckage", mapEditor,
+                    scenario.addBot(new Wreckage("wreckage", mapEditor,
                                     col * 16,
                                     row * 16),
                             WRECKAGE);
@@ -97,58 +99,55 @@ public class SpawnBot implements  Spawn{
                 break;
             default:
                 break;
-        }*/
+        }
     }
 
-    public void spawnPowerUp(MapEditor mapEditor){
-        /*if(direction == PowerUp.DIRECTION_EAST){
+    public void spawnPowerUp(Scenario scenario, MapEditor mapEditor){
+        if(direction == PowerUp.DIRECTION_EAST){
             if(whichBot == POWER_UP_LIFE){
-                game.getCurrentScreen().getScenario().addBot(new PowerUp("cuadcopter", mapEditor,
+                scenario.addBot(new PowerUp("cuadcopter", mapEditor,
                                 col * 16 - 480, row * 16, PowerUp.POWER_LIFE, direction),
                         0);
             }
             else{
-                game.getCurrentScreen().getScenario().addBot(new PowerUp("cuadcopter", mapEditor,
+                scenario.addBot(new PowerUp("cuadcopter", mapEditor,
                                 col * 16 - 480, row * 16, PowerUp.POWER_GUN, direction),
                         0);
             }
         }
         else {
             if(whichBot == POWER_UP_LIFE){
-                game.getCurrentScreen().getScenario().addBot(new PowerUp("cuadcopter", mapEditor,
+                scenario.addBot(new PowerUp("cuadcopter", mapEditor,
                                 col * 16, row * 16 + 320, PowerUp.POWER_LIFE, direction),
                         0);
             }
             else{
-                game.getCurrentScreen().getScenario().addBot(new PowerUp("cuadcopter", mapEditor,
+                scenario.addBot(new PowerUp("cuadcopter", mapEditor,
                                 col * 16, row * 16 + 320, PowerUp.POWER_GUN, direction),
                         0);
             }
-        }*/
+        }
     }
 
-
-    public void spawnZombie(MapEditor mapEditor, float deltaTime, int x, int y){
-        /*if(isFirstTimeSpawn){
-            checkAndAddZombie(game, mapEditor, x, y);
+    public void spawnZombie(Scenario scenario, MapEditor mapEditor, float deltaTime, int x, int y){
+        if(isFirstTimeSpawn){
+            checkAndAddZombie(scenario, mapEditor, x, y);
         }
         else {
             spawnTickTime += deltaTime;
             while (spawnTickTime > spawnTick) {
                 spawnTickTime -= spawnTick;
-                checkAndAddZombie(game, mapEditor, x, y);
+                checkAndAddZombie(scenario, mapEditor, x, y);
             }
-        }*/
+        }
     }
 
-
-
-    public void checkAndAddZombie(MapEditor mapEditor, int x, int y){
-        /*if(game.getCurrentScreen().getScenario().getBots(ZOMBIE).size() < PlatformerScenario.MAX_NUM_ZOMBIES){
-            game.getCurrentScreen().getScenario().addBot(new Enemy("zsuit", mapEditor, x , y, direction),
+    public void checkAndAddZombie(Scenario scenario, MapEditor mapEditor, int x, int y){
+        if(scenario.getBots(ZOMBIE).size() < PlatformerScenario.MAX_NUM_ZOMBIES){
+            scenario.addBot(new Enemy("zsuit", mapEditor, x , y, direction),
                     ZOMBIE);
             isFirstTimeSpawn = false;
-        }*/
+        }
     }
 
     @Override

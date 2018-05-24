@@ -103,7 +103,7 @@ public class GeoHelper {
      */
     public static int getSpatialGridCoord(int screenCoord, int offset, int gridSize, int cellSize){
 
-        int gridCoord = (screenCoord + offset) / (cellSize - 1);
+        int gridCoord = (screenCoord + offset) / cellSize;
 
         if(gridCoord < 0) gridCoord = 0;
         if(gridCoord >= gridSize) gridCoord = gridSize - 1;

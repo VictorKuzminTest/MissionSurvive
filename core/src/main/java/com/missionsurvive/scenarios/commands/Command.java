@@ -6,5 +6,5 @@ package com.missionsurvive.scenarios.commands;
 
 public interface Command {
 
-    public void execute(String data);
+    public String execute(String key, String value);
 }

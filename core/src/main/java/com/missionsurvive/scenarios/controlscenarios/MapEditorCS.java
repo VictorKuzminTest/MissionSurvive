@@ -1,8 +1,19 @@
 package com.missionsurvive.scenarios.controlscenarios;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.ControlPanel;
+import com.missionsurvive.framework.impl.ListButtons;
+import com.missionsurvive.map.Map;
+import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
+import com.missionsurvive.scenarios.Scenario;
+import com.missionsurvive.scenarios.commands.SaveLoadMapCommand;
+import com.missionsurvive.scenarios.commands.NewMapCommand;
+import com.missionsurvive.scenarios.commands.PutBotCommand;
+import com.missionsurvive.utils.Assets;
+import com.missionsurvive.utils.Commands;
+import com.missionsurvive.utils.Controls;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,62 +24,78 @@ import java.util.List;
 
 public class MapEditorCS implements ControlScenario {
 
-    public static final int REMOVE_TILE = -1;
-    public static final int PUT_TILE = 0;
-    public static final int BLOCK_TILE = 1;
-    public static final int UNBLOCK_TILE = 2;
-    public static final int PUT_LADDER = 3;
+    private List<ControlPanel> listOfPanels;
+    private ArrayList<MapTer> mapTerArrayList;
+    private ListingBuilder platformerListingBuilder;
+    private ListingBuilder tilesetListingBuilder;
 
-    private List<ControlPanel> listOfPanels = new ArrayList<ControlPanel>();
-    private ArrayList<MapTer> mapTerArrayList = new ArrayList<MapTer>();
-    private  boolean isTouchingPanels;
+    public MapEditorCS(Screen screen, Map map, Scenario scenario){
+        listOfPanels = new ArrayList<ControlPanel>();
+        mapTerArrayList = new ArrayList<MapTer>();
+        setControlPanels();
 
-    public MapEditorCS(){
-        /*setControlPanels(object);
-        ListingScenario.addButtonsToList("lev1", 0, null);
-        ListingScenario.addButtonsToList("iconseditor", 1, object);*/
+        platformerListingBuilder = new PlatformerScreenListingBuilder(screen, (MapEditor)map, mapTerArrayList);
+        ListButtons controlList = listOfPanels.get(0).getListButtons("editorControl");
+        platformerListingBuilder.addButtons(controlList);
+
+        tilesetListingBuilder = new TilesetListingBuilder("lev1", mapTerArrayList, (MapEditor)map);
+        ListButtons tilesetList = listOfPanels.get(0).getListButtons("tileset");
+        tilesetListingBuilder.addButtons(tilesetList);
+
+        //setting commands to android popups:
+        PutBotCommand putBotCommand = (PutBotCommand) Commands.getCommand("putBot");
+        putBotCommand.setScenario(scenario, mapTerArrayList);
+        Assets.getGame().getActivityCallback().setCommand(putBotCommand, "popup_new_bot");
+
+        SaveLoadMapCommand loadMapCommand = (SaveLoadMapCommand)Commands.getCommand("save_load_map");
+        loadMapCommand.setMap(map, SaveLoadMapCommand.ACTION_LOAD);
+        Assets.getGame().getActivityCallback().setCommand(loadMapCommand, "load_map");
+
+        NewMapCommand newMapCommand = (NewMapCommand)Commands.getCommand("newMap");
+        newMapCommand.setScreen(screen);
+        Assets.getGame().getActivityCallback().setCommand(newMapCommand, "new_map");
+
+        SaveLoadMapCommand saveMapCommand = (SaveLoadMapCommand)Commands.getCommand("save_load_map");
+        saveMapCommand.setMap(map, SaveLoadMapCommand.ACTION_SAVE);
+        Assets.getGame().getActivityCallback().setCommand(saveMapCommand, "save_map");
     }
 
 
-
-    /*public void setControlPanels(){
-        for(int whichPanel = 0; whichPanel < Controls.controlPanels.length; whichPanel++){
-            if(Controls.controlPanels[whichPanel].getScreen().equalsIgnoreCase("MapEditorScreen")) listOfPanels.add(Controls.controlPanels[whichPanel]);
-        }
-        listOfPanels.get(0).setActivated(true);
-    }*/
 
     @Override
-    public void onTouchPanels(float scaleX, float scaleY) {
-
-    }
-
-    public void drawPanels(SpriteBatch batch){
-        /*int numPanels = listOfPanels.size();
-        for(int whichPanel = 0; whichPanel < numPanels; whichPanel++){
-            ControlPanel controlPanel = listOfPanels.get(whichPanel);
-            if(controlPanel.isActivated() == true) controlPanel.drawPanel(g);
-        }*/
-    }
-
-    /*public void onTouchPanels(float scaleX, float scaleY){
+    public boolean onTouchPanels(float scaleX, float scaleY) {
+        boolean onTouch = false;
         int numPanels = listOfPanels.size();
         for(int whichPanel = 0; whichPanel < numPanels; whichPanel++){
             ControlPanel controlPanel = listOfPanels.get(whichPanel);
-            if(controlPanel.isActivated() == true) controlPanel.touchButtons(game, this, touchControl, touchEvents, object);
+            if(controlPanel.isActivated() == true){
+                onTouch = controlPanel.onTouch(scaleX, scaleY);
+            }
         }
-    }*/
-
-    @Override
-    public boolean isTouchingPanels(){
-        return isTouchingPanels;
+        return onTouch;
     }
 
     @Override
-    public void touchingPanels(boolean touch){
-        isTouchingPanels = touch;
+    public void drawPanels(SpriteBatch batch){
+        int numPanels = listOfPanels.size();
+        for(int whichPanel = 0; whichPanel < numPanels; whichPanel++){
+            ControlPanel controlPanel = listOfPanels.get(whichPanel);
+            if(controlPanel.isActivated() == true){
+                controlPanel.drawPanel(batch);
+            }
+        }
     }
 
+    @Override
+    public void action(Object object) {
+        if(object != null){
+            if(object instanceof MapTer){
+                MapTer mapTer = (MapTer)object;
+                mapTer.setEditing(true);
+                mapTerArrayList.add(mapTer);
+            }
+        }
+    }
 
     /*@Override
     public void action(Game game, Player player, Object object, int actionParameter) {
@@ -81,7 +108,7 @@ public class MapEditorCS implements ControlScenario {
                 }
             }
         }
-        if(actionParameter == 8){ //PlayProject
+        if(actionParameter == 8){ //PlayProjectCommand
             if(object instanceof MapEditorScreen){
                 MapEditorScreen mapEditorScreen = (MapEditorScreen)object;
 
@@ -349,7 +376,12 @@ public class MapEditorCS implements ControlScenario {
 
     @Override
     public void setControlPanels() {
-        // TODO Auto-generated method stub
+        for(int i = 0; i < Controls.controlPanels.length; i++){
+            if(Controls.controlPanels[i].getName().equalsIgnoreCase("mapEditorControls")){
+                listOfPanels.add(Controls.controlPanels[i]);
+            }
+        }
+        listOfPanels.get(0).setActivated(true);
     }
 
     @Override

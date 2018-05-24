@@ -1,11 +1,16 @@
 package com.missionsurvive.map;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.missionsurvive.MSGame;
+import com.missionsurvive.scenarios.Spawn;
+import com.missionsurvive.scenarios.SpawnBot;
+import com.missionsurvive.screens.PlatformerScreen;
 import com.missionsurvive.utils.Assets;
 
 import java.util.ArrayList;
@@ -23,30 +28,51 @@ public class MapEditor implements Map{
     private TextureRegion lev3;
     private ScrollMap scrollLevel1Map;
     private MapTer[][] mapTers;
+    private Spawn[][] spawns;
+    private ParallaxCamera gameCam;
+    private Texture layer1Texture;
+    private TextureRegion[][] tileset;
 
     private int tileWidth = 16;
     private int tileHeight = 16;
     private int worldWidth;
     private int worldHeight;
 
-    public MapEditor(int worldWidth, int worldHeight){
+    private boolean isHorizontal = true;
+
+    public MapEditor(ParallaxCamera gameCam, int worldWidth, int worldHeight){
+        this.gameCam = gameCam;
         newMap(worldWidth, worldHeight);
     }
 
     public void newMap(int numCols, int numRows){
+        addNewTileset("lev1", tileWidth, tileHeight);
         initMap(numCols, numRows);
+        newForeground(numCols, numRows, tileWidth, tileHeight);
     }
 
     public void initMap(int worldWidth, int worldHeight){
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
-        tilesets.clear();
+        scrollLevel1Map = new ScrollMap(tileWidth, tileHeight, worldHeight, worldWidth, false);
+        newMapTers(worldWidth, worldHeight);
+
         map = new TiledMap();
         layers = map.getLayers();
 
         Texture lev3Tex = Assets.getTextures()[Assets.getWhichTexture("lev3")];
         lev3Tex.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         lev3 = new TextureRegion(lev3Tex, 0, 0, 480, 320);
+    }
+
+    public void newMapTers(int width, int height){
+        mapTers = new MapTer[worldHeight][worldWidth];
+        spawns = new Spawn[worldHeight][worldWidth];
+        for(int row = 0; row < height; row++){
+            for(int col = 0; col < width; col++){
+                mapTers[row][col] = new MapTer(row, col);
+            }
+        }
     }
 
     public TiledMapTileLayer getForeground(){
@@ -62,12 +88,16 @@ public class MapEditor implements Map{
         layers.add(foreground);
     }
 
+
     @Override
     public void addNewTileset(String asset, int tileWidth, int tileHeight){
-        Texture texture = Assets.getTextures()[Assets.getWhichTexture(asset)];
-        TextureRegion[][] tileset;
-        tileset = TextureRegion.split(texture, tileWidth, tileHeight);
-        tilesets.add(tileset);
+        if(tileset == null) {
+            tilesets.clear();
+            layer1Texture = Assets.getTextures()[Assets.getWhichTexture(asset)];
+            layer1Texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+            tileset = TextureRegion.split(layer1Texture, tileWidth, tileHeight);
+            tilesets.add(tileset);
+        }
     }
 
     public TextureRegion[][] getTextureRegion(int i){
@@ -87,12 +117,18 @@ public class MapEditor implements Map{
         TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
         cell.setTile(new StaticTiledMapTile(textureRegion[assetY][assetX]));
         foreground.setCell(col, (worldHeight - 1) - row, cell);
+        mapTers[row][col].setSrcX(assetX);
+        mapTers[row][col].setSrcY(assetY);
     }
 
+    public void removeTile(int col, int row){
+        foreground.setCell(col, (worldHeight - 1) - row, null);
+    }
 
     /** Getting 3 map levels from text String.
      * @param mapTerInString
      */
+    @Override
     public void loadMap(String mapTerInString){
 
         if(mapTerInString == null) return;
@@ -134,8 +170,7 @@ public class MapEditor implements Map{
             //-}
 
             if(fragmentTokens[whichChar]. equalsIgnoreCase("level1MapTer")){
-                newForeground(worldWidth, worldHeight, 16, 16);
-                addNewTileset("lev1", 16, 16);
+                //newForeground(worldWidth, worldHeight, 16, 16);
             }
 
             //temporary return if to not drawing other layers above layer 1:
@@ -159,8 +194,23 @@ public class MapEditor implements Map{
                     int assetY = Integer.parseInt(fragmentTokens[whichChar + 4]);
                     int assetX = Integer.parseInt(fragmentTokens[whichChar + 5]);
 
-                    setTile(getTextureRegion(0),
-                            col, row, assetX, assetY);
+                    if(assetY != -1){
+                        if(assetX != -1){
+                            setTile(getTextureRegion(0),
+                                    col, row, assetX, assetY);
+                        }
+                    }
+                }
+                if(fragmentTokens[whichChar + 6].equalsIgnoreCase("blocked")){
+                    mapTers[row][col].setBlocked(true);
+                }
+                if(fragmentTokens[whichChar + 6].equalsIgnoreCase("ladder")){
+                    mapTers[row][col].setBlocked(true);
+                    mapTers[row][col].setLadder(true);
+                }
+                if(fragmentTokens[whichChar + 6].equalsIgnoreCase("enemy")){
+                    spawns[row][col] = new SpawnBot(Integer.parseInt(fragmentTokens[whichChar + 7]),
+                    Integer.parseInt(fragmentTokens[whichChar + 8]), row, col);
                 }
 
                 //-if(Integer.parseInt(fragmentTokens[whichChar + 4]) >=  0){
@@ -187,7 +237,105 @@ public class MapEditor implements Map{
     }
 
     @Override
-    public void horizontScroll(float delta, int x){}
+    public String saveMap() {
+
+        String map = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        if(mapTers == null) return map;
+
+        if(!isHorizontal){
+            stringBuilder.append(":");
+            stringBuilder.append("vertical");
+            stringBuilder.append("\n");
+        }
+
+        if(mapTers != null){
+            stringBuilder.append(":");
+            stringBuilder.append("level1MapTer");
+            stringBuilder.append(":");
+            stringBuilder.append("lev1"); //name of the asset with tileset.
+            stringBuilder.append(":");
+            stringBuilder.append("\n");
+            setLevelMap(stringBuilder, mapTers, spawns);
+        }
+
+        map = stringBuilder.toString();
+        return map;
+    }
+
+    private void setLevelMap(StringBuilder stringBuilder, MapTer[][] mapTer, Spawn[][] spawns){
+        for(int row = 0; row < mapTer.length; row++){
+            for(int col = 0; col < mapTer[0].length; col++){
+                stringBuilder.append("row");
+                stringBuilder.append(":");
+                stringBuilder.append(row);
+                stringBuilder.append(":");
+                stringBuilder.append("col");
+                stringBuilder.append(":");
+                stringBuilder.append(col);
+                stringBuilder.append(":");
+                if(mapTer[row][col] != null){
+                    stringBuilder.append(mapTer[row][col].getSrcY());
+                    stringBuilder.append(":");
+                    stringBuilder.append(mapTer[row][col].getSrcX());
+                }
+                else{
+                    stringBuilder.append(-1);
+                    stringBuilder.append(":");
+                    stringBuilder.append(-1);
+                }
+                if(mapTer[row][col].isLadder()){
+                    stringBuilder.append(":");
+                    stringBuilder.append("ladder");
+                    stringBuilder.append(":");
+                    stringBuilder.append("\n");
+                    continue;
+                }
+                if(spawns != null){
+                    if(spawns[row][col] != null){
+                        stringBuilder.append(":");
+                        stringBuilder.append("enemy");
+                        stringBuilder.append(":");
+                        stringBuilder.append(spawns[row][col].getBotId());
+                        stringBuilder.append(":");
+                        stringBuilder.append(spawns[row][col].getDirection());
+                        stringBuilder.append(":");
+                        stringBuilder.append("\n");
+                        continue;
+                    }
+                }
+                if(mapTer[row][col].isBlocked()){
+                    stringBuilder.append(":");
+                    stringBuilder.append("blocked");
+                }
+                stringBuilder.append(":");
+                stringBuilder.append("\n");
+            }
+        }
+    }
+
+    /**
+     * sets position of a foreground to see.
+     */
+    public void setCamPositionX(){
+        gameCam.position.x = -MSGame.SCREEN_OFFSET_X + scrollLevel1Map.getWorldOffsetX();
+    }
+
+    public void setCamPositionY(){
+        gameCam.position.y = worldHeight * 16 + MSGame.SCREEN_OFFSET_Y - scrollLevel1Map.getWorldOffsetY();
+    }
+
+    public boolean isHorizontal(){
+        return isHorizontal;
+    }
+
+    public void setHorizontal(boolean horizontal){this.isHorizontal = horizontal;}
+
+    @Override
+    public void horizontScroll(float delta, int x){
+        scrollLevel1Map.setWorldOffset(x, 0);
+        setCamPositionX();
+    }
 
     @Override
     public void verticalScroll(int y){}
@@ -218,5 +366,9 @@ public class MapEditor implements Map{
     @Override
     public ScrollMap getScrollMap() {
         return scrollLevel1Map;
+    }
+
+    public Spawn[][] getSpawns(){
+        return spawns;
     }
 }

@@ -22,9 +22,9 @@ public class ListButtons implements Observer{
     private String name;
     private Texture texture;
     private String layout;
-    private ArrayList<Button> buttons = new ArrayList<Button>();
+    private ArrayList<Button> buttons;
     //We are using composite pattern (GOF) to keeping track of list of buttons on the control panel:
-    private ArrayList<ListButtons> lists = new ArrayList<ListButtons>();
+    private ArrayList<ListButtons> lists;
     private Listener listener; //listens to other lists
 
     private int startX;  //listing startX
@@ -40,11 +40,15 @@ public class ListButtons implements Observer{
      */
     public ListButtons(Listener listener){
         this.listener = listener;
+        lists = new ArrayList<ListButtons>();
     }
 
     public ListButtons(String name, String assetName, int spaceBetweenButtons,
                        int startX, int startY, int srcBgX, int srcBgY,
                        int listingWidth, int listingHeight, String layout){
+        lists = new ArrayList<ListButtons>();
+        buttons = new ArrayList<Button>();
+
         this.startX = startX;
         this.startY = startY;
         this.listingWidth = listingWidth;

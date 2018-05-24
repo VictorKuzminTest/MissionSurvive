@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.XML;
 import com.missionsurvive.framework.impl.AndroidXML;
 import com.missionsurvive.screens.MainMenuScreen;
-import com.missionsurvive.tests.screens.ButtonsTestScreen;
 import com.missionsurvive.tests.screens.TestScreen;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Controls;
@@ -18,6 +17,12 @@ public class MSGame extends Game {
 
 	SpriteBatch batch;
 	XML xmlParser;
+	private ActivityCallback activityCallback;
+
+	public MSGame(ActivityCallback activityCallback){
+		super();
+		this.activityCallback = activityCallback;
+	}
 	
 	@Override
 	public void create () {
@@ -50,5 +55,9 @@ public class MSGame extends Game {
 
 	public XML getXMLParser(){
 		return xmlParser;
+	}
+
+	public ActivityCallback getActivityCallback(){
+		return activityCallback;
 	}
 }

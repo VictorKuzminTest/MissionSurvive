@@ -6,18 +6,21 @@ import com.missionsurvive.map.MapEditor;
 
 /**
  * Created by kuzmin on 23.04.18.
+ * This class was created for first tests to load map from text. It uses LibGdx methods.
+ * It is better to use android native methods.
  */
-public class Load implements com.missionsurvive.scenarios.commands.Command {
+public class LoadFromExternalLibGdx implements com.missionsurvive.scenarios.commands.Command {
 
     private MapEditor mapEditor;
 
-    public Load(MapEditor mapEditor){
+    public LoadFromExternalLibGdx(MapEditor mapEditor){
         this.mapEditor = mapEditor;
     }
 
     @Override
-    public void execute(String fileName) {
+    public String execute(String key, String fileName) {
         mapEditor.loadMap(loadFileFromExternalStorage(fileName));
+        return null;
     }
 
     public String loadFileFromExternalStorage(String filename){
