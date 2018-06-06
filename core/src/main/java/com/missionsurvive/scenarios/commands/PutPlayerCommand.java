@@ -1,7 +1,7 @@
 package com.missionsurvive.scenarios.commands;
 
 import com.badlogic.gdx.Screen;
-import com.missionsurvive.screens.PlatformerScreen;
+import com.missionsurvive.screens.EditorScreen;
 import com.missionsurvive.screens.ScrollerScreen;
 
 /**
@@ -24,7 +24,7 @@ public class PutPlayerCommand implements Command {
                 ((ScrollerScreen)screen).putPlayer(100, 150);
                 break;
             case PLAY_PLATFORMER:
-                ((PlatformerScreen)screen).putPlayer(100, 150);
+                ((EditorScreen)screen).putPlayer(100, 150);
                 break;
         }
         return null;
@@ -45,9 +45,9 @@ public class PutPlayerCommand implements Command {
      * Gets screen and appropriate playId to execute.
      * @param screen
      */
-    public void setScreen(PlatformerScreen screen) {
+    public void setScreen(EditorScreen screen) {
         this.screen = screen;
-        if(screen instanceof PlatformerScreen){
+        if(screen instanceof EditorScreen){
             playId = PLAY_PLATFORMER;
         }
     }

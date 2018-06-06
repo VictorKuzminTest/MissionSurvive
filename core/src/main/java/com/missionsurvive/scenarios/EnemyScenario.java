@@ -24,7 +24,6 @@ public class EnemyScenario {
         numTileXToCheck = screenWidth / mapEditor.getTileWidth();
     }
 
-
     /**
      * Sets (resets) a direction to move;
      * @param objX
@@ -46,17 +45,17 @@ public class EnemyScenario {
     public void checkForEast(int objX, int objY, int tileSize){
         int worldWidth = mapTers[0].length;
         int row = ((objY) + mapEditor.getScrollLevel1Map().getWorldOffsetY())
-                / (tileSize - 1);
+                / tileSize;
         int startCol = ((objX) + mapEditor.getScrollLevel1Map().getWorldOffsetX())
-                / (tileSize - 1);
+                / tileSize;
         for(int nextCol = 0; nextCol < numTileXToCheck; nextCol++){
             int col = GeoHelper.checkRowCol(startCol + nextCol, worldWidth);
             if(mapTers[row][col].isBlocked() && !mapTers[row][col].isLadder()){
-                targetX = col * (tileSize - 1);
+                targetX = col * tileSize;
                 return;
             }
         }
-        targetX = mapEditor.getScrollLevel1Map().getEndColOffset() * (tileSize - 1);
+        targetX = mapEditor.getScrollLevel1Map().getEndColOffset() * tileSize;
     }
 
     /**

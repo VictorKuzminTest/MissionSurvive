@@ -32,7 +32,6 @@ public class Enemy implements Bot {
     private int spriteHeight;
     private int hitboxWidth;
     private int hitboxHeight;
-    private int whichAsset;
     ObjAnimation animation;
     MapEditor mapEditor;
     private EnemyScenario enemyScenario;
@@ -618,19 +617,19 @@ public class Enemy implements Bot {
         int tileWidth = 16;
         int tileHeight = 16;
 
-        int centerCol = ((centerX) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / (tileWidth - 1);
-        int leftCol = ((left) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / (tileWidth - 1);
-        int rightCol = ((right) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / (tileWidth - 1);
+        int centerCol = ((centerX) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth;
+        int leftCol = ((left) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth;
+        int rightCol = ((right) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth;
 
-        int centerRow = ((centerY) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / (tileHeight - 1);
+        int centerRow = ((centerY) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight;
         if(centerRow < 0) centerRow = 0;
         if(centerRow >= worldHeight) centerRow = worldHeight - 1;
 
-        int topRow = ((top) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / (tileHeight - 1);
+        int topRow = ((top) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight;
         if(topRow < 0) topRow = 0;
         if(topRow >= worldHeight) topRow = worldHeight - 1;
 
-        int bottomRow = ((bottom) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / (tileHeight - 1);
+        int bottomRow = ((bottom) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight;
         if(bottomRow < 0) bottomRow = 0;
         if(bottomRow >= worldHeight) bottomRow = worldHeight - 1;
 

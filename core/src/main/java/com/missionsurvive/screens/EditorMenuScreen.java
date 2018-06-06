@@ -8,13 +8,12 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
-import com.missionsurvive.scenarios.controlscenarios.MenuCS;
+import com.missionsurvive.scenarios.controlscenarios.EditorMenuCS;
 
 /**
  * Created by kuzmin on 07.05.18.
  */
-
-public class MainMenuScreen implements Screen {
+public class EditorMenuScreen implements Screen {
     private MSGame game;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
@@ -24,7 +23,7 @@ public class MainMenuScreen implements Screen {
     private float scaleX;
     private float scaleY;
 
-    public MainMenuScreen(MSGame game){
+    public EditorMenuScreen(MSGame game){
         this.game = game;
 
         gameCam = new OrthographicCamera();
@@ -33,11 +32,11 @@ public class MainMenuScreen implements Screen {
         scaleX = (float)480 / Gdx.graphics.getBackBufferWidth();
         scaleY = (float)320 / Gdx.graphics.getBackBufferHeight();
 
-        controlScenario = new MenuCS();
+        controlScenario = new EditorMenuCS();
     }
 
     public void update(float delta){
-        controlScenario.onTouchPanels(scaleX, scaleY);
+        controlScenario.onTouchPanels(delta, scaleX, scaleY);
     }
 
     @Override

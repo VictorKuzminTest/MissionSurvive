@@ -4,6 +4,7 @@ import com.badlogic.gdx.Screen;
 import com.missionsurvive.framework.impl.ListButtons;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
+import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.commands.BlockLayersCommand;
 import com.missionsurvive.scenarios.commands.PlayProjectCommand;
 import com.missionsurvive.scenarios.commands.PutPlayerCommand;
@@ -12,7 +13,7 @@ import com.missionsurvive.scenarios.commands.ScrollDirCommand;
 import com.missionsurvive.scenarios.commands.ShowHideBotPosCommand;
 import com.missionsurvive.scenarios.commands.ShowLayerCommand;
 import com.missionsurvive.scenarios.commands.WithTileCommand;
-import com.missionsurvive.screens.PlatformerScreen;
+import com.missionsurvive.screens.EditorScreen;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Commands;
 
@@ -27,33 +28,36 @@ public class PlatformerScreenListingBuilder implements ListingBuilder{
     private ArrayList<MapTer> mapTerArrayList;
     private MapEditor mapEditor;
     private Screen screen;
+    private Scenario scenario;
 
-    public PlatformerScreenListingBuilder(Screen screen, MapEditor mapEditor, ArrayList<MapTer> mapTerArrayList){
+    public PlatformerScreenListingBuilder(Screen screen, MapEditor mapEditor, Scenario scenario,
+                                          ArrayList<MapTer> mapTerArrayList){
         this.mapTerArrayList = mapTerArrayList;
         this.mapEditor = mapEditor;
         this.screen = screen;
+        this.scenario = scenario;
     }
 
     @Override
     public void addButtons(ListButtons listButtons) {
         PlayProjectCommand playProjectCommandCommand = (PlayProjectCommand) Commands.getCommand("PlayProjectCommand");
-        playProjectCommandCommand.setScreen((PlatformerScreen) screen);
+        playProjectCommandCommand.setScreen((EditorScreen) screen);
         listButtons.addNewButton("iconseditor", 0, 1, 0, 0, 32, 32, playProjectCommandCommand);
 
         PutPlayerCommand putPlayerCommandCommand = (PutPlayerCommand) Commands.getCommand("PutPlayerCommand");
-        putPlayerCommandCommand.setScreen((PlatformerScreen) screen);
+        putPlayerCommandCommand.setScreen((EditorScreen) screen);
         listButtons.addNewButton("iconseditor", 0, 2, 0, 32, 32, 32, putPlayerCommandCommand);
 
         ShowLayerCommand showLayer1 = (ShowLayerCommand)Commands.getCommand("showLayer");
-        showLayer1.setScreenAndLayer((PlatformerScreen) screen, PlatformerScreen.FIRST_LAYER);
+        showLayer1.setScreenAndLayer((EditorScreen) screen, EditorScreen.FIRST_LAYER);
         listButtons.addNewButton("iconseditor", 0, 3, 0, 64, 32, 32, showLayer1);
 
         ShowLayerCommand showAllLayers = (ShowLayerCommand)Commands.getCommand("showLayer");
-        showAllLayers.setScreenAndLayer((PlatformerScreen) screen, PlatformerScreen.ALL_LAYERS);
+        showAllLayers.setScreenAndLayer((EditorScreen) screen, EditorScreen.ALL_LAYERS);
         listButtons.addNewButton("iconseditor", 0, 4, 0, 96, 32, 32, showAllLayers);
 
         BlockLayersCommand blockLayers = (BlockLayersCommand)Commands.getCommand("blockLayers");
-        blockLayers.setScreen((PlatformerScreen) screen);
+        blockLayers.setScreen((EditorScreen) screen);
         listButtons.addNewButton("iconseditor", 0, 5, 64, 96, 32, 32, blockLayers);
 
         //block tile:
@@ -87,7 +91,8 @@ public class PlatformerScreenListingBuilder implements ListingBuilder{
 
         //scrolling direction of a map: horizontal or vertical:
         ScrollDirCommand scrollDirCommand = (ScrollDirCommand)Commands.getCommand("scrollDir");
-        listButtons.addNewButton("iconseditor", 0, 12, 96, 32, 32, 32, null);
+        scrollDirCommand.setScenario(scenario);
+        listButtons.addNewButton("iconseditor", 0, 12, 96, 32, 32, 32, scrollDirCommand);
 
         //new map:
         ShowPopupCommand popupNewMap = (ShowPopupCommand)Commands.getCommand("showPopup");

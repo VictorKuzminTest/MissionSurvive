@@ -40,6 +40,8 @@ public class Hero implements GameObject {
 
     public static final float IRRESISTIBLE_TICK = 3.0f;
 
+    public static final int NUM_JUMPING_ITERATIONS = 5;
+
     private Physics physics = new HeroPhysics();
     private PlatformerScenario platformerScenario;
     private Hitbox hitbox;
@@ -59,7 +61,6 @@ public class Hero implements GameObject {
     private int spritesetSpriteHeight;
     private int spriteWidth;
     private int spriteHeight;
-    private int whichAsset;
     private int direction;
     private int numDirections;
     private int numActions;
@@ -78,6 +79,7 @@ public class Hero implements GameObject {
     private int startShootingFrame;
     //starting point coordinates for weapon to move. They depend on action shooting frames.
     private int bulletX, bulletY, bulletDirection;
+    private int jumpingIterCount;
 
     private float animationTick = 0.08f;
     private float animationTickTime = 0;
@@ -85,8 +87,6 @@ public class Hero implements GameObject {
     private float movingTickTime = 0;
     private float shootingTick = 0.3f;
     private float shootingTickTime = shootingTick;
-    private float animJumpingTickTime = 0;
-    private float animJumpingTick = 0.14f;
     private float irresistibleTickTime = 0;
 
     private boolean isRunning;
@@ -213,10 +213,6 @@ public class Hero implements GameObject {
                 animationTickTime += deltaTime;
                 animateRunning();
                 break;
-            case ACTION_JUMPING:
-                animJumpingTickTime += deltaTime;
-                animateJumping(mapTer, mapEditor.getScrollLevel1Map(), tileSize);
-                break;
             case ACTION_SHOOTING:
                 shootingTickTime += deltaTime;
                 animateShooting(mapEditor);
@@ -269,14 +265,6 @@ public class Hero implements GameObject {
     public void animateIdling(){
         while(animationTickTime > animationTick){
             animationTickTime -= animationTick;
-            heroAnimation.nextFrame();
-        }
-    }
-
-    public void animateJumping(MapTer[][] mapTer, ScrollMap scrollMap, int tileSize) {
-        while(animJumpingTickTime > animJumpingTick) {
-            animJumpingTickTime -= animJumpingTick;
-
             heroAnimation.nextFrame();
         }
     }
@@ -384,6 +372,8 @@ public class Hero implements GameObject {
 
         int directionX = direction == DIRECTION_RIGHT ? 1 : -1;
 
+        iterateJumping();
+
         if(heroAnimation.getCurrentFrame() >= 0 && heroAnimation.getCurrentFrame() <= 2){
             jumpingToMovingVector(map, mapEditor, tileSize, directionX, -1);
             moveOrScroll(mapEditor);
@@ -399,9 +389,21 @@ public class Hero implements GameObject {
         else if(heroAnimation.getCurrentFrame() == 7){
             setActionAndAnimationFrames(ACTION_IDLE, SPRITES_IDLE, 0);
             movingVector.set(0, 0);
-            animJumpingTickTime = 0;
+            jumpingIterCount = 0;
         }
         hitbox.setPos(x, y);
+    }
+
+    /**
+     * Counts moving progress while jumping. If it is greater then particular value, animation frame is
+     * switched.
+     */
+    public void iterateJumping(){
+        jumpingIterCount++;
+        if(jumpingIterCount >= NUM_JUMPING_ITERATIONS){
+            jumpingIterCount = 0;
+            heroAnimation.nextFrame();
+        }
     }
 
     public void jumpingToMovingVector(MapTer[][] map, MapEditor mapEditor, int tileSize,
@@ -411,10 +413,11 @@ public class Hero implements GameObject {
         movingVector.set(jumpingX, jumpingY);
         calculateMovingVector(map, mapEditor.getScrollLevel1Map(), tileSize, ACTION_JUMPING);
 
-        //when collides tile while going down, sets action to ACTION_FALLING:
+        //when collides tile while going down, sets action to ACTION_FALLING (also reset jumpIterCount):
         if(directionY > 0){
             if(movingVector.getY() < jumpingVector.getY()){
                 isAction = ACTION_FALLING;
+                jumpingIterCount = 0;
             }
         }
 
@@ -843,7 +846,7 @@ public class Hero implements GameObject {
     }
 
     public void addLife(){
-        platformerScenario.setLives(platformerScenario.getLives() + 1);
+        platformerScenario.addLife();
     }
 
     public void addGun(){

@@ -36,7 +36,6 @@ public class Moto implements GameObject{
     private int touchX, touchY;
     private int spriteWidth, spriteHeight;
     private int spritesetSpriteWidth, spritesetSpriteHeight;
-    private int whichAsset;
     private ObjAnimation animation;
     private Hitbox hitbox;
     private boolean isTouched;
@@ -155,7 +154,6 @@ public class Moto implements GameObject{
     public void animate(float deltaTime){
         animateManeuvers(deltaTime);
     }
-
 
 
     /**

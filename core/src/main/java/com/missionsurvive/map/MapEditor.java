@@ -1,6 +1,5 @@
 package com.missionsurvive.map;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayers;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.scenarios.Spawn;
 import com.missionsurvive.scenarios.SpawnBot;
-import com.missionsurvive.screens.PlatformerScreen;
 import com.missionsurvive.utils.Assets;
 
 import java.util.ArrayList;
@@ -39,6 +37,11 @@ public class MapEditor implements Map{
     private int worldHeight;
 
     private boolean isHorizontal = true;
+
+    public MapEditor(int worldWidth, int worldHeight){
+        this.worldWidth = worldWidth;
+        this.worldHeight = worldHeight;
+    }
 
     public MapEditor(ParallaxCamera gameCam, int worldWidth, int worldHeight){
         this.gameCam = gameCam;
@@ -94,8 +97,17 @@ public class MapEditor implements Map{
         if(tileset == null) {
             tilesets.clear();
             layer1Texture = Assets.getTextures()[Assets.getWhichTexture(asset)];
-            layer1Texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-            tileset = TextureRegion.split(layer1Texture, tileWidth, tileHeight);
+            layer1Texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+            int numRows = layer1Texture.getHeight() / (tileHeight + 2);
+            int numCols = layer1Texture.getWidth() / (tileWidth + 2);
+            tileset = new TextureRegion[numRows][numCols];
+            for(int row = 0; row < numRows; row++){
+                for(int col = 0; col < numCols; col++){
+                    tileset[row][col] = new TextureRegion(layer1Texture,
+                            1 + col * (tileWidth + 2), 1 + row * (tileHeight + 2),
+                            tileWidth, tileHeight);
+                }
+            }
             tilesets.add(tileset);
         }
     }
@@ -338,7 +350,10 @@ public class MapEditor implements Map{
     }
 
     @Override
-    public void verticalScroll(int y){}
+    public void verticalScroll(int y){
+        scrollLevel1Map.setWorldOffset(0, y);
+        setCamPositionY();
+    }
 
     public ScrollMap getScrollLevel1Map(){
         return scrollLevel1Map;
@@ -370,5 +385,9 @@ public class MapEditor implements Map{
 
     public Spawn[][] getSpawns(){
         return spawns;
+    }
+
+    public void setScrollMap(ScrollMap scrollMap){
+        scrollLevel1Map = scrollMap;
     }
 }

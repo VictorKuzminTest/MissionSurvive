@@ -1,7 +1,9 @@
 package com.missionsurvive.framework.impl;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.scenarios.commands.Command;
 import com.missionsurvive.framework.Button;
@@ -17,6 +19,7 @@ public class ActionButton implements Button, Observer{
 
     private Texture texture;
     private Command command;
+    private ShapeRenderer coloredBounds;
 
     private int screenX;
     private int screenY;
@@ -26,6 +29,7 @@ public class ActionButton implements Button, Observer{
 
     private float screenXHelper; //helps to accumulate float values (it is used in list of buttons)
     private float screenYHelper;
+    private float scaleToDrawX, scaleToDrawY;
 
     public ActionButton(String assetName, int screenX, int screenY, int srcX, int srcY,
                         int buttonWidth, int buttonHeight, Command command){
@@ -39,38 +43,18 @@ public class ActionButton implements Button, Observer{
         this.buttonHeight = buttonHeight;
 
         if(assetName != null){
-            texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
+            if(assetName.equalsIgnoreCase("clear")){
+                coloredBounds = new ShapeRenderer();
+                coloredBounds.setColor(0.5f, 0.5f, 0, 1);
+                scaleToDrawX = (float) Gdx.graphics.getBackBufferWidth() / MSGame.SCREEN_WIDTH;
+                scaleToDrawY = (float)Gdx.graphics.getBackBufferHeight() / MSGame.SCREEN_HEIGHT;
+            }
+            else{
+                texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
+            }
         }
 
         this.command = command;
-
-        /*if(action != null){
-            if(action.equalsIgnoreCase("MapScreen")) actionParameter = 1;
-            if(action.equalsIgnoreCase("ScrollerSceenTest")) actionParameter = 2;
-
-            if(action.equalsIgnoreCase("lev1")) actionParameter = 3;
-            if(action.equalsIgnoreCase("lev2")) actionParameter = 4;
-            if(action.equalsIgnoreCase("lev3")) actionParameter = 5;
-            if(action.equalsIgnoreCase("putPlayer")) actionParameter = 6;
-            if(action.equalsIgnoreCase("putBot")) actionParameter = 7;
-            if(action.equalsIgnoreCase("PlayProjectCommand")) actionParameter = 8;
-            if(action.equalsIgnoreCase("allLevelsTileset")) actionParameter = 9;
-            if(action.equalsIgnoreCase("level1Tileset")) actionParameter = 10;
-            if(action.equalsIgnoreCase("level2Tileset")) actionParameter = 11;
-            if(action.equalsIgnoreCase("level3Tileset")) actionParameter = 12;
-            if(action.equalsIgnoreCase("blockTile")) actionParameter = 13;
-            if(action.equalsIgnoreCase("unblockTile")) actionParameter = 14;
-            if(action.equalsIgnoreCase("save")) actionParameter = 15;
-            if(action.equalsIgnoreCase("load")) actionParameter = 16;
-            if(action.equalsIgnoreCase("putBoss")) actionParameter = 17;
-            if(action.equalsIgnoreCase("putShotgun")) actionParameter = 18;
-            if(action.equalsIgnoreCase("removeTile")) actionParameter = 19;
-            if(action.equalsIgnoreCase("blockMap")) actionParameter = 20;
-            if(action.equalsIgnoreCase("putLadder")) actionParameter = 21;
-            if(action.equalsIgnoreCase("sloMo")) actionParameter = 22;
-            if(action.equalsIgnoreCase("newMap")) actionParameter = 23;
-            if(action.equalsIgnoreCase("scrollMap")) actionParameter = 24;
-        }*/
     }
 
     @Override
@@ -95,12 +79,27 @@ public class ActionButton implements Button, Observer{
 
     @Override
     public void drawButton(SpriteBatch batch) {
-        batch.begin();
-        batch.draw(texture, MSGame.SCREEN_OFFSET_X + screenX,
-                MSGame.SCREEN_OFFSET_Y + GeoHelper.transformCanvasYCoordToGL(screenY,
-                        MSGame.SCREEN_HEIGHT, buttonHeight),
-                buttonWidth, buttonHeight);
-        batch.end();
+        if(texture != null){
+            batch.begin();
+            batch.draw(texture, MSGame.SCREEN_OFFSET_X + screenX,
+                    MSGame.SCREEN_OFFSET_Y + GeoHelper.transformCanvasYCoordToGL(screenY,
+                            MSGame.SCREEN_HEIGHT, buttonHeight),
+                    srcX, srcY,
+                    buttonWidth, buttonHeight);
+            batch.end();
+        }
+        else if(coloredBounds != null){
+            drawColoredBounds();
+        }
+    }
+
+    public void drawColoredBounds(){
+        coloredBounds.begin(ShapeRenderer.ShapeType.Filled);
+        coloredBounds.rect(screenX * scaleToDrawX,
+                GeoHelper.transformCanvasYCoordToGL(screenY,
+                        MSGame.SCREEN_HEIGHT, buttonHeight) * scaleToDrawY,
+                buttonWidth * scaleToDrawX, buttonHeight * scaleToDrawY);
+        coloredBounds.end();
     }
 
     @Override

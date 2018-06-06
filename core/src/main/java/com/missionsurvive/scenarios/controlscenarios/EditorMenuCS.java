@@ -1,9 +1,7 @@
 package com.missionsurvive.scenarios.controlscenarios;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.ControlPanel;
-import com.missionsurvive.framework.impl.ListButtons;
 import com.missionsurvive.utils.Controls;
 
 import java.util.ArrayList;
@@ -13,16 +11,12 @@ import java.util.List;
  * Created by kuzmin on 07.05.18.
  */
 
-public class ScrollerCS implements ControlScenario {
+public class EditorMenuCS implements ControlScenario {
 
     private List<ControlPanel> listOfPanels = new ArrayList<ControlPanel>();
-    private ListingBuilder listingBuilder;
 
-    public ScrollerCS(Screen screen){
+    public EditorMenuCS(){
         setControlPanels();
-        listingBuilder = new ScrollerScreenListingBuilder(screen);
-        ListButtons controlList = listOfPanels.get(0).getListButtons("editorControl");
-        listingBuilder.addButtons(controlList);
     }
 
     @Override
@@ -33,7 +27,7 @@ public class ScrollerCS implements ControlScenario {
     @Override
     public void setControlPanels() {
         for(int i = 0; i < Controls.controlPanels.length; i++){
-            if(Controls.controlPanels[i].getName().equalsIgnoreCase("ScrollerControls")){
+            if(Controls.controlPanels[i].getScreen().equalsIgnoreCase("Menu")){
                 listOfPanels.add(Controls.controlPanels[i]);
             }
         }
@@ -52,12 +46,12 @@ public class ScrollerCS implements ControlScenario {
     }
 
     @Override
-    public boolean onTouchPanels(float delta, float scaleX, float scaleY) {
+    public boolean onTouchPanels(float deltaTime, float scaleX, float scaleY) {
         int numPanels = listOfPanels.size();
         for(int whichPanel = 0; whichPanel < numPanels; whichPanel++){
             ControlPanel controlPanel = listOfPanels.get(whichPanel);
             if(controlPanel.isActivated() == true){
-                controlPanel.onTouch(delta, scaleX, scaleY);
+                controlPanel.onTouch(deltaTime, scaleX, scaleY);
             }
         }
         return false;

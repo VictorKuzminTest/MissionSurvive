@@ -80,16 +80,18 @@ public class ControlPanel {
         }
     }
 
+
     /**
      * We listen to touch events, then we check the state of events occurred.
+     * @param deltaTime
      * @param scaleX
      * @param scaleY
      * @return
      */
-    public boolean onTouch(float scaleX, float scaleY){
-        buttonTouchListener.trackEvents(scaleX, scaleY);
+    public boolean onTouch(float deltaTime, float scaleX, float scaleY){
+        buttonTouchListener.trackEvents(deltaTime, scaleX, scaleY);
         if(rootList != null){
-            rootList.getListener().trackEvents(scaleX, scaleY);
+            rootList.getListener().trackEvents(deltaTime, scaleX, scaleY);
         }
 
         if(buttonTouchListener.getState() != ButtonTouchListener.STATE_NONE){

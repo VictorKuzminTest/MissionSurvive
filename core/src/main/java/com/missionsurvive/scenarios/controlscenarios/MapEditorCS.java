@@ -34,7 +34,8 @@ public class MapEditorCS implements ControlScenario {
         mapTerArrayList = new ArrayList<MapTer>();
         setControlPanels();
 
-        platformerListingBuilder = new PlatformerScreenListingBuilder(screen, (MapEditor)map, mapTerArrayList);
+        platformerListingBuilder = new PlatformerScreenListingBuilder(screen,
+                (MapEditor)map, scenario, mapTerArrayList);
         ListButtons controlList = listOfPanels.get(0).getListButtons("editorControl");
         platformerListingBuilder.addButtons(controlList);
 
@@ -63,13 +64,13 @@ public class MapEditorCS implements ControlScenario {
 
 
     @Override
-    public boolean onTouchPanels(float scaleX, float scaleY) {
+    public boolean onTouchPanels(float delta, float scaleX, float scaleY) {
         boolean onTouch = false;
         int numPanels = listOfPanels.size();
         for(int whichPanel = 0; whichPanel < numPanels; whichPanel++){
             ControlPanel controlPanel = listOfPanels.get(whichPanel);
             if(controlPanel.isActivated() == true){
-                onTouch = controlPanel.onTouch(scaleX, scaleY);
+                onTouch = controlPanel.onTouch(delta, scaleX, scaleY);
             }
         }
         return onTouch;
@@ -273,8 +274,8 @@ public class MapEditorCS implements ControlScenario {
         }
         if(actionParameter == 22){ //sloMo: change skipping sprites time.
             if(object != null){
-                if(object instanceof PlatformerScreen){
-                    PlatformerScreen platformerScreen = (PlatformerScreen)object;
+                if(object instanceof EditorScreen){
+                    EditorScreen platformerScreen = (EditorScreen)object;
                     platformerScreen.getHero().setAnimationTick();
                 }
             }
@@ -284,8 +285,8 @@ public class MapEditorCS implements ControlScenario {
         }
         if(actionParameter == 24){ //scrollMap: changes a scroll of a map to horizontal, vertical etc.
             if(object != null){
-                if(object instanceof PlatformerScreen){
-                    PlatformerScreen platformerScreen = (PlatformerScreen)object;
+                if(object instanceof EditorScreen){
+                    EditorScreen platformerScreen = (EditorScreen)object;
                     if(platformerScreen.getScenario() instanceof PlatformerScenario){
                         PlatformerScenario platformerScenario =
                                 (PlatformerScenario) platformerScreen.getScenario();

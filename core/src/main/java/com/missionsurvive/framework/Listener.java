@@ -11,10 +11,11 @@ public interface Listener {
 
     /**
      * Tracking touch events: touchDown, touchDragged, touchUp.
-     * @param scaleX scale factors to fit real screen size to logic screen size
+     * @param deltaTime
+     * @param scaleX  scale factors to fit real screen size to logic screen size
      * @param scaleY
      */
-    public void trackEvents(float scaleX, float scaleY);
+    public void trackEvents(float deltaTime, float scaleX, float scaleY);
 
     public int getState();
 }

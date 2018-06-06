@@ -47,16 +47,6 @@ public class Icon {
         batch.end();
     }
 
-    public void drawIcon(SpriteBatch batch, int offsetStartX, int offsetStartY, int offsetWidth, int offsetHeight){
-		/*g.drawPixmap(pixmap, x, y,
-				assetStartX + offsetStartX, assetStartY + offsetStartY,
-				assetWidth + offsetWidth, assetHeight + offsetHeight, null);*/
-    }
-
-    public void drawIconRect(SpriteBatch batch, int color, int x, int y, int iconWidth, int iconHeight){
-        /*g.drawRect(x, y, iconWidth, iconHeight, color, null);*/
-    }
-
     public String getIconName(){
         return iconName;
     }

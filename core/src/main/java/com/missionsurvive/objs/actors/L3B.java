@@ -32,7 +32,6 @@ public class L3B implements Bot {
     private int spritesetSpriteHeight;
     private int spriteWidth;
     private int spriteHeight;
-    private int whichAsset;
     private Hitbox hitbox;
     private List<EnemyBullet> bullets = new ArrayList<EnemyBullet>();
     private int numBullets;
@@ -431,13 +430,13 @@ public class L3B implements Bot {
         int tileWidth = 16;
         int tileHeight = 16;
 
-        int centerCol = ((hitbox.getCenterX() + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / (tileWidth - 1));
-        int leftCol = ((hitbox.getLeft() + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / (tileWidth - 1));
-        int rightCol = ((hitbox.getRight() + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / (tileWidth - 1));
+        int centerCol = ((hitbox.getCenterX() + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth);
+        int leftCol = ((hitbox.getLeft() + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth);
+        int rightCol = ((hitbox.getRight() + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth);
 
-        int centerRow = ((hitbox.getCenterY() + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / (tileHeight - 1));
-        int topRow = ((hitbox.getTop() + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / (tileHeight - 1));
-        int bottomRow = ((hitbox.getBottom() + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / (tileHeight - 1));
+        int centerRow = ((hitbox.getCenterY() + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight);
+        int topRow = ((hitbox.getTop() + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight);
+        int bottomRow = ((hitbox.getBottom() + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight);
 
         if(topRow >= 0) {  //to the north
             if(mapTer[topRow][centerCol].isBlocked()){

@@ -4,16 +4,16 @@
     <controlPanel screen = "Menu"
                   name = "MainMenu">
         <button
-            assetName = "button"
+            assetName = "clear"
             buttonType = "ACTION"
             x = "64"
             y = "128"
             width = "200"
             height = "45"
-            action = "PlatformerScreen">
+            action = "EditorScreen">
         </button>
         <button
-            assetName = "button"
+            assetName = "clear"
             buttonType = "ACTION"
             x = "64"
             y = "175"
@@ -88,8 +88,8 @@
             assetName = "digits"
             x = "42"
             y = "18"
-            srcX = "10"
-            srcY = "0"
+            srcX = "181"
+            srcY = "1"
             width = "16"
             height = "16">
         </icon>
@@ -122,9 +122,82 @@
             x = "10"
             y = "50"
             width = "34"
-            height = "300"
+            height = "250"
             layout = "vertical">
         </listbuttons>
+    </controlPanel>
+
+    <controlPanel screen = "GameMenuScreen"
+        name = "StartGameMenu">
+        <button
+            assetName = "art"
+            x = "177"
+            y = "134"
+            srcY = "322"
+            width = "152"
+            height = "26"
+            action = "ToDifficultyGameMenuFromStart">
+        </button>
+        <button
+            assetName = "art"
+            x = "177"
+            y = "175"
+            srcY = "349"
+            width = "131"
+            height = "26"
+            action = "quitGame">
+        </button>
+    </controlPanel>
+    <controlPanel screen = "GameMenuScreen"
+        name = "DifficultyGameMenu">
+        <button
+            assetName = "art"
+            x = "177"
+            y = "134"
+            srcY = "378"
+            width = "117"
+            height = "26"
+            action = "beginner">
+        </button>
+        <button
+            assetName = "art"
+            x = "177"
+            y = "175"
+            srcY = "405"
+            width = "155"
+            height = "26"
+            action = "experienced">
+        </button>
+        <button
+            assetName = "art"
+            x = "400"
+            y = "280"
+            srcY = "432"
+            width = "66"
+            height = "26"
+            action = "ToStartGameMenu">
+        </button>
+    </controlPanel>
+    <controlPanel screen = "GameMenuScreen"
+        name = "ChooseLevelMenu">
+        <listbuttons
+            listingName = "chooseLevel"
+            x = "80"
+            y = "115"
+            width = "320"
+            height = "100"
+            spaceBetweeButtons = "10"
+            layout = "horizontal">
+        </listbuttons>
+        <button
+            assetName = "art"
+            x = "400"
+            y = "280"
+            srcY = "432"
+            width = "66"
+            height = "26"
+            action = "ToDifficultyGameMenuFromChoose">
+        </button>
     </controlPanel>
 
 </control>

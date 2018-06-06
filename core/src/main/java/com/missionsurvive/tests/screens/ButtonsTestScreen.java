@@ -48,8 +48,8 @@ public class ButtonsTestScreen implements Screen {
     }
 
     public void update(float delta){
-        buttonsTest.touchButtons(scaleX, scaleY);
-        buttonsTest.touchLists(scaleX, scaleY);
+        buttonsTest.touchButtons(delta, scaleX, scaleY);
+        buttonsTest.touchLists(delta, scaleX, scaleY);
     }
 
     @Override

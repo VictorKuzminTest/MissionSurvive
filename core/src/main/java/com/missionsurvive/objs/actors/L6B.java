@@ -66,7 +66,6 @@ public class L6B implements Bot {
     private int targetX;
     private int directionX;
     private int frames;
-    private int whichAsset;
     private int spriteWidth = 100;
     private int spriteHeight = 110;
     private int spritesetSpriteWidth = spriteWidth + 2;
@@ -332,8 +331,8 @@ public class L6B implements Bot {
     }
 
     public void falling(MapTer[][] map, int tileSize) {
-        int row = GeoHelper.checkRowCol(hitbox.getBottom() / (tileSize - 1), map.length);
-        int col = GeoHelper.checkRowCol(hitbox.getCenterX() / (tileSize - 1), map[0].length);
+        int row = GeoHelper.checkRowCol(hitbox.getBottom() / tileSize, map.length);
+        int col = GeoHelper.checkRowCol(hitbox.getCenterX() / tileSize, map[0].length);
         if(!map[row][col].isBlocked()){
             attackMovement(DIRECTION_DOWN);
         }

@@ -33,7 +33,6 @@ public class Boss implements Bot {
     private int spriteHeight;
     private int hitboxWidth;
     private int hitboxHeight;
-    private int whichAsset;
     private List<EnemyBullet> bullets = new ArrayList<EnemyBullet>();
     private int numBullets;
     ObjAnimation animation;
@@ -53,7 +52,6 @@ public class Boss implements Bot {
     private float movingTickTime = 0;
     private static float animationTick = 0.08f;
     private static float movingTick =  0.03f;
-    private float startRunning = 0;  //This variable is used to determine whether start moving hero or not. We increment this variable by the value of "deltaTime", and when it reaches the value of "animationTick", we start moving hero. When our finger releases touch screen, this value turns to 0. So our hero didn't "jerk" when we touch the screen "near" hero, and started running smoothly.
     private float betweenActionsTickTime = 0 , betweenActionsTick = 0.5f;
 
     private final int IDLE_ACTION = 0;
@@ -73,8 +71,6 @@ public class Boss implements Bot {
     private int startFallingFrame = 0, numFallingFrames = 1;
 
     private float zombieDyingTick = 0.1f, zombieDyingTickTime = 0;
-
-
 
     private boolean isNorth, isEast, isSouth, isWest; //переменный, указывающие, какие тайлы мира заблокированы.
     private MapTer northTer, eastTer, southTer, westTer; //переменные, хранящие MapTer смежных с героем тайлов.
@@ -149,7 +145,6 @@ public class Boss implements Bot {
             return false;
         }
     }
-
 
     @Override
     public void update(float deltaTime) {
@@ -368,7 +363,6 @@ public class Boss implements Bot {
         }
     }
 
-
     public void idling(){
         while(betweenActionsTickTime > betweenActionsTick){
             betweenActionsTickTime -= betweenActionsTick;
@@ -381,7 +375,6 @@ public class Boss implements Bot {
             }
         }
     }
-
 
     public void idlingAnimation(){
         while(animationTickTime > animationTick) {
@@ -468,7 +461,6 @@ public class Boss implements Bot {
         }
     }
 
-
     public void setDirection(int x){
         if(this.x < x){
             direction = 0;  //right
@@ -477,7 +469,6 @@ public class Boss implements Bot {
             direction = 1;  //left
         }
     }
-
 
     public void setPos(){
         left = (x + 13) - mapEditor.getScrollLevel1Map().getWorldOffsetX(); //+13 means, that I calculated approximately the x coordinate of hitbox: (spriteWidth - hitboxWidth) / 2.
@@ -489,11 +480,9 @@ public class Boss implements Bot {
         centerY = top + halfHeroHeight;
     }
 
-
     public void setSetOfFrames(int setOfFrames){
         animation.setSetOfFrames(setOfFrames);
     }
-
 
     public void shoot(){
         if(isAction < 4){ //if zombie is not dying.
@@ -517,7 +506,6 @@ public class Boss implements Bot {
             }
         }
     }
-
 
     public void shootingAnimation(){
         while(animationTickTime > animationTick) {
@@ -544,18 +532,17 @@ public class Boss implements Bot {
         isAction = 1;
     }
 
-
     public  void tilemapCollision(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
         int tileWidth = 16;
         int tileHeight = 16;
 
-        int centerCol = ((centerX) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / (tileWidth - 1);
-        int leftCol = ((left) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / (tileWidth - 1);
-        int rightCol = ((right) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / (tileWidth - 1);
+        int centerCol = ((centerX) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth;
+        int leftCol = ((left) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth;
+        int rightCol = ((right) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth;
 
-        int centerRow = ((centerY) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / (tileHeight - 1);
-        int topRow = ((top) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / (tileHeight - 1);
-        int bottomRow = ((bottom) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / (tileHeight - 1);
+        int centerRow = ((centerY) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight;
+        int topRow = ((top) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight;
+        int bottomRow = ((bottom) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight;
 
         if(topRow >= 0) {  //to the north
             if(mapTer[topRow][centerCol].isBlocked()){
@@ -598,7 +585,6 @@ public class Boss implements Bot {
             }
         }
     }
-
 
     @Override
     public int getX(){

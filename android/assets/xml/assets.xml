@@ -7,6 +7,12 @@
         pixmapformat = "ARGB8888">
     </asset>
     <asset
+        type = "int"
+        name = "levels"
+        path = "int/levels.png"
+        pixmapformat = "ARGB8888">
+    </asset>
+    <asset
         type = "ter"
         name = "lev1"
         path = "ter/lev1.png"

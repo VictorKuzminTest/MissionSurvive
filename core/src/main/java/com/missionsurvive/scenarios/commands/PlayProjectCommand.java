@@ -1,7 +1,7 @@
 package com.missionsurvive.scenarios.commands;
 
 import com.badlogic.gdx.Screen;
-import com.missionsurvive.screens.PlatformerScreen;
+import com.missionsurvive.screens.EditorScreen;
 import com.missionsurvive.screens.ScrollerScreen;
 
 /**
@@ -25,8 +25,8 @@ public class PlayProjectCommand implements  Command{
                         getHeroControl(((ScrollerScreen)screen).isHeroControl()));
                 break;
             case PLAY_PLATFORMER:
-                ((PlatformerScreen)screen).setHeroControl(
-                        getHeroControl(((PlatformerScreen)screen).isHeroControl()));
+                ((EditorScreen)screen).setHeroControl(
+                        getHeroControl(((EditorScreen)screen).isHeroControl()));
                 break;
         }
         return null;
@@ -48,9 +48,9 @@ public class PlayProjectCommand implements  Command{
         }
     }
 
-    public void setScreen(PlatformerScreen screen) {
+    public void setScreen(EditorScreen screen) {
         this.screen = screen;
-        if(screen instanceof PlatformerScreen){
+        if(screen instanceof EditorScreen){
             playId = PLAY_PLATFORMER;
         }
     }

@@ -38,7 +38,7 @@ import java.util.ArrayList;
  * Created by kuzmin on 04.05.18.
  */
 
-public class ScrollerScreen implements Screen {
+public class ScrollerScreen extends GameScreen implements Screen {
 
     private MSGame game;
     private Texture bgTexture;
@@ -92,7 +92,7 @@ public class ScrollerScreen implements Screen {
     }
 
     public void update(float deltaTime) {
-        controlScenario.onTouchPanels(scaleX, scaleY);
+        controlScenario.onTouchPanels(deltaTime, scaleX, scaleY);
         if(isHeroControl){
             scrollerScenario.update(map, touchControl, deltaTime);
         }
@@ -257,6 +257,7 @@ public class ScrollerScreen implements Screen {
         controlScenario.drawPanels(game.getSpriteBatch());
     }
 
+    @Override
     public void putPlayer(int x, int y){
         scrollerScenario.placeObject(x, y);
         moto = scrollerScenario.getMoto();

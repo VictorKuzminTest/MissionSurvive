@@ -4,8 +4,6 @@ import com.missionsurvive.framework.impl.ListButtons;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.scenarios.commands.PutTileCommand;
-import com.missionsurvive.scenarios.commands.ShowLayerCommand;
-import com.missionsurvive.screens.PlatformerScreen;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Commands;
 
@@ -44,12 +42,12 @@ public class TilesetListingBuilder implements ListingBuilder{
 
         listButtons.clearList(); //сначала очищаем список кнопок, чтобы потом добавлять целый новый tileset.
 
-        for(int row = 0; row < height / 16; row++){ //18 is tileset tile height.
-            for(int col = 0; col < width / 16; col++){ //...tileset tile width.
+        for(int row = 0; row < height / 18; row++){ //18 is tileset tile height.
+            for(int col = 0; col < width / 18; col++){ //...tileset tile width.
 
                 PutTileCommand putTile = (PutTileCommand) Commands.getCommand("putTile");
                 putTile.setAsset(mapEditor, mapTerArrayList, col, row);
-                listButtons.addNewButton(assetName, col, row, col * 16, row * 16, 16, 16, putTile);
+                listButtons.addNewButton(assetName, col, row, 1 + col * 18, 1 + row * 18, 16, 16, putTile);
             }
         }
     }

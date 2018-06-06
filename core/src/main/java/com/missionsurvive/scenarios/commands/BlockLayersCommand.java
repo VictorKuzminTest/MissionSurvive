@@ -1,7 +1,7 @@
 package com.missionsurvive.scenarios.commands;
 
 import com.badlogic.gdx.Screen;
-import com.missionsurvive.screens.PlatformerScreen;
+import com.missionsurvive.screens.EditorScreen;
 
 /**
  * Created by kuzmin on 15.05.18.
@@ -13,13 +13,13 @@ public class BlockLayersCommand implements Command{
 
     @Override
     public String execute(String key, String value) {
-        boolean isScrollBlocked = ((PlatformerScreen)screen).isScrollBlocked() ? false : true;
+        boolean isScrollBlocked = ((EditorScreen)screen).isScrollBlocked() ? false : true;
 
-        ((PlatformerScreen) screen).setScrollBlocked(isScrollBlocked);
+        ((EditorScreen) screen).setScrollBlocked(isScrollBlocked);
         return null;
     }
 
-    public void setScreen(PlatformerScreen screen) {
+    public void setScreen(EditorScreen screen) {
         this.screen = screen;
     }
 }

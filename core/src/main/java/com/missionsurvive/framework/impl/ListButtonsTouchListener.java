@@ -2,6 +2,7 @@ package com.missionsurvive.framework.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.missionsurvive.framework.Button;
+import com.missionsurvive.framework.KineticScroll;
 import com.missionsurvive.framework.Listener;
 import com.missionsurvive.framework.Observer;
 import com.missionsurvive.geom.GeoHelper;
@@ -21,6 +22,7 @@ public class ListButtonsTouchListener implements Listener {
 
     private ArrayList<ListButtons> lists = new ArrayList<ListButtons>();
     private ListButtons currentList;
+    private KineticScroll kineticScroll = new KineticScroll();
 
     private int state;
 
@@ -35,13 +37,15 @@ public class ListButtonsTouchListener implements Listener {
     }
 
     @Override
-    public void trackEvents(float scaleX, float scaleY){
+    public void trackEvents(float deltaTime, float scaleX, float scaleY){
         if(Gdx.input.justTouched()){
             lastX = Gdx.input.getX(0) * scaleX;
             lastY =  Gdx.input.getY(0) * scaleY;
             downX = lastX;
             downY = lastY;
             getTouchDownEvent((int)lastX, (int)lastY);
+
+            kineticScroll.onTouchDownList(currentList, downX, downY);
         }
         else{
             if(Gdx.input.isTouched(0)){
@@ -56,9 +60,14 @@ public class ListButtonsTouchListener implements Listener {
 
                 lastX = currentX;
                 lastY = currentY;
+
+                kineticScroll.traceTouch(deltaTime, currentX, currentY);
+
             }
             else{
                 getTouchUpEvent((int)lastX, (int)lastY);
+
+                kineticScroll.scrolling(deltaTime);
             }
         }
     }

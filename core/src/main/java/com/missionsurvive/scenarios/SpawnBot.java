@@ -8,7 +8,6 @@ import com.missionsurvive.objs.actors.Enemy;
 import com.missionsurvive.objs.actors.L3B;
 import com.missionsurvive.objs.actors.L6B;
 import com.missionsurvive.objs.actors.ShotgunZombie;
-import com.missionsurvive.screens.PlatformerScreen;
 
 /**
  * Created by kuzmin on 04.05.18.

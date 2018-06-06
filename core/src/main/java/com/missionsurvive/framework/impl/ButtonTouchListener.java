@@ -33,7 +33,7 @@ public class ButtonTouchListener implements Listener{
     }
 
     @Override
-    public void trackEvents(float scaleX, float scaleY){
+    public void trackEvents(float deltaTime, float scaleX, float scaleY){
         if(Gdx.input.justTouched()){
             lastX = Gdx.input.getX(0) * scaleX;
             lastY =  Gdx.input.getY(0) * scaleY;

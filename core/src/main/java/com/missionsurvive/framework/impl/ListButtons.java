@@ -17,6 +17,10 @@ import java.util.ArrayList;
 
 public class ListButtons implements Observer{
 
+    public static final int LAYOUT_GRID = 0;
+    public static final int LAYOUT_VERTICAL = 1;
+    public static final int LAYOUT_HORIZONTAL = 2;
+
     //Название списка. Поскольку мы будем добавлять элементы списка из сценария программно,
     //нам нужно знать что и в какой список добавляем.
     private String name;
@@ -33,6 +37,7 @@ public class ListButtons implements Observer{
     private int listingHeight;
     private int spaceBetweenButtons; //space between buttons in pixels
     private int srcBgX, srcBgY; //откуда начинается отрисовка asset для background.
+    private int layoutId;
 
     /**
      * Constructor for root lists, which contains other lists of buttons.
@@ -55,7 +60,17 @@ public class ListButtons implements Observer{
         this.listingHeight = listingHeight;
 
         this.name = name;
-        this.layout = layout;
+
+        if(layout != null){
+            if(layout.equalsIgnoreCase("horizontal")){
+                layoutId = LAYOUT_HORIZONTAL;
+            }
+            else if(layout.equalsIgnoreCase("vertical")){
+                layoutId = LAYOUT_VERTICAL;
+            }
+            this.layout = layout;
+        }
+
         this.spaceBetweenButtons = spaceBetweenButtons;
 
         this.srcBgX = srcBgX;
@@ -169,6 +184,57 @@ public class ListButtons implements Observer{
      * @param distanceY delta distance y
      */
     public void scrollButtons(float distanceX, float distanceY){
+        switch (layoutId){
+            case LAYOUT_GRID:
+                scroll(0, getVertBounds(distanceY));
+                scroll(getHorBounds(distanceX), 0);
+                break;
+            case LAYOUT_VERTICAL:
+                scroll(0, getVertBounds(distanceY));
+                break;
+            case LAYOUT_HORIZONTAL:
+                scroll(getHorBounds(distanceX), 0);
+                break;
+        }
+    }
+
+    public float getVertBounds(float distanceY){
+        if(distanceY > 0){
+            Button firstButton = buttons.get(0);
+            if((firstButton.getStartY() + distanceY) > startY){
+                distanceY = startY - firstButton.getStartY();
+                return distanceY;
+            }
+        }
+        else if(distanceY < 0){
+            Button lastButton = buttons.get(buttons.size() - 1);
+            if((lastButton.getStartY() + lastButton.getButtonHeight() + distanceY) < (startY + listingHeight)){
+                distanceY = (startY + listingHeight) - (lastButton.getStartY() + lastButton.getButtonHeight());
+                return distanceY;
+            }
+        }
+        return distanceY;
+    }
+
+    public float getHorBounds(float distanceX){
+        if(distanceX > 0){
+            Button firstButton = buttons.get(0);
+            if((firstButton.getStartX() + distanceX) > startX){
+                distanceX = startX - firstButton.getStartX();
+                return distanceX;
+            }
+        }
+        else if(distanceX < 0){
+            Button lastButton = buttons.get(buttons.size() - 1);
+            if((lastButton.getStartX() + lastButton.getButtonWidth() + distanceX) < (startX + listingWidth)){
+                distanceX = (startX + listingWidth) - (lastButton.getStartX() + lastButton.getButtonWidth());
+                return distanceX;
+            }
+        }
+        return distanceX;
+    }
+
+    public void scroll(float distanceX, float distanceY){
         int len = buttons.size();
         for(int whichButton = 0; whichButton < len; whichButton++){
             Button button = buttons.get(whichButton);
@@ -181,7 +247,6 @@ public class ListButtons implements Observer{
     public ArrayList<Button> getButtons(){
         return buttons;
     }
-
 
     public void addList(ListButtons listButtons){
         lists.add(listButtons);

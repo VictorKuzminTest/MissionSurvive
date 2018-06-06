@@ -42,7 +42,7 @@ public class ButtonsTest {
         numButtons = 5;
 
         for(int i = 0; i < numButtons; i++){
-            Observer button = new ActionButton("button", screenX, spaceYBetweenButtons + i * height,
+            Observer button = new ActionButton("clear", screenX, spaceYBetweenButtons + i * height,
                     0, 0, width, height, null);
             buttons.add((Button)button);
             buttonTouchListener.attach(button);
@@ -82,12 +82,12 @@ public class ButtonsTest {
         }
     }
 
-    public void touchButtons(float scaleX, float scaleY){
-        buttonTouchListener.trackEvents(scaleX, scaleY);
+    public void touchButtons(float deltaTime, float scaleX, float scaleY){
+        buttonTouchListener.trackEvents(deltaTime, scaleX, scaleY);
     }
 
-    public void touchLists(float scaleX, float scaleY){
-        rootList.getListener().trackEvents(scaleX, scaleY);
+    public void touchLists(float deltaTime, float scaleX, float scaleY){
+        rootList.getListener().trackEvents(deltaTime, scaleX, scaleY);
     }
 
     public ArrayList<Button> getButtons(){

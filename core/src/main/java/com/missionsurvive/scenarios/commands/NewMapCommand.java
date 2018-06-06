@@ -1,11 +1,7 @@
 package com.missionsurvive.scenarios.commands;
 
 import com.badlogic.gdx.Screen;
-import com.missionsurvive.MSGame;
-import com.missionsurvive.screens.MainMenuScreen;
-import com.missionsurvive.screens.PlatformerScreen;
-import com.missionsurvive.screens.ScrollerScreen;
-import com.missionsurvive.utils.Assets;
+import com.missionsurvive.screens.EditorScreen;
 
 /**
  * Created by kuzmin on 21.05.18.
@@ -14,7 +10,7 @@ import com.missionsurvive.utils.Assets;
 public class NewMapCommand implements Command{
     private int width;
     private int height;
-    private PlatformerScreen platformerScreen;
+    private EditorScreen editorScreen;
 
     @Override
     public String execute(String key, String value) {
@@ -25,13 +21,13 @@ public class NewMapCommand implements Command{
             height = Integer.parseInt(value);
         }
         else if(key.equalsIgnoreCase("newMap")){
-            platformerScreen.newMap(width, height);
+            editorScreen.newMap(width, height);
         }
         return null;
     }
 
     public void setScreen(Screen screen){
-        platformerScreen = (PlatformerScreen)screen;
+        editorScreen = (EditorScreen)screen;
     }
 
 }
