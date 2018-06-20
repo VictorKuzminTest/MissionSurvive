@@ -114,6 +114,9 @@ public class ScrollerScenario implements Scenario {
         moto.moving(deltaTime);
     }
 
+    @Override
+    public void setScroll(boolean horizontal, boolean vertical) {}
+
     /**
      * Generates new motorcycle.
      */

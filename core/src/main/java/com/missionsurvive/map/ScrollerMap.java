@@ -132,7 +132,7 @@ public class ScrollerMap implements Map{
     }
 
     @Override
-    public void loadMap(String mapTerInString) {}
+    public boolean loadMap(String mapTerInString) {return false;}
 
     @Override
     public void verticalScroll(int y) {

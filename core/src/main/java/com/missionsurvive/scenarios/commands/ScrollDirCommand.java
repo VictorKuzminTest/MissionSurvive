@@ -14,12 +14,10 @@ public class ScrollDirCommand implements Command{
     @Override
     public String execute(String key, String value) {
         if(platformerScenario.isHorizontal()){
-            platformerScenario.setHorizontal(false);
-            platformerScenario.setVertical(true);
+            platformerScenario.setScroll(false, true);
         }
         else{
-            platformerScenario.setHorizontal(true);
-            platformerScenario.setVertical(false);
+            platformerScenario.setScroll(true, false);
         }
         return null;
     }

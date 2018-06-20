@@ -117,31 +117,6 @@ public class TouchControl {
                     }
                 }
             }
-
-            /*int len = touchEvents.size();
-            for(int touchEvent = 0; touchEvent < len; touchEvent++){
-                TouchEvent event = touchEvents.get(touchEvent);
-
-                switch(event.type){
-                    case TouchEvent.TOUCH_DOWN:{
-                        shoot(platformerScenario, hero, event.x, event.y);
-                        moveHero(hero, event.x, event.y);
-                        countJumpingTime(hero, event, 0);
-                        break;
-                    }
-                    case TouchEvent.TOUCH_DRAGGED:{
-                        shoot(platformerScenario, hero, event.x, event.y);
-                        moveHero(hero, event.x, event.y);
-                        countJumpingTime(hero, event, 0);
-                        break;
-                    }
-                    case TouchEvent.TOUCH_UP:{
-                        stopActions(hero);
-                        countJumpingTime(hero, event, 0);
-                        break;
-                    }
-                }
-            }*/
         }
     }
 
@@ -263,34 +238,6 @@ public class TouchControl {
                 }
                 break;
         }
-
-        /*if(touchEvent != null){
-            if(touchEvent.type == TouchEvent.TOUCH_DOWN){
-                isMapTouchedDown = true;
-                initEventToJumpX = touchEvent.x;
-                initEventToJumpY = touchEvent.y;
-            }
-            else if(touchEvent.type == TouchEvent.TOUCH_DRAGGED){
-                while(jumpingTickTime > jumpingTick){
-                    jumpingTickTime = 0;
-
-                    initEventToJumpX = touchEvent.x;
-                    initEventToJumpY = touchEvent.y;
-                }
-            }
-            else{
-                isMapTouchedDown = false;
-                if(Math.abs(initEventToJumpY - touchEvent.y) > MIN_THRASHOLD_Y){
-                    if(Math.abs(initEventToJumpX - touchEvent.x) < MIN_THRASHOLD_X){
-                        hero.setJumpingVector(0, hero.getSpeedJumpingY());
-                    }
-                    else{
-                        hero.setJumpingVector(hero.getSpeedJumpingX(), hero.getSpeedJumpingY());
-                    }
-                    jumpHero(hero);
-                }
-            }
-        }*/
     }
 
 

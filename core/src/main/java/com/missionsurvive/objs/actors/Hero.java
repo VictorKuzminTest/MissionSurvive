@@ -717,10 +717,6 @@ public class Hero implements GameObject {
         return isHorizontalScroll;
     }
 
-    public void scenarioSetHorizontal(boolean isHorizontal){
-        platformerScenario.setHorizontal(isHorizontal);
-    }
-
     //FOR TESTING:
     public void setAnimationTick() {
         if(animationTick == 0.08f){
@@ -877,4 +873,5 @@ public class Hero implements GameObject {
     public List<Weapon> getWeapon(){
         return weapon.getWeapon();
     }
+
 }

@@ -37,6 +37,9 @@ public class MapEditor implements Map{
     private int worldHeight;
 
     private boolean isHorizontal = true;
+    private boolean isLoaded;
+
+    public MapEditor(){}
 
     public MapEditor(int worldWidth, int worldHeight){
         this.worldWidth = worldWidth;
@@ -135,15 +138,20 @@ public class MapEditor implements Map{
 
     public void removeTile(int col, int row){
         foreground.setCell(col, (worldHeight - 1) - row, null);
+        mapTers[row][col].setSrcX(-1);
+        mapTers[row][col].setSrcY(-1);
     }
 
     /** Getting 3 map levels from text String.
      * @param mapTerInString
      */
     @Override
-    public void loadMap(String mapTerInString){
+    public boolean loadMap(String mapTerInString){
+        isLoaded = false;
 
-        if(mapTerInString == null) return;
+        if(mapTerInString == null){
+            return isLoaded = false;
+        }
 
         //-MapTer[][] mapTer = null;
         String assetName = null;
@@ -157,7 +165,14 @@ public class MapEditor implements Map{
         for(int whichChar = 0; whichChar < len; whichChar++){
             if(fragmentTokens[whichChar].contains("\n")){
                 fragmentTokens[whichChar] = fragmentTokens[whichChar].replaceAll("\n", "");
-                row = -1; col = -1;
+            }
+
+            if(fragmentTokens[whichChar]. equalsIgnoreCase("new")){
+                worldWidth = Integer.parseInt(fragmentTokens[whichChar + 1]);
+                worldHeight = Integer.parseInt(fragmentTokens[whichChar + 2]);
+                newMap(worldWidth, worldHeight);
+
+                isLoaded = true;
             }
 
             //-if(fragmentTokens[whichChar].equalsIgnoreCase("scroll")){
@@ -186,9 +201,9 @@ public class MapEditor implements Map{
             }
 
             //temporary return if to not drawing other layers above layer 1:
-            if(fragmentTokens[whichChar].equalsIgnoreCase("level2MapTer")){
-                return;
-            }
+            //if(fragmentTokens[whichChar].equalsIgnoreCase("level2MapTer")){
+            //    return;
+            //}
 
 
             if(fragmentTokens[whichChar].equalsIgnoreCase("row")){
@@ -245,7 +260,8 @@ public class MapEditor implements Map{
                 //-}
             }
         }
-        //-game.getCurrentScreen().setMap(); //set new map to screen.                                                 //+
+        //-game.getCurrentScreen().setMap(); //set new map to screen.         //+
+        return isLoaded;
     }
 
     @Override
@@ -389,5 +405,9 @@ public class MapEditor implements Map{
 
     public void setScrollMap(ScrollMap scrollMap){
         scrollLevel1Map = scrollMap;
+    }
+
+    public void setGameCam(ParallaxCamera gameCam) {
+        this.gameCam = gameCam;
     }
 }

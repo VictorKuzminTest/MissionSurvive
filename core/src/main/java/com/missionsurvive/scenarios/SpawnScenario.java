@@ -1,7 +1,9 @@
 package com.missionsurvive.scenarios;
 
 import com.missionsurvive.map.MapEditor;
+import com.missionsurvive.objs.AutoScroll;
 import com.missionsurvive.objs.Helicopter;
+import com.missionsurvive.objs.actors.Boss;
 import com.missionsurvive.scenarios.Spawn;
 
 /**
@@ -11,6 +13,7 @@ import com.missionsurvive.scenarios.Spawn;
 public class SpawnScenario implements Spawn {
 
     public static final int LEVEL_2_SCENE = 1000;
+    public static final int SCENE_TEST = 5000;
 
     private int scenarioId;
     private int direction;
@@ -37,6 +40,14 @@ public class SpawnScenario implements Spawn {
 
                     isFirstTimeSpawn = false;
                 }*/
+                break;
+            case SCENE_TEST:
+                if(isFirstTimeSpawn) { //so we generate only one time
+                    scenario.addBot(new AutoScroll(scenario, col * 16, row * 16), 0);
+                    scenario.setScroll(false, false);
+
+                    isFirstTimeSpawn = false;
+                }
                 break;
         }
     }

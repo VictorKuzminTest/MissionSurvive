@@ -47,12 +47,10 @@ public class PlatformerScenario implements Scenario {
         fillSpawnsFakeList();
 
         if(mapEditor.isHorizontal()){
-            setHorizontal(true);
-            setVertical(false);
+            setScroll(true, false);
         }
         else{
-            setHorizontal(false);
-            setVertical(true);
+            setScroll(false, true);
         }
     }
 
@@ -276,12 +274,12 @@ public class PlatformerScenario implements Scenario {
      */
     public void spawnEnemy(MapEditor mapEditor, float deltaTime,
                            int worldWidth, int worldHeight){
-        if(isHorizontal){
-            spawnHorEnemy(mapEditor, deltaTime, mapEditor.getScrollLevel1Map(),
+        if(isVertical){
+            spawnVertEnemy(mapEditor, deltaTime, mapEditor.getScrollLevel1Map(),
                     worldWidth, worldHeight);
         }
         else{
-            spawnVertEnemy(mapEditor, deltaTime, mapEditor.getScrollLevel1Map(),
+            spawnHorEnemy(mapEditor, deltaTime, mapEditor.getScrollLevel1Map(),
                     worldWidth, worldHeight);
         }
     }
@@ -429,10 +427,13 @@ public class PlatformerScenario implements Scenario {
         playScript.addLife();
     }
 
-    public void setHorizontal(boolean horizontal) {
+    @Override
+    public void setScroll(boolean horizontal, boolean vertical) {
+        this.isVertical = vertical;
         this.isHorizontal = horizontal;
         mapEditor.setHorizontal(horizontal);
         if(hero != null){
+            hero.setVerticalScroll(vertical);
             hero.setHorizontalScroll(horizontal);
         }
     }
@@ -441,14 +442,8 @@ public class PlatformerScenario implements Scenario {
         return isHorizontal;
     }
 
-    public void setVertical(boolean vertical){
-        this.isVertical = vertical;
-        if(hero != null){
-            hero.setVerticalScroll(vertical);
-        }
-    }
-
     public boolean isVertical(){
         return isVertical;
     }
+
 }

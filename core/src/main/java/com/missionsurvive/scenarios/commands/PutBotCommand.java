@@ -87,7 +87,8 @@ public class PutBotCommand implements Command{
                 }
             }
             else if(bot.equalsIgnoreCase("l1b")){
-                putBot(SpawnBot.LEVEL_1_BOSS, Enemy.EAST);
+                //putBot(SpawnBot.LEVEL_1_BOSS, Enemy.EAST);
+                putBot(SpawnScenario.SCENE_TEST, Enemy.EAST);
             }
             else if(bot.equalsIgnoreCase("l3b")){
                 putBot(SpawnBot.LEVEL_3_BOSS, Enemy.EAST);

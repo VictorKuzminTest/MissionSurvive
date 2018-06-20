@@ -26,4 +26,6 @@ public interface Scenario {
     public abstract void removeBot(Bot bot, int criteria);
 
     public abstract List<Bot> getBots(int criteria);
+
+    public abstract void setScroll(boolean horizontal, boolean vertical);
 }

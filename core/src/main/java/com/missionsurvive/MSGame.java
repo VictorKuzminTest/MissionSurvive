@@ -6,6 +6,7 @@ import com.missionsurvive.framework.XML;
 import com.missionsurvive.framework.impl.AndroidXML;
 import com.missionsurvive.screens.EditorMenuScreen;
 import com.missionsurvive.screens.GameMenuScreen;
+import com.missionsurvive.screens.ScreenFactory;
 import com.missionsurvive.tests.screens.ButtonsTestScreen;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Controls;
@@ -19,6 +20,7 @@ public class MSGame extends Game {
 	SpriteBatch batch;
 	XML xmlParser;
 	private ActivityCallback activityCallback;
+	private ScreenFactory screenFactory;
 
 	public MSGame(ActivityCallback activityCallback){
 		super();
@@ -33,15 +35,17 @@ public class MSGame extends Game {
 		Controls.setControls(this);
 		Assets.setGame(this);
 
+		screenFactory = new ScreenFactory(this);
+
 		//test screens:
 		//setScreen(new TestScreen(this));
 		//setScreen(new ButtonsTestScreen(this));
 
 		//start editor screen:
-		//setScreen(new EditorMenuScreen(this));
+		setScreen(new EditorMenuScreen(this));
 
 		//start game screen:
-		setScreen((new GameMenuScreen(this)));
+		//setScreen(screenFactory.newScreen("GameMenuScreen", null));
 	}
 
 	@Override
@@ -64,5 +68,9 @@ public class MSGame extends Game {
 
 	public ActivityCallback getActivityCallback(){
 		return activityCallback;
+	}
+
+	public ScreenFactory getScreenFactory(){
+		return screenFactory;
 	}
 }

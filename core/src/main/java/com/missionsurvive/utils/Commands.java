@@ -13,6 +13,7 @@ import com.missionsurvive.scenarios.commands.PutTileCommand;
 import com.missionsurvive.scenarios.commands.ScrollDirCommand;
 import com.missionsurvive.scenarios.commands.ShowPopupCommand;
 import com.missionsurvive.scenarios.commands.ShowLayerCommand;
+import com.missionsurvive.scenarios.commands.ToLevelCommand;
 import com.missionsurvive.scenarios.commands.ToScreenCommand;
 import com.missionsurvive.scenarios.commands.WithTileCommand;
 
@@ -42,6 +43,9 @@ public class Commands {
             }
             else if(action.equalsIgnoreCase("ToDifficultyGameMenuFromChoose")){
                 return command = new OpenCloseCPCommand("ToDifficultyGameMenuFromChoose", null);
+            }
+            else if(action.equalsIgnoreCase("ToLevel")){
+                return command = new ToLevelCommand();
             }
             else if(action.equalsIgnoreCase("PlayProjectCommand")){
                 return command = new PlayProjectCommand();

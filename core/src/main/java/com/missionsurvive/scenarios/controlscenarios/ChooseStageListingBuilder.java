@@ -1,6 +1,10 @@
 package com.missionsurvive.scenarios.controlscenarios;
 
 import com.missionsurvive.framework.impl.ListButtons;
+import com.missionsurvive.scenarios.commands.Command;
+import com.missionsurvive.scenarios.commands.PlayProjectCommand;
+import com.missionsurvive.screens.EditorScreen;
+import com.missionsurvive.utils.Commands;
 
 /**
  * Created by kuzmin on 05.06.18.
@@ -15,7 +19,8 @@ public class ChooseStageListingBuilder implements ListingBuilder{
         //first lev:
         int assetX = 1;
         int assetY = 1;
-        listButtons.addNewButton("levels", 0, 0, assetX, assetY, buttonWidth, buttonHeight, null);
+        Command toLev1Command = Commands.getCommand("ToLevel");
+        listButtons.addNewButton("levels", 0, 0, assetX, assetY, buttonWidth, buttonHeight, toLev1Command);
 
         //sec lev:
         assetX = 1 + (buttonWidth + 2) * 1;

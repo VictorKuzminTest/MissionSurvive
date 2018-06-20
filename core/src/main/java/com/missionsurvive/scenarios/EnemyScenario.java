@@ -67,8 +67,8 @@ public class EnemyScenario {
      */
     public void checkForWest(int objX, int objY, int tileSize){
         int worldWidth = mapTers[0].length;
-        int row = ((objY) + mapEditor.getScrollLevel1Map().getWorldOffsetY())
-                / tileSize;
+        int row = GeoHelper.checkRowCol(((objY) + mapEditor.getScrollLevel1Map().getWorldOffsetY())
+                / tileSize, mapTers.length);
         int startCol = ((objX) + mapEditor.getScrollLevel1Map().getWorldOffsetX())
                 / tileSize;
         for(int nextCol = 0; nextCol < numTileXToCheck; nextCol++){

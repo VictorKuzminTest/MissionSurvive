@@ -147,7 +147,6 @@ public class EditorScreen extends GameScreen implements Screen {
         }
     }
 
-
     private void drawWorld(){
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -252,7 +251,6 @@ public class EditorScreen extends GameScreen implements Screen {
         platformerScenario.placeObject(x, y);
         if(platformerScenario instanceof PlatformerScenario) {
             hero = ((PlatformerScenario) platformerScenario).getHero();
-
         }
     }
 

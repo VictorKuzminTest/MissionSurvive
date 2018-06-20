@@ -10,7 +10,7 @@ import java.util.List;
 public class KineticScroll {
     public static final float DELTA_TRACE_TICK = 0.05f;
     public static final float BRAKING_SPEED = 0.5f;
-    public static final float SCROLLING_TICK = 0.07f;
+    public static final float SCROLLING_TICK = 0.03f;
 
     private ListButtons currentList;
 

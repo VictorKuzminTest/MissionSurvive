@@ -16,7 +16,7 @@ public interface Map {
 
     public ScrollMap getScrollMap();
 
-    public void loadMap(String mapTerInString);
+    public boolean loadMap(String mapTerInString);
 
     public String saveMap();
 }
