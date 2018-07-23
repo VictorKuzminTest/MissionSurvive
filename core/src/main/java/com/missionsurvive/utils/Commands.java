@@ -11,6 +11,7 @@ import com.missionsurvive.scenarios.commands.NewMapCommand;
 import com.missionsurvive.scenarios.commands.PutBotCommand;
 import com.missionsurvive.scenarios.commands.PutTileCommand;
 import com.missionsurvive.scenarios.commands.ScrollDirCommand;
+import com.missionsurvive.scenarios.commands.ShowHideBotPosCommand;
 import com.missionsurvive.scenarios.commands.ShowPopupCommand;
 import com.missionsurvive.scenarios.commands.ShowLayerCommand;
 import com.missionsurvive.scenarios.commands.ToLevelCommand;
@@ -58,6 +59,9 @@ public class Commands {
             }
             else if(action.equalsIgnoreCase("blockLayers")){
                 return command = new BlockLayersCommand();
+            }
+            else if(action.equalsIgnoreCase("showBots")){
+                return command = new ShowHideBotPosCommand();
             }
             else if(action.equalsIgnoreCase("withTileAction")){
                 return command = new WithTileCommand();

@@ -23,13 +23,15 @@ public class MapEditor implements Map{
     private ArrayList<TextureRegion[][]> tilesets = new ArrayList<TextureRegion[][]>();
     private MapLayers layers;
     private TiledMapTileLayer foreground;
-    private TextureRegion lev3;
+    //private TextureRegion lev3;
     private ScrollMap scrollLevel1Map;
     private MapTer[][] mapTers;
     private Spawn[][] spawns;
     private ParallaxCamera gameCam;
     private Texture layer1Texture;
     private TextureRegion[][] tileset;
+    private ParallaxBackground lev3;
+    private ParallaxBackground lev2;
 
     private int tileWidth = 16;
     private int tileHeight = 16;
@@ -46,8 +48,11 @@ public class MapEditor implements Map{
         this.worldHeight = worldHeight;
     }
 
-    public MapEditor(ParallaxCamera gameCam, int worldWidth, int worldHeight){
+    public MapEditor(ParallaxBackground lev3, ParallaxBackground lev2,
+                     ParallaxCamera gameCam, int worldWidth, int worldHeight){
         this.gameCam = gameCam;
+        this.lev3 = lev3;
+        this.lev2 = lev2;
         newMap(worldWidth, worldHeight);
     }
 
@@ -66,9 +71,9 @@ public class MapEditor implements Map{
         map = new TiledMap();
         layers = map.getLayers();
 
-        Texture lev3Tex = Assets.getTextures()[Assets.getWhichTexture("lev3")];
+        /*Texture lev3Tex = Assets.getTextures()[Assets.getWhichTexture("lev3")];
         lev3Tex.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        lev3 = new TextureRegion(lev3Tex, 0, 0, 480, 320);
+        lev3 = new TextureRegion(lev3Tex, 0, 0, 480, 320);*/
     }
 
     public void newMapTers(int width, int height){
@@ -85,9 +90,9 @@ public class MapEditor implements Map{
         return foreground;
     }
 
-    public TextureRegion getlev3(){
+    /*public TextureRegion getlev3(){
         return lev3;
-    }
+    }*/
 
     public void newForeground(int width, int height, int tileWidth, int tileHeight){
         foreground = new TiledMapTileLayer(width, height, tileWidth, tileHeight);
@@ -347,6 +352,8 @@ public class MapEditor implements Map{
      */
     public void setCamPositionX(){
         gameCam.position.x = -MSGame.SCREEN_OFFSET_X + scrollLevel1Map.getWorldOffsetX();
+        lev3.updateCamera(1);
+        lev2.updateCamera(1);
     }
 
     public void setCamPositionY(){

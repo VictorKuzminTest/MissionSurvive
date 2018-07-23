@@ -88,8 +88,10 @@ public class PopupBots extends Popup implements View.OnClickListener {
 
         bots.add("zombie");
         bots.add("shotgunzombie");
+        bots.add("soldierzombie");
         bots.add("l1b");
         bots.add("l3b");
+        bots.add("l5b");
         bots.add("l6b");
         bots.add("powerup");
         bots.add("wreckage");

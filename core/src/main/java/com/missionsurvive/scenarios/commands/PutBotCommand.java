@@ -2,12 +2,11 @@ package com.missionsurvive.scenarios.commands;
 
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.PowerUp;
-import com.missionsurvive.objs.actors.Enemy;
+import com.missionsurvive.objs.actors.Zombie;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.SpawnBot;
 import com.missionsurvive.scenarios.SpawnScenario;
-import com.missionsurvive.utils.Assets;
 
 import java.util.ArrayList;
 
@@ -66,32 +65,47 @@ public class PutBotCommand implements Command{
         if(bot != null){
             if(bot.equalsIgnoreCase("zombie")){
                 if(direction.equalsIgnoreCase("east")){
-                    putBot(SpawnBot.ZOMBIE, Enemy.EAST);
+                    putBot(SpawnBot.ZOMBIE, Zombie.EAST);
                 }
                 else if(direction.equalsIgnoreCase("west")){
-                    putBot(SpawnBot.ZOMBIE, Enemy.WEST);
+                    putBot(SpawnBot.ZOMBIE, Zombie.WEST);
                 }
                 else{
-                    putBot(SpawnBot.ZOMBIE, Enemy.EAST);
+                    putBot(SpawnBot.ZOMBIE, Zombie.EAST);
                 }
             }
             else if(bot.equalsIgnoreCase("shotgunzombie")){
                 if(direction.equalsIgnoreCase("east")){
-                    putBot(SpawnBot.SHOTGUN_ZOMBIE, Enemy.EAST);
+                    putBot(SpawnBot.SHOTGUN_ZOMBIE, Zombie.EAST);
                 }
                 else if(direction.equalsIgnoreCase("west")){
-                    putBot(SpawnBot.SHOTGUN_ZOMBIE, Enemy.WEST);
+                    putBot(SpawnBot.SHOTGUN_ZOMBIE, Zombie.WEST);
                 }
                 else{
-                    putBot(SpawnBot.SHOTGUN_ZOMBIE, Enemy.EAST);
+                    putBot(SpawnBot.SHOTGUN_ZOMBIE, Zombie.EAST);
+                }
+            }
+            else if(bot.equalsIgnoreCase("soldierzombie")){
+                if(direction.equalsIgnoreCase("east")){
+                    putBot(SpawnBot.SOLDIER_ZOMBIE, Zombie.EAST);
+                }
+                else if(direction.equalsIgnoreCase("west")){
+                    putBot(SpawnBot.SOLDIER_ZOMBIE, Zombie.WEST);
+                }
+                else{
+                    putBot(SpawnBot.SOLDIER_ZOMBIE, Zombie.EAST);
                 }
             }
             else if(bot.equalsIgnoreCase("l1b")){
-                //putBot(SpawnBot.LEVEL_1_BOSS, Enemy.EAST);
-                putBot(SpawnScenario.SCENE_TEST, Enemy.EAST);
+                putBot(SpawnBot.LEVEL_1_BOSS, Zombie.EAST);
+                //putBot(SpawnScenario.SCENE_TEST, Zombie.EAST);
             }
             else if(bot.equalsIgnoreCase("l3b")){
-                putBot(SpawnBot.LEVEL_3_BOSS, Enemy.EAST);
+                putBot(SpawnBot.LEVEL_3_BOSS, Zombie.EAST);
+            }
+            else if(bot.equalsIgnoreCase("l5b")){
+                putBot(SpawnBot.LEVEL_5_BOSS, Zombie.EAST);
+                //putBot(SpawnScenario.SCENE_TEST, Zombie.EAST);
             }
             else if(bot.equalsIgnoreCase("powerup")){
                 if(direction.equalsIgnoreCase("eastlife")){
@@ -114,7 +128,8 @@ public class PutBotCommand implements Command{
                 putBot(SpawnBot.LEVEL_6_BOSS, 0);
             }
             else if(bot.equalsIgnoreCase("helicopter")){
-                putBot(SpawnScenario.LEVEL_2_SCENE, 0);
+                //putBot(SpawnScenario.LEVEL_2_SCENE, 0);
+                putBot(SpawnScenario.LEVEL_1_SCENE, 0);
             }
         }
         setBotToNull();

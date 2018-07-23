@@ -85,9 +85,10 @@ public class PlatformerScreenListingBuilder implements ListingBuilder{
         popupNewBot.setActivity(Assets.getGame().getActivityCallback(), ShowPopupCommand.POPUP_NEW_BOT);
         listButtons.addNewButton("iconseditor", 0, 10, 32, 0, 32, 32, popupNewBot);
 
-        //show show position of enemies:
+        //show position of enemies:
         ShowHideBotPosCommand showEnemyPos = (ShowHideBotPosCommand)Commands.getCommand("showBots");
-        listButtons.addNewButton("iconsEditor", 0, 11, 96, 96, 32, 32, null);
+        showEnemyPos.setScreen((EditorScreen) screen);
+        listButtons.addNewButton("iconsEditor", 0, 11, 96, 96, 32, 32, showEnemyPos);
 
         //scrolling direction of a map: horizontal or vertical:
         ScrollDirCommand scrollDirCommand = (ScrollDirCommand)Commands.getCommand("scrollDir");

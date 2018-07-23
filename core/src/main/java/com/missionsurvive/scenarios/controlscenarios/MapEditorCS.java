@@ -160,22 +160,22 @@ public class MapEditorCS implements ControlScenario {
             game.showPopup(AndroidLook.POPUP_NEW_BOT); //show dialog for setting new bots.
         }
         if(actionParameter == 300){
-            putBot(SpawnBot.ZOMBIE, Enemy.WEST);
+            putBot(SpawnBot.ZOMBIE, Zombie.WEST);
         }
         if(actionParameter == 301){
-            putBot(SpawnBot.ZOMBIE, Enemy.EAST);
+            putBot(SpawnBot.ZOMBIE, Zombie.EAST);
         }
         if(actionParameter == 310){
-            putBot(SpawnBot.SHOTGUN_ZOMBIE, Enemy.EAST);
+            putBot(SpawnBot.SHOTGUN_ZOMBIE, Zombie.EAST);
         }
         if(actionParameter == 311){
-            putBot(SpawnBot.SHOTGUN_ZOMBIE, Enemy.WEST);
+            putBot(SpawnBot.SHOTGUN_ZOMBIE, Zombie.WEST);
         }
         if(actionParameter == 32){
-            putBot(SpawnBot.LEVEL_1_BOSS, Enemy.EAST);
+            putBot(SpawnBot.LEVEL_1_BOSS, Zombie.EAST);
         }
         if(actionParameter == 33){
-            putBot(SpawnBot.LEVEL_3_BOSS, Enemy.EAST);
+            putBot(SpawnBot.LEVEL_3_BOSS, Zombie.EAST);
         }
         if(actionParameter == 66){
             putBot(SpawnBot.LEVEL_6_BOSS, 0);
@@ -379,6 +379,9 @@ public class MapEditorCS implements ControlScenario {
     public void setControlPanels() {
         for(int i = 0; i < Controls.controlPanels.length; i++){
             if(Controls.controlPanels[i].getName().equalsIgnoreCase("mapEditorControls")){
+                listOfPanels.add(Controls.controlPanels[i]);
+            }
+            else if(Controls.controlPanels[i].getName().equalsIgnoreCase("EndLevelMenu")){
                 listOfPanels.add(Controls.controlPanels[i]);
             }
         }

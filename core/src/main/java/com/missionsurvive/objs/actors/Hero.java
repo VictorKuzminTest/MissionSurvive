@@ -416,7 +416,7 @@ public class Hero implements GameObject {
         //when collides tile while going down, sets action to ACTION_FALLING (also reset jumpIterCount):
         if(directionY > 0){
             if(movingVector.getY() < jumpingVector.getY()){
-                isAction = ACTION_FALLING;
+                setActionAndAnimationFrames(ACTION_FALLING, SPRITES_FALLING, 0);
                 jumpingIterCount = 0;
             }
         }

@@ -9,8 +9,9 @@ import com.missionsurvive.map.ScrollMap;
 import com.missionsurvive.objs.Bot;
 import com.missionsurvive.objs.EnemyBullet;
 import com.missionsurvive.objs.Weapon;
-import com.missionsurvive.objs.actors.Enemy;
+import com.missionsurvive.objs.actors.Zombie;
 import com.missionsurvive.objs.actors.Hero;
+import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +35,14 @@ public class PlatformerScenario implements Scenario {
     //on the level (method: setFirstTimeSpawned):
     private ArrayList<Spawn> spawnsFakeList = new ArrayList<Spawn>();
     private PlayScript playScript;
+    private ControlScenario controlScenario;
 
     private float checkOffScreenTickTime = 0, checkOffscreenTick = 1.0f;
     private float resurrectionTickTime = 0, resurrectionTick = 2.0f;
 
     private boolean isHorizontal = true;
     private boolean isVertical = false;
+    private boolean isPlayerControl = true;
 
     public PlatformerScenario(MapEditor mapEditor, PlayScript playScript){
         this.mapEditor = mapEditor;
@@ -74,6 +77,7 @@ public class PlatformerScenario implements Scenario {
     public void update(Map map, TouchControl touchControl, float deltaTime) {
         int worldHeight = mapEditor.getLevel1Ter().length;
         int worldWidth = mapEditor.getLevel1Ter()[0].length;
+
         checkHeroOffScreen();
         updateHero(mapEditor, worldWidth, worldHeight, touchControl, deltaTime);
         updateEnemies(mapEditor.getLevel1Ter(), mapEditor, worldWidth, worldHeight, deltaTime);
@@ -342,7 +346,7 @@ public class PlatformerScenario implements Scenario {
                 if(!GeoHelper.overlapRectangles(bot.getX(), bot.getY(),
                         bot.getSpriteWidth(), bot.getSpriteHeight(),
                         -150, -150, 780 , 620)){  //coordinate of the screen +- 150
-                    if(bot instanceof Enemy){
+                    if(bot instanceof Zombie){
                         removeBot(bot, SpawnBot.ZOMBIE);
                     }
                     else{
@@ -389,7 +393,7 @@ public class PlatformerScenario implements Scenario {
      */
     public void setSpawn(int col, int row, int botId, int direction){
         Spawn spawn;
-        if(botId >= SpawnScenario.LEVEL_2_SCENE){
+        if(botId >= SpawnScenario.LEVEL_1_SCENE){
             spawn = new SpawnScenario(botId, direction, row, col);
         }
         else{
@@ -444,6 +448,16 @@ public class PlatformerScenario implements Scenario {
 
     public boolean isVertical(){
         return isVertical;
+    }
+
+    @Override
+    public void setControlScenario(ControlScenario controlScenario) {
+        this.controlScenario = controlScenario;
+    }
+
+    @Override
+    public ControlScenario getControlScenario() {
+        return controlScenario;
     }
 
 }

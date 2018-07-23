@@ -20,7 +20,7 @@ import com.missionsurvive.utils.Assets;
  * Created by kuzmin on 03.05.18.
  */
 
-public class Enemy implements Bot {
+public class Zombie implements Bot {
 
     public static final int EAST = 0;
     public static final int WEST = 1;
@@ -77,7 +77,7 @@ public class Enemy implements Bot {
     private boolean isRunning = false;
     private int targetX = -1, targetY = -1;
 
-    public Enemy(String assetName, MapEditor mapEditor, int x, int y, int direction) {
+    public Zombie(String assetName, MapEditor mapEditor, int x, int y, int direction) {
         this.x = x;
         this.y = y;
         if(assetName != null){

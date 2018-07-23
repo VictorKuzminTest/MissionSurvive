@@ -1,10 +1,7 @@
 package com.missionsurvive.scenarios;
 
 import com.missionsurvive.map.MapEditor;
-import com.missionsurvive.objs.AutoScroll;
-import com.missionsurvive.objs.Helicopter;
-import com.missionsurvive.objs.actors.Boss;
-import com.missionsurvive.scenarios.Spawn;
+import com.missionsurvive.objs.Trigger;
 
 /**
  * Created by kuzmin on 17.05.18.
@@ -12,7 +9,8 @@ import com.missionsurvive.scenarios.Spawn;
 
 public class SpawnScenario implements Spawn {
 
-    public static final int LEVEL_2_SCENE = 1000;
+    public static final int LEVEL_1_SCENE = 1000;
+    public static final int LEVEL_2_SCENE = 2000;
     public static final int SCENE_TEST = 5000;
 
     private int scenarioId;
@@ -31,6 +29,14 @@ public class SpawnScenario implements Spawn {
     @Override
     public void spawnBot(Scenario scenario, MapEditor mapEditor, float deltaTime) {
         switch (scenarioId){
+            case LEVEL_1_SCENE:
+                if(isFirstTimeSpawn){ //so we generate only one time
+                    scenario.addBot(new Trigger(scenario, col * 16, row * 16), 0);
+                    scenario.setScroll(false, false);
+
+                    isFirstTimeSpawn = false;
+                }
+                break;
             case LEVEL_2_SCENE:
                 /*if(isFirstTimeSpawn) { //so we generate only one time
                     game.getCurrentScreen().getScenario().addBot(
@@ -42,8 +48,8 @@ public class SpawnScenario implements Spawn {
                 }*/
                 break;
             case SCENE_TEST:
-                if(isFirstTimeSpawn) { //so we generate only one time
-                    scenario.addBot(new AutoScroll(scenario, col * 16, row * 16), 0);
+                if(isFirstTimeSpawn) {
+                    scenario.addBot(new Trigger(scenario, col * 16, row * 16), 0);
                     scenario.setScroll(false, false);
 
                     isFirstTimeSpawn = false;

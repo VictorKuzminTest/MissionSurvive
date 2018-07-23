@@ -10,6 +10,7 @@ import com.missionsurvive.framework.impl.ActionButton;
 import com.missionsurvive.framework.impl.Icon;
 import com.missionsurvive.framework.impl.ListButtons;
 import com.missionsurvive.framework.impl.ListButtonsTouchListener;
+import com.missionsurvive.framework.impl.Rect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +41,40 @@ public class Controls {
             ControlPanel controlPanel = new ControlPanel(screen, name);
             controlPanels[i] = controlPanel;
 
+            setRects(controlPanel, xml.getChildNodes(cpanelsTags[i], "rect"));
             setButtons(controlPanel, xml.getChildNodes(cpanelsTags[i], "button"));
             setListButtons(controlPanel, xml.getChildNodes(cpanelsTags[i], "listbuttons"));
             setIcons(controlPanel, xml.getChildNodes(cpanelsTags[i], "icon"));
+        }
+    }
+
+    public static void setRects(ControlPanel controlPanel, XmlReader.Element[] controlTags){
+        if(controlTags != null){
+            int iconsCount = controlTags.length;
+            for(int i = 0; i < iconsCount; i++){
+                String rectName = null;
+                int x = 0;
+                int y = 0;
+                int width = 0;
+                int height = 0;
+                float r = 0;
+                float g = 0;
+                float b = 0;
+                float a = 0;
+
+                rectName = xml.getAttrValue(controlTags[i], "rectName");
+                x = getIntValue(x, xml.getAttrValue(controlTags[i], "x"));
+                y = getIntValue(y, xml.getAttrValue(controlTags[i], "y"));
+                width = getIntValue(width, xml.getAttrValue(controlTags[i], "width"));
+                height = getIntValue(height, xml.getAttrValue(controlTags[i], "height"));
+                r = getFloatValue(r, xml.getAttrValue(controlTags[i], "r"));
+                g = getFloatValue(g, xml.getAttrValue(controlTags[i], "g"));
+                b = getFloatValue(b, xml.getAttrValue(controlTags[i], "b"));
+                a = getFloatValue(a, xml.getAttrValue(controlTags[i], "a"));
+
+                controlPanel.addIcon(new Rect(rectName, null, x, y, 0, 0, width, height,
+                        r, g, b, a));
+            }
         }
     }
 
@@ -101,6 +133,14 @@ public class Controls {
                         Commands.getCommand(action)));
             }
         }
+    }
+
+
+    public static float getFloatValue(float defaultValue, String attrStr){
+        if(attrStr != null){
+            return Float.parseFloat(attrStr);
+        }
+        return defaultValue;
     }
 
     /**

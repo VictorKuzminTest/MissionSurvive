@@ -28,7 +28,9 @@ public class TilesetListingBuilder implements ListingBuilder{
 
     @Override
     public void addButtons(ListButtons listButtons) {
-        addTileset(listButtons);
+        if(listButtons != null){
+            addTileset(listButtons);
+        }
     }
 
     /**

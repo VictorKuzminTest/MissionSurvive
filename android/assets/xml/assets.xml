@@ -20,14 +20,32 @@
     </asset>
     <asset
         type = "ter"
-        name = "lev2"
-        path = "ter/lev2.png"
+        name = "lev21"
+        path = "ter/lev21.png"
         pixmapformat = "ARGB8888">
     </asset>
     <asset
         type = "ter"
-        name = "lev3"
-        path = "ter/lev3.png"
+        name = "lev22"
+        path = "ter/lev22.png"
+        pixmapformat = "ARGB8888">
+    </asset>
+    <asset
+        type = "ter"
+        name = "lev31"
+        path = "ter/lev31.png"
+        pixmapformat = "ARGB8888">
+    </asset>
+    <asset
+        type = "ter"
+        name = "lev32"
+        path = "ter/lev32.png"
+        pixmapformat = "ARGB8888">
+    </asset>
+    <asset
+        type = "ter"
+        name = "lev33"
+        path = "ter/lev33.png"
         pixmapformat = "ARGB8888">
     </asset>
     <asset
@@ -74,14 +92,26 @@
     </asset>
     <asset
         type = "cast"
+        name = "soldierzombie"
+        path = "cast/soldierzombie.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
         name = "helicopter"
         path = "cast/helicopter.png"
         pixmapformat = "ARGB4444">
     </asset>
     <asset
         type = "cast"
-        name = "boss"
-        path = "cast/boss.png"
+        name = "l1b"
+        path = "cast/l1b.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "cast"
+        name = "l5b"
+        path = "cast/l5b.png"
         pixmapformat = "ARGB4444">
     </asset>
     <asset

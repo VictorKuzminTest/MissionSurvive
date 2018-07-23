@@ -199,5 +199,38 @@
             action = "ToDifficultyGameMenuFromChoose">
         </button>
     </controlPanel>
-
+    <controlPanel screen = "PlatformerScreen"
+        name = "EndLevelMenu">
+        <rect
+            rectName = "endLevel"
+            x = "110"
+            y = "70"
+            width = "260"
+            height = "180"
+            r = "0.0f"
+            g = "0.0f"
+            b = "0.0f"
+            a = "0.5f">
+        </rect>
+        <icon
+            iconName = "clear"
+            assetName = "art"
+            x = "250"
+            y = "70"
+            srcX = "155"
+            srcY = "322"
+            width = "80"
+            height = "26">
+        </icon>
+        <button
+            assetName = "art"
+            x = "354"
+            y = "224"
+            srcX = "155"
+            srcY = "349"
+            width = "66"
+            height = "26"
+            action = "NextLevel">
+        </button>
+    </controlPanel>
 </control>

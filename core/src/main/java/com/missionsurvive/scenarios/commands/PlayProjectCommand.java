@@ -21,20 +21,20 @@ public class PlayProjectCommand implements  Command{
     public String execute(String key, String value) {
         switch (playId){
             case PLAY_SCROLLER:
-                ((ScrollerScreen)screen).setHeroControl(
-                        getHeroControl(((ScrollerScreen)screen).isHeroControl()));
+                ((ScrollerScreen)screen).setPause(
+                        getPause(((ScrollerScreen)screen).onPause()));
                 break;
             case PLAY_PLATFORMER:
-                ((EditorScreen)screen).setHeroControl(
-                        getHeroControl(((EditorScreen)screen).isHeroControl()));
+                ((EditorScreen)screen).setPause(
+                        getPause(((EditorScreen)screen).onPause()));
                 break;
         }
         return null;
     }
 
-    public boolean getHeroControl(boolean currentState){
-        boolean isHeroControl = currentState == true ? false : true;
-        return isHeroControl;
+    public boolean getPause(boolean currentState){
+        boolean onPause = currentState == true ? false : true;
+        return onPause;
     }
 
     /**

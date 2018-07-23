@@ -46,6 +46,8 @@ public class WithTileCommand implements Command{
                     mapEditor.removeTile(mapTerArrayList.get(mapTerNum).getCol(),
                             mapTerArrayList.get(mapTerNum).getRow());
                     mapTerArrayList.get(mapTerNum).setEditing(false);
+                    mapEditor.getSpawns()[mapTerArrayList.get(mapTerNum).getRow()]
+                            [mapTerArrayList.get(mapTerNum).getCol()] = null;
                 }
                 break;
             case PUT_TILE:
@@ -64,12 +66,8 @@ public class WithTileCommand implements Command{
                     mapTerArrayList.get(mapTerNum).setBlocked(false);
                     mapTerArrayList.get(mapTerNum).setLadder(false);
                     mapTerArrayList.get(mapTerNum).setEditing(false);
-                    //cancel spawn enemies:
-                    /*Scenario scenario = Assets.getGame().getCurrentScreen().getScenario();
-                    if(scenario instanceof PlatformerScenario){
-                        ((PlatformerScenario)scenario).getSpawnEnemies()[mapTerArrayList.get(mapTerNum).getRow()]
-                                [mapTerArrayList.get(mapTerNum).getCol()] = null;
-                    }*/
+                    mapEditor.getSpawns()[mapTerArrayList.get(mapTerNum).getRow()]
+                            [mapTerArrayList.get(mapTerNum).getCol()] = null;
                 }
                 break;
             case PUT_LADDER:

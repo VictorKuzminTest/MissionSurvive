@@ -7,7 +7,7 @@ import com.missionsurvive.scenarios.commands.Command;
  * Created by kuzmin on 25.04.18.
  */
 
-public interface Button {
+public interface Button{
 
     public boolean onClick(boolean onClick);
 

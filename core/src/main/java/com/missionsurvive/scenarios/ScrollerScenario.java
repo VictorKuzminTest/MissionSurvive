@@ -14,6 +14,7 @@ import com.missionsurvive.objs.RocketL4;
 import com.missionsurvive.objs.Springboard;
 import com.missionsurvive.objs.Tear;
 import com.missionsurvive.objs.actors.Moto;
+import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 import com.missionsurvive.screens.ScrollerScreen;
 
 import java.util.ArrayList;
@@ -116,6 +117,16 @@ public class ScrollerScenario implements Scenario {
 
     @Override
     public void setScroll(boolean horizontal, boolean vertical) {}
+
+    @Override
+    public void setControlScenario(ControlScenario controlScenario) {
+
+    }
+
+    @Override
+    public ControlScenario getControlScenario() {
+        return null;
+    }
 
     /**
      * Generates new motorcycle.

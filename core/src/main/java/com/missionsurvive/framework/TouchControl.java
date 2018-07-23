@@ -109,7 +109,7 @@ public class TouchControl {
                             touchEvent = EVENT_UP;
                             stopActions(hero);
                             countJumpingTime(hero, EVENT_UP,
-                                    (int)(Gdx.input.getX(0) * scaleX), (int)(Gdx.input.getY(0) * scaleY), 0);
+                                        (int)(Gdx.input.getX(0) * scaleX), (int)(Gdx.input.getY(0) * scaleY), 0);
                         }
                         else{
                             touchEvent = EVENT_NONE;
@@ -130,8 +130,15 @@ public class TouchControl {
                 stopActions(hero);
             }
 
-            hero.run();
-            setFallingX(hero);
+            if(GeoHelper.inBoundsSpaceX(x,
+                    hero.getCenterX() - hero.getSpeedRunning(),
+                    hero.getCenterX() + hero.getSpeedRunning()) != GeoHelper.INSIDE){
+                hero.run();
+                setFallingX(hero);
+            }
+            else{
+                stopActions(hero);
+            }
         }
         else if(hero.isAction() == Hero.ACTION_JUMPING){
 

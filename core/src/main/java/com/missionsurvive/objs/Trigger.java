@@ -1,18 +1,20 @@
 package com.missionsurvive.objs;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.missionsurvive.framework.ControlPanel;
 import com.missionsurvive.framework.Decorator;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
+import com.missionsurvive.scenarios.commands.Command;
 
 /**
  * Created by kuzmin on 09.06.18.
  * Auto scrolling of the screen to some target.
  */
-public class AutoScroll implements Bot{
+public class Trigger implements Bot{
 
     public static final float SCROLLING_TICK = 0.03f;
 
@@ -25,7 +27,7 @@ public class AutoScroll implements Bot{
 
     private float scrollingTickTime;
 
-    public AutoScroll(Scenario scenario, int x, int y){
+    public Trigger(Scenario scenario, int x, int y){
         this.x = x;
         endScrollX = x + numTilesToScroll * 16;
         this.scenario = (PlatformerScenario) scenario;
@@ -46,11 +48,22 @@ public class AutoScroll implements Bot{
             x += getDistX();
 
             if(speedScrollingX <= 0){
+                showEndLevelPanel();
                 scenario.removeBot(this, 0);
             }
             else{
                 mapEditor.horizontScroll(0, speedScrollingX);
                 scenario.getHero().setX(scenario.getHero().getX() - speedScrollingX);
+            }
+        }
+    }
+
+    public void showEndLevelPanel(){
+        int numPanels = scenario.getControlScenario().getControlPanels().size();
+        for(int i  = 0; i < numPanels; i++){
+            ControlPanel cp = scenario.getControlScenario().getControlPanels().get(i);
+            if(cp.getName().equalsIgnoreCase("EndLevelMenu")){
+                cp.setActivated(true);
             }
         }
     }

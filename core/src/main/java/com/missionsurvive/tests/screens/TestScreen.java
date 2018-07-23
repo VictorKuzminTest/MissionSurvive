@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -47,16 +48,19 @@ public class TestScreen implements Screen {
 
         font = new BitmapFont();
 
-        mapEditor = new MapEditor(null, 300, 23);
-        mapEditorTest = new MapEditorTest(mapEditor);
-
         //loadbasicTestMap();
         loadMapTest();
         renderer = new OrthogonalTiledMapRenderer(mapEditor.getMap());
 
+        Texture lev3Tex = Assets.getTextures()[Assets.getWhichTexture("lev31")];
+        lev3Tex.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        TextureRegion lev3 = new TextureRegion(lev3Tex, 0, 0, 480, 320);
         background = new ParallaxBackground(new ParallaxLayer[]{
-                new ParallaxLayer(mapEditor.getlev3(), new Vector2(1, 1), new Vector2(0, 0)),
+                new ParallaxLayer(lev3, new Vector2(1, 1), new Vector2(0, 0)),
         }, 480, 320, new Vector2(50, 0));
+
+        mapEditor = new MapEditor(background, null, null, 300, 23);
+        mapEditorTest = new MapEditorTest(mapEditor);
     }
 
     /**

@@ -3,8 +3,9 @@ package com.missionsurvive.scenarios;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.objs.PowerUp;
 import com.missionsurvive.objs.Wreckage;
-import com.missionsurvive.objs.actors.Boss;
-import com.missionsurvive.objs.actors.Enemy;
+import com.missionsurvive.objs.actors.L1B;
+import com.missionsurvive.objs.actors.L5B;
+import com.missionsurvive.objs.actors.Zombie;
 import com.missionsurvive.objs.actors.L3B;
 import com.missionsurvive.objs.actors.L6B;
 import com.missionsurvive.objs.actors.ShotgunZombie;
@@ -17,9 +18,11 @@ public class SpawnBot implements Spawn{
 
     public static final int ZOMBIE = 1;
     public static final int SHOTGUN_ZOMBIE = 2;
-    public static final int LEVEL_1_BOSS = 3;
-    public static final int LEVEL_3_BOSS = 4;
-    public static final int LEVEL_6_BOSS = 5;
+    public static final int SOLDIER_ZOMBIE = 3;
+    public static final int LEVEL_1_BOSS = 4;
+    public static final int LEVEL_3_BOSS = 5;
+    public static final int LEVEL_5_BOSS = 6;
+    public static final int LEVEL_6_BOSS = 7;
     public static final int POWER_UP_LIFE = 11;
     public static final int POWER_UP_GUN = 12;
     public static final int WRECKAGE = 20;
@@ -52,10 +55,19 @@ public class SpawnBot implements Spawn{
                     isFirstTimeSpawn = false;
                 }
                 break;
+            case SOLDIER_ZOMBIE:
+                if(isFirstTimeSpawn){ //so we generate only one time
+                    scenario.addBot(
+                            new ShotgunZombie("soldierzombie", mapEditor, col * 16 - 20, row * 16 - 70,
+                                    direction),
+                            SHOTGUN_ZOMBIE);
+                    isFirstTimeSpawn = false;
+                }
+                break;
             case LEVEL_1_BOSS:
                 if(isFirstTimeSpawn){ //so we generate only one time
                     scenario.addBot(
-                            new Boss("boss", mapEditor, col * 16, row * 16),
+                            new L1B("l1b", mapEditor, col * 16, row * 16),
                             LEVEL_1_BOSS);
                     isFirstTimeSpawn = false;
                 }
@@ -65,6 +77,14 @@ public class SpawnBot implements Spawn{
                     scenario.addBot(
                             new L3B("l3b", mapEditor, col * 16, row * 16),
                             LEVEL_3_BOSS);
+                    isFirstTimeSpawn = false;
+                }
+                break;
+            case LEVEL_5_BOSS:
+                if(isFirstTimeSpawn){ //so we generate only one time
+                    scenario.addBot(
+                            new L5B("l5b", mapEditor, col * 16, row * 16),
+                            LEVEL_5_BOSS);
                     isFirstTimeSpawn = false;
                 }
                 break;
@@ -143,7 +163,7 @@ public class SpawnBot implements Spawn{
 
     public void checkAndAddZombie(Scenario scenario, MapEditor mapEditor, int x, int y){
         if(scenario.getBots(ZOMBIE).size() < PlatformerScenario.MAX_NUM_ZOMBIES){
-            scenario.addBot(new Enemy("zsuit", mapEditor, x , y, direction),
+            scenario.addBot(new Zombie("zsuit", mapEditor, x , y, direction),
                     ZOMBIE);
             isFirstTimeSpawn = false;
         }

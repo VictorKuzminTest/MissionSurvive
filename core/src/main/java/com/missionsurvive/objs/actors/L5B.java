@@ -23,7 +23,7 @@ import java.util.Random;
  * Created by kuzmin on 03.05.18.
  */
 
-public class Boss implements Bot {
+public class L5B implements Bot {
 
     private int x; //screen coordinates.
     private int y;
@@ -79,7 +79,7 @@ public class Boss implements Bot {
     private boolean isRunning = false;
     private int targetX = -1, targetY = -1;
 
-    public Boss(String assetName, MapEditor mapEditor, int x, int y) {
+    public L5B(String assetName, MapEditor mapEditor, int x, int y) {
         this.x = x;
         this.y = y;
         if(assetName != null){

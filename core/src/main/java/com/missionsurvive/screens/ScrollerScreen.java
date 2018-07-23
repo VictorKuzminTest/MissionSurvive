@@ -62,7 +62,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
     private float scaleX, scaleY;
 
     private boolean blink;
-    private boolean isHeroControl;
+    private boolean onPause;
 
     public ScrollerScreen(MSGame game) {
         this.game = game;
@@ -93,7 +93,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
 
     public void update(float deltaTime) {
         controlScenario.onTouchPanels(deltaTime, scaleX, scaleY);
-        if(isHeroControl){
+        if(!onPause){
             scrollerScenario.update(map, touchControl, deltaTime);
         }
     }
@@ -116,7 +116,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if(isHeroControl){
+        if(!onPause){
             game.getSpriteBatch().enableBlending();
             game.getSpriteBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             background.render(delta);
@@ -263,11 +263,11 @@ public class ScrollerScreen extends GameScreen implements Screen {
         moto = scrollerScenario.getMoto();
     }
 
-    public boolean isHeroControl(){
-        return isHeroControl;
+    public boolean onPause(){
+        return onPause;
     }
 
-    public void setHeroControl(boolean isHeroControl){
+    public void setPause(boolean onPause){
         /*if(isHeroControl()){
             Sounds.theme4.stop();
         }
@@ -276,7 +276,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
             Sounds.theme4.setVolume(1);
             Sounds.theme4.play();
         }*/
-        this.isHeroControl = isHeroControl;
+        this.onPause = onPause;
     }
 
     public Map getMap(){

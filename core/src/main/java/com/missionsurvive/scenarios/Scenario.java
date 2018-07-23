@@ -6,6 +6,7 @@ import com.missionsurvive.map.Map;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.Bot;
+import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 
 import java.util.List;
 
@@ -28,4 +29,8 @@ public interface Scenario {
     public abstract List<Bot> getBots(int criteria);
 
     public abstract void setScroll(boolean horizontal, boolean vertical);
+
+    public void setControlScenario(ControlScenario controlScenario);
+
+    public ControlScenario getControlScenario();
 }

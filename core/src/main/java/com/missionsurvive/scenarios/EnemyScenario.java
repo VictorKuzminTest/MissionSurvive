@@ -4,7 +4,7 @@ import com.missionsurvive.MSGame;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
-import com.missionsurvive.objs.actors.Enemy;
+import com.missionsurvive.objs.actors.Zombie;
 
 /**
  * Created by kuzmin on 04.05.18.
@@ -31,8 +31,8 @@ public class EnemyScenario {
      * @param tileSize
      */
     public void setDirection(int objX, int objY, int tileSize, int direction){
-        if(direction == Enemy.WEST) checkForEast(objX, objY, tileSize);
-        if(direction == Enemy.EAST) checkForWest(objX, objY, tileSize);
+        if(direction == Zombie.WEST) checkForEast(objX, objY, tileSize);
+        if(direction == Zombie.EAST) checkForWest(objX, objY, tileSize);
     }
 
     /**
