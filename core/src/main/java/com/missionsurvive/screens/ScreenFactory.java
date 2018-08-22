@@ -27,6 +27,9 @@ public class ScreenFactory {
         else if(screenName.equals("PlatformerScreen")){
             screen = new PlatformerScreen(game, map);
         }
+        else if(screenName.equalsIgnoreCase("EndScreen")){
+            screen = new EndScreen(game, map);
+        }
         return screen;
     }
 }

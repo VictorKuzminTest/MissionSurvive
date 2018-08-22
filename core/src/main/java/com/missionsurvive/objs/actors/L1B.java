@@ -22,8 +22,17 @@ import java.util.Random;
 /**
  * Created by kuzmin on 14.07.18.
  */
-
 public class L1B implements Bot{
+
+    public static final int ACTION_IDLE = 0;
+    public static final int ACTION_FALLING = 1;
+    public static final int ACTION_RUNNING = 2;
+    public static final int ACTION_DYING = 4;
+    public static final int ACTION_DEAD = 5;
+
+    private final int SPRITES_IDLE = 0;
+    private final int SPRITES_RUN = 1;
+    private final int SPRITES_DYING = 2;
 
     private int x; //screen coordinates.
     private int y;
@@ -33,11 +42,8 @@ public class L1B implements Bot{
     private int spriteHeight;
     private int hitboxWidth;
     private int hitboxHeight;
-    private List<EnemyBullet> bullets = new ArrayList<EnemyBullet>();
-    private int numBullets;
     ObjAnimation animation;
     MapEditor mapEditor;
-    Random random = new Random();
     L1B.ActionScenario actionScenario = new L1B.ActionScenario();
     private PlatformerScenario platformerScenario;
     private Texture texture;
@@ -46,29 +52,21 @@ public class L1B implements Bot{
     private int halfHeroWidth;
     private int centerX, centerY, top, bottom, left, right;  //ограничивающие точки "тела" героя (top, bootom, left, right). centerX-centerY - центр героя.
     private int vectorX, vectorY;  //Вектор передвижения героя в данный момент времени.
-    private int bulletX, bulletY, bulletDirection; //starting point coordinates for bullet to move. They depend on action shooting frames.
 
     private float animationTickTime = 0;
     private float movingTickTime = 0;
-    private static float animationTick = 0.08f;
-    private static float movingTick =  0.03f;
-    private float betweenActionsTickTime = 0 , betweenActionsTick = 0.5f;
-
-    private final int IDLE_ACTION = 0;
-    private final int RUN_ACTION = 1;
-    private final int SHOOTING_ACTION = 2;
-    private final int DYING = 3;
+    private float animationTick = 0.08f;
+    private float movingTick =  0.03f;
+    private float betweenActionsTickTime = 0 , betweenActionsTick = 1.2f;
 
     private int[] actions; //массив, в котором содержится инфа о действиях игрока и количестве фреймах в них (номер элемента массива - row, содержание элемента - количество фреймов).
     private int numDirections; //количество направлений для действий (сторон света).
     private int numActions; //количество действий.
     private int currentAction; //currentAction
     private int direction; //direction of action.  0 - right, 1 - left.
-    private int runningSpeed = 2; //скорость бега в пикселях.
-    private int fallingSpeed = 7; //falling speed in pixels.
+    private int runningSpeed = 4; //скорость бега в пикселях.
+    private int fallingSpeed = 1; //falling speed in pixels.
     private int hits;
-
-    private int startFallingFrame = 0, numFallingFrames = 1;
 
     private float zombieDyingTick = 0.1f, zombieDyingTickTime = 0;
 
@@ -77,7 +75,7 @@ public class L1B implements Bot{
 
     private int isAction; //this variable determines the action our hero is using.
     private boolean isRunning = false;
-    private int targetX = -1, targetY = -1;
+    private int targetX = -1;
 
     public L1B(String assetName, MapEditor mapEditor, int x, int y) {
         this.x = x;
@@ -89,8 +87,8 @@ public class L1B implements Bot{
         spriteHeight = 70;
         spritesetSpriteWidth = spriteWidth + 2;
         spritesetSpriteHeight = spriteHeight + 2;
-        hitboxWidth = 34;
-        hitboxHeight = 50;
+        hitboxWidth = 16;
+        hitboxHeight = 60;
         halfHeroHeight = hitboxHeight / 2;
         halfHeroWidth = hitboxWidth / 2;
         hits = 10;
@@ -98,28 +96,19 @@ public class L1B implements Bot{
         this.mapEditor = mapEditor;
 
         numDirections = 2;
-        numActions = 4;
+        numActions = 3;
         actions = new int[numDirections * numActions];
         for(int whichAction = 0; whichAction < actions.length; whichAction++){
-            if(whichAction >= IDLE_ACTION * numDirections && whichAction <= IDLE_ACTION * numDirections + 1) actions[whichAction] = 1;
-            else if(whichAction >= RUN_ACTION * numDirections && whichAction <= RUN_ACTION * numDirections + 1) actions[whichAction] = 10;
-            else if(whichAction >= SHOOTING_ACTION * numDirections && whichAction <= SHOOTING_ACTION * numDirections + 1) actions[whichAction] = 3;
-            else if(whichAction >= DYING * numDirections && whichAction <= DYING * numDirections + 1) actions[whichAction] = 4;
+            if(whichAction >= SPRITES_IDLE * numDirections && whichAction <= SPRITES_IDLE * numDirections + 1) actions[whichAction] = 1;
+            else if(whichAction >= SPRITES_RUN * numDirections && whichAction <= SPRITES_RUN * numDirections + 1) actions[whichAction] = 10;
+            else if(whichAction >= SPRITES_DYING * numDirections && whichAction <= SPRITES_DYING * numDirections + 1) actions[whichAction] = 4;
         }
         animation = new ObjAnimation(actions, spriteWidth, spriteHeight);
-        numBullets = 10;
-        setBulletHolder(numBullets);
     }
 
 
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY){
-        for(int whichBullet = 0; whichBullet < numBullets; whichBullet++){
-            bullets.get(whichBullet).drawObject(batch, col, row,
-                    mapEditor.getScrollLevel1Map().getWorldOffsetX(),
-                    mapEditor.getScrollLevel1Map().getWorldOffsetY());
-        }
-
         batch.begin();
         batch.draw(texture, MSGame.SCREEN_OFFSET_X + x - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
                 MSGame.SCREEN_OFFSET_Y +
@@ -138,7 +127,7 @@ public class L1B implements Bot{
 
     @Override
     public boolean onTouch(){
-        if(isAction < 4){
+        if(isAction < ACTION_DYING){
             return true;
         }
         else{
@@ -154,12 +143,7 @@ public class L1B implements Bot{
     ///////////////////////////////THESE ARE MAIN METHODS FOR MOVING AND ANIMATING/////////////////////////////////////////////
     @Override
     public void moving(float deltaTime, MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
-        for(int whichBullet = 0; whichBullet < numBullets; whichBullet++){
-            bullets.get(whichBullet).moving(deltaTime, mapEditor.getScrollLevel1Map().getWorldOffsetX(),
-                    mapEditor.getScrollLevel1Map().getWorldOffsetY(), platformerScenario);
-        }
-
-        if(isAction == 5){  //dead
+        if(isAction == ACTION_DEAD){
             return;
         }
 
@@ -168,21 +152,21 @@ public class L1B implements Bot{
     }
 
     public void animate(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight, float deltaTime){
-
         switch (isAction){
-            case 0: animationTickTime += deltaTime;
+            case ACTION_IDLE:
+                animationTickTime += deltaTime;
                 idlingAnimation();
                 break;
-            case 1: animationTickTime += deltaTime;
+            case ACTION_FALLING:
+                animationTickTime += deltaTime;
                 idlingAnimation();
                 break;
-            case 2: animationTickTime += deltaTime;
+            case ACTION_RUNNING:
+                animationTickTime += deltaTime;
                 runningAnimation();
                 break;
-            case 3: animationTickTime += deltaTime;
-                shootingAnimation();
-                break;
-            case 4: zombieDyingTickTime += deltaTime;
+            case ACTION_DYING:
+                zombieDyingTickTime += deltaTime;
                 dying();
                 break;
             default: break;
@@ -200,12 +184,15 @@ public class L1B implements Bot{
             fall();
 
             switch(isAction){
-                case 0: betweenActionsTickTime += deltaTime;
+                case ACTION_IDLE:
+                    betweenActionsTickTime += deltaTime;
                     idling();
                     break;
-                case 1: falling(mapTer, mapEditor, worldWidth, worldHeight);
+                case ACTION_FALLING:
+                    falling(mapTer, mapEditor, worldWidth, worldHeight);
                     break;
-                case 2: running(mapTer, mapEditor, worldWidth, worldHeight);
+                case ACTION_RUNNING:
+                    running(mapTer, mapEditor, worldWidth, worldHeight);
                     break;
                 default: break;
             }
@@ -214,10 +201,11 @@ public class L1B implements Bot{
     ///////////////////////////////THESE ARE MAIN METHODS FOR MOVING AND ANIMATING/////////////////////////////////////////////
 
 
-
     @Override
     public void collide(Hero hero){
-        hero.die();
+        if(isAction < ACTION_DYING){
+            hero.die();
+        }
     }
 
     public void calculateVectorX(int direction, int speedInPixels, MapEditor mapEditor){
@@ -240,7 +228,7 @@ public class L1B implements Bot{
                 }
             }
         }
-        else if( direction == 1){ //west
+        else if(direction == 1){ //west
             if(!isWest){
                 vectorX = speedInPixels;
                 return;
@@ -305,8 +293,8 @@ public class L1B implements Bot{
 
 
     public void die(){
-        if(isAction < 4){
-            isAction = 4;
+        if(isAction < ACTION_DYING){
+            isAction = ACTION_DYING;
         }
     }
 
@@ -315,11 +303,11 @@ public class L1B implements Bot{
         while(zombieDyingTickTime > zombieDyingTick){
             zombieDyingTickTime -= zombieDyingTick;
 
-            setActionAnimationFrames(DYING);
+            setActionAnimationFrames(SPRITES_DYING);
 
-            if(animation.getCurrentFrame() == actions[DYING * numDirections] - 1){
+            if(animation.getCurrentFrame() == actions[SPRITES_DYING * numDirections] - 1){
                 animation.setSetOfFrames(currentAction * numDirections + direction);
-                isAction = 5;  //dead;
+                isAction = ACTION_DEAD;  //dead;
                 return;
             }
             animation.nextFrame();
@@ -329,27 +317,27 @@ public class L1B implements Bot{
 
     public void fall(){
         if(!isSouth){
-            isAction = 1;
+            isAction = ACTION_FALLING;
         }
     }
 
 
     public void falling(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
-        setActionAnimationFrames(IDLE_ACTION);
+        setActionAnimationFrames(SPRITES_IDLE);
 
         if(!isSouth){
             calculateVectorY(direction, fallingSpeed, mapEditor);
             y += vectorY;
-            isAction = 1;
+            isAction = ACTION_FALLING;
         }
         else{
             calculateVectorY(direction, fallingSpeed, mapEditor);
             if(vectorY == 0){  //so we stood on the ground.
                 animation.setCurrentFrame(0); //current frame = our hero landed on the ground.
-                isAction = 0;
+                isAction = ACTION_IDLE;
             }
 
-            isAction = 0;
+            isAction = ACTION_IDLE;
         }
     }
 
@@ -358,7 +346,7 @@ public class L1B implements Bot{
         if(hits < 0){
             die();
         }
-        if(isAction < 5){  //if an enemy is not dead...
+        if(isAction < ACTION_DEAD){  //if an enemy is not dead...
             weapon.hit(true);
         }
     }
@@ -368,10 +356,10 @@ public class L1B implements Bot{
             betweenActionsTickTime -= betweenActionsTick;
 
             if(isRunning){
-                isAction = 2; //running
+                isAction = ACTION_RUNNING;
             }
             else{
-                actionScenario.setAction(random);
+                actionScenario.setAction();
             }
         }
     }
@@ -380,7 +368,7 @@ public class L1B implements Bot{
         while(animationTickTime > animationTick) {
             animationTickTime -= animationTick;
 
-            setActionAnimationFrames(IDLE_ACTION);
+            setActionAnimationFrames(SPRITES_IDLE);
             animation.nextFrame();
         }
     }
@@ -393,23 +381,21 @@ public class L1B implements Bot{
 
     @Override
     public void run(){
-        if(isAction < 4){ //if zombie is not dying.
+        if(isAction < ACTION_DYING){ //if zombie is not dying.
             if(!platformerScenario.getHero().equals(null)){
-                if(platformerScenario.getHero().isAction() != 2){  //if our player is not currently jumping.
-                    this.targetX = platformerScenario.getTargetX() + mapEditor.getScrollLevel1Map().getWorldOffsetX();
-                    this.targetY = platformerScenario.getTargetY() + mapEditor.getScrollLevel1Map().getWorldOffsetY();
-                }
+                this.targetX = platformerScenario.getTargetX()
+                        + mapEditor.getScrollLevel1Map().getWorldOffsetX();
             }
             if(targetX > 0){
                 isRunning = true;
             }
 
-            if(isAction != 1){
-                currentAction = RUN_ACTION;
+            if(isAction != ACTION_FALLING){
+                currentAction = SPRITES_RUN;
 
                 setDirection(targetX);
                 setSetOfFrames(currentAction * numDirections + direction);
-                isAction = 2;
+                isAction = ACTION_RUNNING;
             }
         }
     }
@@ -438,11 +424,12 @@ public class L1B implements Bot{
     }
 
 
-    public void runningAnimation(){setDirection(targetX);
+    public void runningAnimation(){
+        setDirection(targetX);
         while(animationTickTime > animationTick) {
             animationTickTime -= animationTick;
 
-            setActionAnimationFrames(RUN_ACTION);
+            setActionAnimationFrames(SPRITES_RUN);
             animation.nextFrame();
         }
     }
@@ -451,13 +438,6 @@ public class L1B implements Bot{
         if(currentAction != action){
             currentAction = action;
             animation.setSetOfFrames(currentAction * numDirections + direction);
-        }
-    }
-
-
-    public void setBulletHolder(int numBullets){ //generates the bullet holder.
-        for(int whichBullet = 0; whichBullet < numBullets; whichBullet++){
-            bullets.add(new EnemyBullet("bullet", MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT));
         }
     }
 
@@ -471,7 +451,7 @@ public class L1B implements Bot{
     }
 
     public void setPos(){
-        left = (x + 13) - mapEditor.getScrollLevel1Map().getWorldOffsetX(); //+13 means, that I calculated approximately the x coordinate of hitbox: (spriteWidth - hitboxWidth) / 2.
+        left = (x + 23) - mapEditor.getScrollLevel1Map().getWorldOffsetX(); //+23 means, that I calculated approximately the x coordinate of hitbox: (spriteWidth - hitboxWidth) / 2.
         top = (y + 10) - mapEditor.getScrollLevel1Map().getWorldOffsetY(); //+10 means, that I calculated approximately the y coordinate of hitbox: (spriteHeight - hitboxHeight) / 2.
         bottom = top + hitboxHeight;
         right = left + hitboxWidth;
@@ -484,52 +464,9 @@ public class L1B implements Bot{
         animation.setSetOfFrames(setOfFrames);
     }
 
-    public void shoot(){
-        if(isAction < 4){ //if zombie is not dying.
-            if(!platformerScenario.getHero().equals(null)){
-                if(platformerScenario.getHero().isAction() != 2){  //if our player is not currently jumping.
-                    this.targetX = platformerScenario.getTargetX() + mapEditor.getScrollLevel1Map().getWorldOffsetX();
-                    this.targetY = platformerScenario.getTargetY() + mapEditor.getScrollLevel1Map().getWorldOffsetY();
-                    setDirection(targetX);
-                    if(direction == 0){ //right
-                        bulletX = x + 56;
-                        bulletY = y + 23;
-                        bulletDirection = EnemyBullet.DIRECTION_RIGHT;
-                    }
-                    else{ //left
-                        bulletX = x + 2;
-                        bulletY = y + 23;
-                        bulletDirection = EnemyBullet.DIRECTION_LEFT;
-                    }
-                    isAction = 3;
-                }
-            }
-        }
-    }
-
-    public void shootingAnimation(){
-        while(animationTickTime > animationTick) {
-            animationTickTime -= animationTick;
-
-            setActionAnimationFrames(SHOOTING_ACTION);
-            animation.nextFrame();
-            if(animation.getCurrentFrame() == 1){
-                for(int whichBullet = 0; whichBullet < numBullets; whichBullet++){
-                    if(bullets.get(whichBullet).shoot(bulletX, bulletY, bulletDirection)){
-                        break;
-                    }
-                }
-            }
-            if(animation.getCurrentFrame() == actions[SHOOTING_ACTION * numDirections] - 1){
-                isAction = 1;
-            }
-        }
-    }
-
-
     public void stopRunning(){
         isRunning = false;
-        isAction = 1;
+        isAction = ACTION_FALLING;
     }
 
     public  void tilemapCollision(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
@@ -637,7 +574,7 @@ public class L1B implements Bot{
 
     @Override
     public int isAction() {
-        return 0;
+        return isAction;
     }
 
     @Override
@@ -647,15 +584,8 @@ public class L1B implements Bot{
 
     public class ActionScenario{
 
-        public void setAction(Random random){
-            switch(random.nextInt(2)){
-                case 0: run();
-                    break;
-                case 1: shoot();
-                    break;
-                default:
-                    break;
-            }
+        public void setAction(){
+            run();
         }
     }
 

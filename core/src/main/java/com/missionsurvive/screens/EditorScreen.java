@@ -123,10 +123,11 @@ public class EditorScreen extends GameScreen implements Screen {
         map = new MapEditor(lev3, lev2, gameCam, worldWidth, worldHeight);
         playScript = new PlayScript(this);
         renderer = new OrthogonalTiledMapRenderer(((MapEditor)map).getMap());
-        platformerScenario = new PlatformerScenario((MapEditor)map, playScript);
+        touchControl = new TouchControl(scaleX, scaleY);
+        platformerScenario = new PlatformerScenario((MapEditor)map,
+                playScript, touchControl);
         controlScenario = new MapEditorCS(this, map, platformerScenario);
         platformerScenario.setControlScenario(controlScenario);
-        touchControl = new TouchControl(scaleX, scaleY);
 
         /*this.whichAsset = Assets.getWhichPixmap("lev3");*/
         /*theme = Sounds.theme2;*/
@@ -358,5 +359,9 @@ public class EditorScreen extends GameScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public Scenario getPlatformerScenario() {
+        return platformerScenario;
     }
 }

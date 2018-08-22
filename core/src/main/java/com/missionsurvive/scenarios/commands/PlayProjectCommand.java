@@ -1,6 +1,7 @@
 package com.missionsurvive.scenarios.commands;
 
 import com.badlogic.gdx.Screen;
+import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.screens.EditorScreen;
 import com.missionsurvive.screens.ScrollerScreen;
 
@@ -25,8 +26,15 @@ public class PlayProjectCommand implements  Command{
                         getPause(((ScrollerScreen)screen).onPause()));
                 break;
             case PLAY_PLATFORMER:
-                ((EditorScreen)screen).setPause(
-                        getPause(((EditorScreen)screen).onPause()));
+                EditorScreen editorScreen = (EditorScreen)screen;
+                editorScreen.setPause(
+                        getPause(editorScreen.onPause()));
+
+                PlatformerScenario platformerScenario =
+                        (PlatformerScenario)editorScreen.getPlatformerScenario();
+                platformerScenario.setPlayerControl(true);
+                platformerScenario.setFirstTimeSpawned();
+                platformerScenario.removeAllBots();
                 break;
         }
         return null;

@@ -8,22 +8,14 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.missionsurvive.MSGame;
-import com.missionsurvive.framework.TouchControl;
 import com.missionsurvive.framework.impl.DrawerFacade;
 import com.missionsurvive.map.Map;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.ParallaxCamera;
-import com.missionsurvive.objs.actors.Hero;
-import com.missionsurvive.scenarios.PlatformerScenario;
-import com.missionsurvive.scenarios.PlayScript;
 import com.missionsurvive.scenarios.Scenario;
-import com.missionsurvive.scenarios.SpawnBot;
+import com.missionsurvive.scenarios.EndGameScenario;
 
-/**
- * Created by kuzmin on 31.05.18.
- */
-
-public class PlatformerScreen extends GameScreen implements Screen {
+public class EndScreen extends GameScreen implements Screen {
 
     private MSGame game;
     private DrawerFacade drawerFacade;
@@ -31,27 +23,16 @@ public class PlatformerScreen extends GameScreen implements Screen {
     private Viewport gamePort;
     private TiledMapRenderer renderer;
     private Map map;
-    private PlayScript playScript;
-    private Scenario platformerScenario;
-    private TouchControl touchControl;
-    private Hero hero;
+    private Scenario endGameScenario;
 
-    private int worldWidth, worldHeight;
+    private int worldHeight;
 
-    //transforming real coords into logic:
-    private float scaleX, scaleY;
-
-    public PlatformerScreen(MSGame game, Map map){
+    public EndScreen(MSGame game, Map map){
         this.game = game;
-
-        scaleX = (float) MSGame.SCREEN_WIDTH / Gdx.graphics.getBackBufferWidth();
-        scaleY = (float)MSGame.SCREEN_HEIGHT / Gdx.graphics.getBackBufferHeight();
-
         drawerFacade = new DrawerFacade();
-
         this.map = map;
+
         worldHeight = map.getLevel1Ter().length;
-        worldWidth = map.getLevel1Ter()[0].length;
 
         gameCam = new ParallaxCamera(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT); //extends OrthographicCamera
         gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
@@ -60,21 +41,11 @@ public class PlatformerScreen extends GameScreen implements Screen {
         gameCam.position.z = 0;
         renderer = new OrthogonalTiledMapRenderer(((MapEditor)map).getMap());
         ((MapEditor)map).setGameCam(gameCam);
-
-        touchControl = new TouchControl(scaleX, scaleY);
-        playScript = new PlayScript(this);
-        platformerScenario = new PlatformerScenario((MapEditor)map, playScript, touchControl);
-
-        putPlayer(100, 150);
+        endGameScenario = new EndGameScenario((MapEditor) map);
     }
 
     public void update(float deltaTime) {
-        platformerScenario.update(map, touchControl, deltaTime);
-    }
-
-    @Override
-    public void show() {
-
+        endGameScenario.update(map, null, deltaTime);
     }
 
     private void drawWorld(){
@@ -89,14 +60,13 @@ public class PlatformerScreen extends GameScreen implements Screen {
         renderer.setView(gameCam);
         renderer.render();
 
-        drawerFacade.drawWreckages(platformerScenario.getBots(SpawnBot.WRECKAGE), game.getSpriteBatch());
-
         //draw all other bots:
-        drawerFacade.drawBots(platformerScenario.getBots(0), game.getSpriteBatch());
+        drawerFacade.drawBots(endGameScenario.getBots(0), game.getSpriteBatch());
+    }
 
-        drawerFacade.drawBots(platformerScenario.getBots(SpawnBot.ZOMBIE), game.getSpriteBatch());
+    @Override
+    public void show() {
 
-        drawerFacade.drawHero(hero, game.getSpriteBatch());
     }
 
     @Override
@@ -132,9 +102,6 @@ public class PlatformerScreen extends GameScreen implements Screen {
 
     @Override
     public void putPlayer(int x, int y) {
-        platformerScenario.placeObject(x, y);
-        if(platformerScenario instanceof PlatformerScenario) {
-            hero = ((PlatformerScenario) platformerScenario).getHero();
-        }
+
     }
 }

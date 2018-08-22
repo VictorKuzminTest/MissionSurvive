@@ -96,6 +96,7 @@ public class PopupBots extends Popup implements View.OnClickListener {
         bots.add("powerup");
         bots.add("wreckage");
         bots.add("helicopter");
+        bots.add("endGame");
 
         return bots;
     }

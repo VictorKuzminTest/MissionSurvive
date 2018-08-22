@@ -1,11 +1,14 @@
-package com.missionsurvive.objs;
+package com.missionsurvive.objs.triggers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.ControlPanel;
 import com.missionsurvive.framework.Decorator;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
+import com.missionsurvive.objs.Bot;
+import com.missionsurvive.objs.Weapon;
 import com.missionsurvive.objs.actors.Hero;
+import com.missionsurvive.objs.actors.L1B;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.commands.Command;
@@ -14,11 +17,12 @@ import com.missionsurvive.scenarios.commands.Command;
  * Created by kuzmin on 09.06.18.
  * Auto scrolling of the screen to some target.
  */
-public class Trigger implements Bot{
+public class TriggerBoss implements Bot {
 
     public static final float SCROLLING_TICK = 0.03f;
 
     private PlatformerScenario scenario;
+    private Bot bot;
 
     private int speedScrollingX = 2;
     private int x;
@@ -27,10 +31,11 @@ public class Trigger implements Bot{
 
     private float scrollingTickTime;
 
-    public Trigger(Scenario scenario, int x, int y){
+    public TriggerBoss(Bot bot, Scenario scenario, int x, int y){
         this.x = x;
         endScrollX = x + numTilesToScroll * 16;
         this.scenario = (PlatformerScenario) scenario;
+        this.bot = bot;
     }
 
     @Override
@@ -45,15 +50,16 @@ public class Trigger implements Bot{
         while(scrollingTickTime > SCROLLING_TICK){
             scrollingTickTime -= SCROLLING_TICK;
 
-            x += getDistX();
+            if(speedScrollingX > 0){
+                x += getDistX();
 
-            if(speedScrollingX <= 0){
-                showEndLevelPanel();
-                scenario.removeBot(this, 0);
-            }
-            else{
                 mapEditor.horizontScroll(0, speedScrollingX);
                 scenario.getHero().setX(scenario.getHero().getX() - speedScrollingX);
+            }
+
+            if(bot.isAction() == L1B.ACTION_DEAD){
+                showEndLevelPanel();
+                scenario.removeBot(this, 0);
             }
         }
     }

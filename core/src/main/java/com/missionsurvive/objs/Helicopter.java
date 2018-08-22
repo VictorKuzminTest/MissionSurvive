@@ -16,6 +16,8 @@ import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.utils.Assets;
 
+import sun.rmi.runtime.Log;
+
 /**
  * Created by kuzmin on 01.05.18.
  */
@@ -30,6 +32,7 @@ public class Helicopter implements Bot{
 
     public static final int ACTION_FLYING = 0;
     public static final int ACTION_SHOTDOWN = 1;
+    public static final int ACTION_BEYOND_SCREEN = 2;
 
     private MapEditor mapEditor;
     private Hitbox hitbox;
@@ -56,7 +59,7 @@ public class Helicopter implements Bot{
     private float animationTickTime;
     private float movingTick;
 
-    public Helicopter(String assetName, MapEditor mapEditor, int x, int y, int direction) {
+    public Helicopter(String assetName, MapEditor mapEditor, int x, int y) {
         worldX = x;
         worldY = y;
         spriteWidth = 173;
@@ -105,17 +108,22 @@ public class Helicopter implements Bot{
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
 
-        /*Animation currentAnimation = animation.getChildren().get(frames);
+        Animation currentAnimation = animation.getChildren().get(frames);
 
-        g.drawScaledPixmap(pixmaps[assetId],
+        batch.begin();
+        batch.draw(texture, MSGame.SCREEN_OFFSET_X + worldX - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
+                MSGame.SCREEN_OFFSET_Y +
+                        GeoHelper.transformCanvasYCoordToGL(
+                                worldY - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
+                                MSGame.SCREEN_HEIGHT, dstHeight),
+                dstWidth, dstHeight,
                 currentAnimation.getChildren().get(currentAnimation.getCurrentFrame()).getX(),
                 currentAnimation.getChildren().get(currentAnimation.getCurrentFrame()).getY(),
                 spriteWidth, spriteHeight,
-                worldX - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
-                worldY - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
-                dstWidth, dstHeight, null);
+                false, false);
+        batch.end();
 
-        rocketLauncher.draw(g, pixmaps);*/
+        rocketLauncher.draw(batch);
     }
 
     @Override
@@ -155,9 +163,19 @@ public class Helicopter implements Bot{
                 scale();
             }
             else{
-                worldX += 6;
+                worldX += 2;
+                if(isBeyondScreen()){
+                    action = ACTION_BEYOND_SCREEN;
+                }
             }
         }
+    }
+
+    public boolean isBeyondScreen(){
+        if((worldX - mapEditor.getScrollLevel1Map().getWorldOffsetX()) > MSGame.SCREEN_WIDTH){
+            return true;
+        }
+        return false;
     }
 
     public void scale(){
@@ -169,7 +187,8 @@ public class Helicopter implements Bot{
 
                 hitbox.setPos(worldX - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
                         worldY - mapEditor.getScrollLevel1Map().getWorldOffsetY());
-                rocketLauncher.shoot(mapEditor.getScrollLevel1Map().getWorldOffsetX());
+                rocketLauncher.shoot(mapEditor.getScrollLevel1Map().getWorldOffsetX(),
+                        mapEditor.getScrollLevel1Map().getWorldOffsetY());
             }
         }
     }
@@ -280,11 +299,10 @@ public class Helicopter implements Bot{
 
     @Override
     public int isAction() {
-        return 0;
+        return action;
     }
 
     private class RocketLauncher{
-
         private Rocket rocket;
 
         private boolean isShot = false;
@@ -307,8 +325,9 @@ public class Helicopter implements Bot{
             rocket.moving(deltaTime, worldOffsetX, worldOffsetY, platformerScenario);
         }
 
-        public void shoot(int offsetX){
-            rocket.shoot(480 + offsetX, hitbox.getCenterY(), EnemyBullet.DIRECTION_LEFT);
+        public void shoot(int offsetX, int offsetY){
+            rocket.shoot(480 + offsetX, hitbox.getCenterY() + offsetY,
+                    EnemyBullet.DIRECTION_LEFT);
             isShot = true;
         }
 

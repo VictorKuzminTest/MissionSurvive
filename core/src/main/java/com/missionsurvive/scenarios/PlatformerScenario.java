@@ -36,6 +36,7 @@ public class PlatformerScenario implements Scenario {
     private ArrayList<Spawn> spawnsFakeList = new ArrayList<Spawn>();
     private PlayScript playScript;
     private ControlScenario controlScenario;
+    private TouchControl touchControl;
 
     private float checkOffScreenTickTime = 0, checkOffscreenTick = 1.0f;
     private float resurrectionTickTime = 0, resurrectionTick = 2.0f;
@@ -44,7 +45,9 @@ public class PlatformerScenario implements Scenario {
     private boolean isVertical = false;
     private boolean isPlayerControl = true;
 
-    public PlatformerScenario(MapEditor mapEditor, PlayScript playScript){
+    public PlatformerScenario(MapEditor mapEditor, PlayScript playScript,
+                              TouchControl touchControl){
+        this.touchControl = touchControl;
         this.mapEditor = mapEditor;
         this.playScript = playScript;
         fillSpawnsFakeList();
@@ -121,6 +124,13 @@ public class PlatformerScenario implements Scenario {
         }
     }
 
+    public void removeAllBots(){
+        bots.clear();
+        zombieBots.clear();
+        wreckages.clear();
+        otherBots.clear();
+    }
+
     @Override
     public List<Bot> getBots(int criteria){
         if(criteria == SpawnBot.ZOMBIE){
@@ -164,7 +174,9 @@ public class PlatformerScenario implements Scenario {
     public void updateHero(MapEditor mapEditor, int worldWidth, int worldHeight,
                            TouchControl touchControl, float deltaTime){
         if(hero != null){
-            touchControl.heroControl(this, hero, deltaTime);
+            if(isPlayerControl) {
+                touchControl.heroControl(this, hero, deltaTime);
+            }
             hero.moving(deltaTime, mapEditor.getLevel1Ter(), mapEditor, worldWidth, worldHeight);
 
             if(hero.isAction() == hero.ACTION_DEAD){
@@ -458,6 +470,18 @@ public class PlatformerScenario implements Scenario {
     @Override
     public ControlScenario getControlScenario() {
         return controlScenario;
+    }
+
+    public void setPlayerControl(boolean isPlayerControl){
+        this.isPlayerControl = isPlayerControl;
+    }
+
+    public boolean isPlayerControl(){
+        return isPlayerControl;
+    }
+
+    public TouchControl getTouchControl(){
+        return touchControl;
     }
 
 }

@@ -32,11 +32,11 @@ public class Hero implements GameObject {
 
     public static final int DIRECTION_RIGHT = 0, DIRECTION_LEFT = 1;
     public static final int SPRITES_IDLE = 0, SPRITES_RUN = 1, SPRITES_JUMPING = 2,
-            SPRITES_IDLE_SHOOTING = 3, SPRITES_RUNNING_SHOOTING_STRAIGHT = 4,
+            SPRITES_IDLE_SHOOTING = 3, SPRITES_IDLE_BACK = 4,
             SPRITES_FALLING = 5, SPRITES_DYING = 6;
     public static final int ACTION_IDLE = 0, ACTION_FALLING = 1, ACTION_RUNNING = 2,
             ACTION_JUMPING = 3, ACTION_SHOOTING = 4, ACTION_DYING = 5, ACTION_DEAD = 6,
-            ACTION_BEYOND_SCREEN = 7;
+            ACTION_BEYOND_SCREEN = 7, ACTION_IDLE_BACK = 8;
 
     public static final float IRRESISTIBLE_TICK = 3.0f;
 
@@ -141,7 +141,7 @@ public class Hero implements GameObject {
             else if(whichAction >= SPRITES_RUN * numDirections && whichAction <= SPRITES_RUN * numDirections + 1) actions[whichAction] = 10;
             else if(whichAction >= SPRITES_JUMPING * numDirections && whichAction <= SPRITES_JUMPING * numDirections + 1) actions[whichAction] = 8;
             else if(whichAction >= SPRITES_IDLE_SHOOTING * numDirections && whichAction <= SPRITES_IDLE_SHOOTING * numDirections + 1) actions[whichAction] = 20;
-            else if(whichAction >= SPRITES_RUNNING_SHOOTING_STRAIGHT * numDirections && whichAction <= SPRITES_RUNNING_SHOOTING_STRAIGHT * numDirections + 1) actions[whichAction] = 12;
+            else if(whichAction >= SPRITES_IDLE_BACK * numDirections && whichAction <= SPRITES_IDLE_BACK * numDirections + 1) actions[whichAction] = 4;
             else if(whichAction >= SPRITES_FALLING * numDirections && whichAction <= SPRITES_FALLING * numDirections + 1) actions[whichAction] = 3;
             else if(whichAction >= SPRITES_DYING * numDirections && whichAction <= SPRITES_DYING * numDirections + 1) actions[whichAction] = 5;
         }
@@ -221,6 +221,10 @@ public class Hero implements GameObject {
                 animationTickTime += deltaTime;
                 animateDying();
                 break;
+            case ACTION_IDLE_BACK:
+                animationTickTime += deltaTime;
+                animateIdlingBack();
+                break;
         }
     }
 
@@ -266,6 +270,13 @@ public class Hero implements GameObject {
         while(animationTickTime > animationTick){
             animationTickTime -= animationTick;
             heroAnimation.nextFrame();
+        }
+    }
+
+    public void animateIdlingBack(){
+        while(animationTickTime > animationTick){
+            animationTickTime -= animationTick;
+            heroAnimation.animateBackAndForth(0, 4, 1);
         }
     }
 
@@ -315,6 +326,18 @@ public class Hero implements GameObject {
         }
         else{
             return false;
+        }
+    }
+
+    /**
+     * hero couldn't go beyond left of the screen:
+     */
+    public void checkLeftScreen(){
+        if((x + movingVector.getX()) <= 0){
+            x = 0;
+        }
+        else{
+            x += movingVector.getX();
         }
     }
 
@@ -473,6 +496,9 @@ public class Hero implements GameObject {
         }
     }
 
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
 
     public void setDirectionAndActionToRun(){
         if(direction == DIRECTION_RIGHT){
@@ -502,18 +528,6 @@ public class Hero implements GameObject {
             else{
                 checkLeftScreen();
             }
-        }
-        else{
-            x += movingVector.getX();
-        }
-    }
-
-    /**
-     * hero couldn't go beyond left of the screen:
-     */
-    public void checkLeftScreen(){
-        if((x + movingVector.getX()) <= 0){
-            x = 0;
         }
         else{
             x += movingVector.getX();
@@ -566,11 +580,6 @@ public class Hero implements GameObject {
         if(notJumpingFallingShooting()){
             setActionAndAnimationFrames(ACTION_IDLE, SPRITES_IDLE, 0);
         }
-    }
-
-
-    public void setDirection(int direction) {
-        this.direction = direction;
     }
 
     public int getX(){return x;}
@@ -717,16 +726,6 @@ public class Hero implements GameObject {
         return isHorizontalScroll;
     }
 
-    //FOR TESTING:
-    public void setAnimationTick() {
-        if(animationTick == 0.08f){
-            animationTick = 2.0f;
-        }
-        else{
-            animationTick = 0.08f;
-        }
-    }
-
     public void setMovingVector(int x, int y) {
         movingVector.set(x, y);
     }
@@ -819,7 +818,6 @@ public class Hero implements GameObject {
                 bulletDirection = 5;
                 direction = DIRECTION_LEFT;
             }
-
         }
     }
 

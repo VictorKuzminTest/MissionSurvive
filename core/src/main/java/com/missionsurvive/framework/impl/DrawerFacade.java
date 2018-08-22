@@ -1,7 +1,10 @@
 package com.missionsurvive.framework.impl;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.map.Map;
@@ -10,6 +13,7 @@ import com.missionsurvive.objs.Wreckage;
 import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.scenarios.Spawn;
 import com.missionsurvive.scenarios.SpawnBot;
+import com.missionsurvive.scenarios.SpawnScenario;
 import com.missionsurvive.utils.Assets;
 
 import java.util.List;
@@ -28,8 +32,20 @@ public class DrawerFacade {
     private Texture l5bTexture = Assets.getTextures()[Assets.getWhichTexture("l5b")];
     private Texture l6bTexture = Assets.getTextures()[Assets.getWhichTexture("l6b")];
 
+    private ShapeRenderer hitBox;
+
+    private float scaleToDrawX, scaleToDrawY;
     private int tileWidth = 16;
     private int tileHeight = 16;
+
+    public DrawerFacade(){
+        scaleToDrawX = (float)Gdx.graphics.getBackBufferWidth()
+                / MSGame.SCREEN_WIDTH;
+        scaleToDrawY = (float)Gdx.graphics.getBackBufferHeight()
+                / MSGame.SCREEN_HEIGHT;
+        hitBox = new ShapeRenderer();
+        hitBox.setColor(0, 0, 0, 0.5f);
+    }
 
     public void drawHero(Hero hero, SpriteBatch batch){
         if(hero != null){
@@ -66,11 +82,7 @@ public class DrawerFacade {
             //drawing wreckage on the ground:
             wreckage.drawObject(batch, 0, 0);
             //draw hitbox:
-            int left = wreckage.getLeft();
-            int top = wreckage.getTop();
-            int width = wreckage.getHitboxWidth();
-            int height = wreckage.getHitboxHeight();
-            /*g.drawRect(left, top, width, height, Color.BLACK, null);*/
+            drawHitBox(wreckage);
         }
     }
 
@@ -79,11 +91,7 @@ public class DrawerFacade {
         for(int i = 0; i < numBots; i++){
             bots.get(i).drawObject(batch, 0, 0, 0, 0);
             //draw hitbox:
-            /*int left = bots.get(i).getLeft();
-            int top = bots.get(i).getTop();
-            int width = bots.get(i).getHitboxWidth();
-            int height = bots.get(i).getHitboxHeight();
-            g.drawRect(left, top, width, height, Color.BLACK, null);*/
+            drawHitBox(bots.get(i));
         }
     }
 
@@ -120,7 +128,7 @@ public class DrawerFacade {
                         1, 1,
                         54, 70);
                 break;
-            case SpawnBot.LEVEL_1_BOSS:
+            case SpawnScenario.LEVEL_1_SCENE:
                 drawBot(batch, l1bTexture,
                         col * tileWidth - map.getScrollMap().getWorldOffsetX(),
                         row * tileHeight - map.getScrollMap().getWorldOffsetY(),
@@ -160,5 +168,22 @@ public class DrawerFacade {
                         GeoHelper.transformCanvasYCoordToGL(y, MSGame.SCREEN_HEIGHT, spriteHeight),
                 srcX, srcY, spriteWidth, spriteHeight);
         batch.end();
+    }
+
+    public void drawHitBox(Bot bot){
+        int left = bot.getLeft();
+        int top = bot.getTop();
+        int width = bot.getHitboxWidth();
+        int height = bot.getHitboxHeight();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        hitBox.begin(ShapeRenderer.ShapeType.Filled);
+        hitBox.rect(left * scaleToDrawX,
+                GeoHelper.transformCanvasYCoordToGL(top,
+                        MSGame.SCREEN_HEIGHT, height) * scaleToDrawY,
+                width * scaleToDrawX, height * scaleToDrawY);
+        hitBox.end();
     }
 }
