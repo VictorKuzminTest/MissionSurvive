@@ -31,8 +31,12 @@ public class EnemyScenario {
      * @param tileSize
      */
     public void setDirection(int objX, int objY, int tileSize, int direction){
-        if(direction == Zombie.WEST) checkForEast(objX, objY, tileSize);
-        if(direction == Zombie.EAST) checkForWest(objX, objY, tileSize);
+        if(direction == Zombie.WEST){
+            checkForEast(objX, objY, tileSize);
+        }
+        if(direction == Zombie.EAST){
+            checkForWest(objX, objY, tileSize);
+        }
     }
 
     /**

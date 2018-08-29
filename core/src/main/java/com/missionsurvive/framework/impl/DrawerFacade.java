@@ -27,6 +27,7 @@ public class DrawerFacade {
     private Texture zombieTexture = Assets.getTextures()[Assets.getWhichTexture("zombie")];
     private Texture shotgunZombieTexture = Assets.getTextures()[Assets.getWhichTexture("shotgunzombie")];
     private Texture soldierZombieTexture = Assets.getTextures()[Assets.getWhichTexture("soldierzombie")];
+    private Texture powerUpTexture = Assets.getTextures()[Assets.getWhichTexture("powerup")];
     private Texture l1bTexture = Assets.getTextures()[Assets.getWhichTexture("l1b")];
     private Texture l3bTexture = Assets.getTextures()[Assets.getWhichTexture("l3b")];
     private Texture l5bTexture = Assets.getTextures()[Assets.getWhichTexture("l5b")];
@@ -128,6 +129,20 @@ public class DrawerFacade {
                         1, 1,
                         54, 70);
                 break;
+            case SpawnBot.POWER_UP_GUN:
+                drawBot(batch, powerUpTexture,
+                        col * tileWidth - map.getScrollMap().getWorldOffsetX(),
+                        row * tileHeight - map.getScrollMap().getWorldOffsetY(),
+                        1, 35,
+                        32, 32);
+                break;
+            case SpawnBot.POWER_UP_LIFE:
+                drawBot(batch, powerUpTexture,
+                        col * tileWidth - map.getScrollMap().getWorldOffsetX(),
+                        row * tileHeight - map.getScrollMap().getWorldOffsetY(),
+                        1, 1,
+                        32, 32);
+                break;
             case SpawnScenario.LEVEL_1_SCENE:
                 drawBot(batch, l1bTexture,
                         col * tileWidth - map.getScrollMap().getWorldOffsetX(),
@@ -135,21 +150,21 @@ public class DrawerFacade {
                         1, 1,
                         60, 70);
                 break;
-            case SpawnBot.LEVEL_3_BOSS:
+            case SpawnScenario.LEVEL_3_SCENE:
                 drawBot(batch, l3bTexture,
                         col * tileWidth - map.getScrollMap().getWorldOffsetX(),
                         row * tileHeight - map.getScrollMap().getWorldOffsetY(),
                         1, 1,
                         140, 110);
                 break;
-            case SpawnBot.LEVEL_5_BOSS:
+            case SpawnScenario.LEVEL_5_SCENE:
                 drawBot(batch, l5bTexture,
                         col * tileWidth - map.getScrollMap().getWorldOffsetX(),
                         row * tileHeight - map.getScrollMap().getWorldOffsetY(),
                         1, 1,
                         60, 70);
                 break;
-            case SpawnBot.LEVEL_6_BOSS:
+            case SpawnScenario.LEVEL_6_SCENE:
                 drawBot(batch, l6bTexture,
                         col * tileWidth - map.getScrollMap().getWorldOffsetX(),
                         row * tileHeight - map.getScrollMap().getWorldOffsetY(),

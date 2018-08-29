@@ -31,4 +31,6 @@ public interface Weapon extends  GameObject {
     public boolean hit(boolean isHit);
 
     public List<Weapon> getWeapon();
+
+    public int getHP();
 }

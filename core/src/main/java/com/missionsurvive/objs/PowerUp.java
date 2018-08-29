@@ -1,5 +1,6 @@
 package com.missionsurvive.objs;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.MSGame;
@@ -29,15 +30,15 @@ public class PowerUp implements Bot{
     public static final int SPRITES_CUADCOPTER = 0, SPRITES_EXPLOSION = 1,
             SPRITES_LIFE = 2, SPRITES_GUN = 3;
 
+    public static final float COLOR_STEP = 0.03f;
+
     private MapEditor mapEditor;
     private ObjAnimation animation;
     private Hitbox hitbox;
     private MapTer southTer;
-    private ColorMatrixFilter colorMatrixFilter = new ColorMatrixFilter();
     private PlatformerScenario platformerScenario;
     private Texture texture;
 
-    private int whichAsset;
     private int screenX, screenY;
     private int spritesetSpriteWidth, spritesetSpriteHeight, spriteWidth, spriteHeight;
     private int flyingSpeed = 3, fallingSpeed = 5;
@@ -50,8 +51,10 @@ public class PowerUp implements Bot{
     private float animationTickTime = 0, animationTick = 0.08f;
     private float movingTickTime = 0, movingTick = 0.03f;
     private float removingTickTime = 0, removingTick = 2.0f;
+    private float colorGreenBlue;
 
     private boolean colorUp;
+    private boolean isGun;
 
     public PowerUp(String assetName, MapEditor mapEditor, int x, int y, int powerupId, int direction){
         this.screenX = x;
@@ -76,36 +79,41 @@ public class PowerUp implements Bot{
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
         if(isAction != ACTION_PICKED_UP) {
-            batch.begin();
-            batch.draw(texture, MSGame.SCREEN_OFFSET_X + screenX - mapEditor.getScrollLevel1Map().getWorldOffsetX() ,
-                    MSGame.SCREEN_OFFSET_Y +
-                            GeoHelper.transformCanvasYCoordToGL(screenY - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
-                                    MSGame.SCREEN_HEIGHT, spriteHeight),
-                    1 + animation.getCurrentFrame() * spritesetSpriteWidth,
-                    1,
-                    spriteWidth, spriteHeight);
-            batch.end();
-        }
-
-
-        /*if(isAction != ACTION_PICKED_UP) {
-            if (paint == null) {
-                g.drawPixmap(pixmaps[this.whichAsset],
-                        screenX - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
-                        screenY - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
-                        1 + animation.getCurrentFrame() * spritesetSpriteWidth,
-                        1, spriteWidth, spriteHeight, paint);
-            } else {
-                g.drawPixmap(pixmaps[this.whichAsset],
-                        screenX - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
-                        screenY - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
-                        1 + animation.getCurrentFrame() * spritesetSpriteWidth,
-                        1 + POWER_GUN * spritesetSpriteHeight,
-                        spriteWidth, spriteHeight, paint);
+            if(isGun){
+                batch.begin();
+                Color color = batch.getColor();
+                batch.setColor(color.r, colorGreenBlue, colorGreenBlue, color.a);
+                drawGun(batch);
+                batch.setColor(color.r, color.g, color.b, color.a);
+                batch.end();
             }
-        }*/
+            else{
+                batch.begin();
+                draw(batch);
+                batch.end();
+            }
+        }
     }
 
+    private void draw(SpriteBatch batch){
+        batch.draw(texture, MSGame.SCREEN_OFFSET_X + screenX - mapEditor.getScrollLevel1Map().getWorldOffsetX() ,
+                MSGame.SCREEN_OFFSET_Y +
+                        GeoHelper.transformCanvasYCoordToGL(screenY - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
+                                MSGame.SCREEN_HEIGHT, spriteHeight),
+                1 + animation.getCurrentFrame() * spritesetSpriteWidth,
+                1,
+                spriteWidth, spriteHeight);
+    }
+
+    private void drawGun(SpriteBatch batch){
+        batch.draw(texture, MSGame.SCREEN_OFFSET_X + screenX - mapEditor.getScrollLevel1Map().getWorldOffsetX() ,
+                MSGame.SCREEN_OFFSET_Y +
+                        GeoHelper.transformCanvasYCoordToGL(screenY - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
+                                MSGame.SCREEN_HEIGHT, spriteHeight),
+                1 + animation.getCurrentFrame() * spritesetSpriteWidth,
+                1 + POWER_GUN * spritesetSpriteHeight,
+                spriteWidth, spriteHeight);
+    }
 
     @Override
     public void drawObject(SpriteBatch batch, int screenX, int screenY) {
@@ -192,7 +200,7 @@ public class PowerUp implements Bot{
 
     @Override
     public void collide(Hero hero) {
-        if(isAction != ACTION_PICKED_UP){
+        if(isAction != ACTION_PICKED_UP && isAction != ACTION_FLY){
             switch(powerupId){
                 case POWER_LIFE:
                     hero.addLife();
@@ -259,43 +267,38 @@ public class PowerUp implements Bot{
         while(animationTickTime > animationTick) {
             animationTickTime -= animationTick;
 
-            /*switch (powerupId){
+            switch (powerupId){
                 case POWER_LIFE:
                     animation.animateBackAndForth(0, 3, 1);
                     break;
                 case POWER_GUN:
-                    setPaintColorFilter();
-                    paint.setColorFilter(colorMatrixFilter.getColorFilter());
+                    setColorFilter();
                     break;
-            }*/
+            }
         }
     }
 
 
     /**
-     * set matrix color filter for power up could change its color.
+     * set color filter for power up could change its color.
      */
-    private void setPaintColorFilter(){
-        float incr = 0.03f;
-        float colorValue;
+    private void setColorFilter(){
         if(colorUp){
-            colorValue = GeoHelper.checkFloat(colorMatrixFilter.getGreen() + incr, 1.0f);
-            if(colorValue >= 1.0){
+            colorGreenBlue = GeoHelper.checkFloat(
+                    colorGreenBlue + COLOR_STEP, 1.0f);
+            if(colorGreenBlue >= 1.0){
+                colorGreenBlue = 1.0f;
                 colorUp = false;
             }
-
-
         }
         else {
-            colorValue = GeoHelper.checkFloat(colorMatrixFilter.getGreen() - incr, 0.5f);
-            if(colorValue <= 0.5){
+            colorGreenBlue = GeoHelper.checkFloat(
+                    colorGreenBlue - COLOR_STEP, 0.5f);
+            if(colorGreenBlue <= 0.5f){
                 colorUp = true;
             }
         }
-        colorMatrixFilter.setFilterColor(1.0f, colorValue, colorValue, 1.0f);
     }
-
-
 
     public void animateFlying(){
         while(animationTickTime > animationTick) {
@@ -335,19 +338,9 @@ public class PowerUp implements Bot{
     }
 
     public void spawnPowerUp(){
-        //-Random random = new Random();
-        //-float idToSpawn = random.nextFloat();
-        //-if(idToSpawn < 0.9f){
-        //-  powerupId = POWER_GUN;
-        //-   paint = new Paint();
-        //-}
-        //-else{
-        //-  powerupId = POWER_LIFE;
-        //-}
-
-        /*if(powerupId == POWER_GUN){
-            paint = new Paint();
-        }*/
+        if(powerupId == POWER_GUN){
+            isGun = true;
+        }
     }
 
     @Override
@@ -434,42 +427,5 @@ public class PowerUp implements Bot{
         else{
             southTer = null;
         }
-    }
-
-    private class ColorMatrixFilter {
-        private float[] colorMatrixData = new float []{
-                1, 0, 0, 0, 0,
-                0, 1, 0, 0, 0,
-                0, 0, 1, 0, 0,
-                0, 0, 0, 1, 0
-        };
-
-        /*private ColorFilter colorFilter = new ColorMatrixColorFilter(colorMatrixData);*/
-
-        private void setFilterColor(float red, float green, float blue, float alpha){
-            colorMatrixData[0] = red;
-            colorMatrixData[6] = green;
-            colorMatrixData[12] = blue;
-            colorMatrixData[18] = alpha;
-
-            /*colorFilter = new ColorMatrixColorFilter(colorMatrixData);*/
-        }
-
-        /*private ColorFilter getColorFilter(){
-            return colorFilter;
-        }*/
-
-        private float getRed(){
-            return colorMatrixData[0];
-        }
-
-        private float getGreen(){
-            return colorMatrixData[6];
-        }
-
-        private float getBlue(){
-            return colorMatrixData[12];
-        }
-
     }
 }

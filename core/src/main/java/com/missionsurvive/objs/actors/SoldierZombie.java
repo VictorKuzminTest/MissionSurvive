@@ -1,5 +1,6 @@
 package com.missionsurvive.objs.actors;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.MSGame;
@@ -13,6 +14,7 @@ import com.missionsurvive.objs.EnemyBullet;
 import com.missionsurvive.objs.Weapon;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
+import com.missionsurvive.scenarios.SpawnBot;
 import com.missionsurvive.utils.Assets;
 
 import java.util.ArrayList;
@@ -23,6 +25,9 @@ import java.util.List;
  */
 
 public class SoldierZombie implements Bot {
+
+    public static final float ALPHA_STEP = 0.04f;
+    public static final float ALPHA_INIT = 1.0f;
 
     private int x; //screen coordinates.
     private int y;
@@ -51,15 +56,16 @@ public class SoldierZombie implements Bot {
     private int currentAction; //currentAction
     private int direction; //direction of action.  0 - right, 1 - left.
     private int fallingSpeed = 7; //falling speed in pixels.
-    private int hits;
     private int numIdleShootingFrames = 3; //количество фреймов, когда игрок стоит на одном месте, для анимации выстрелов в одну сторону (вверх, прямо-вверх, прямо и т.д.).
     private int startIdleShootingFrame; //какой из фреймов анимации idleShootingFrames является начальным для отрисовки.
+    private int hp;
 
     private float animationTickTime = 0, animationTick = 0.08f;
     private float movingTickTime = 0, movingTick =  0.03f;
     private float zombieDyingTick = 0.5f, zombieDyingTickTime = 0;
     private float shootingTick = 0.2f, shootingTicktime = 0;
     private float betweenActionsTickTime = 1.0f , betweenActionsTick = 1.5f;
+    private float alpha = ALPHA_INIT;
 
     private boolean isNorth, isEast, isSouth, isWest; //переменный, указывающие, какие тайлы мира заблокированы.
     private MapTer northTer, eastTer, southTer, westTer; //переменные, хранящие MapTer смежных с героем тайлов.
@@ -84,9 +90,8 @@ public class SoldierZombie implements Bot {
         hitboxHeight = 50;
         halfHeroHeight = hitboxHeight / 2;
         halfHeroWidth = hitboxWidth / 2;
-        hits = 0;
         this.mapEditor = mapEditor;
-
+        hp = 18;
         this.direction = direction;
         startIdleShootingFrame = 6;
 
@@ -111,6 +116,19 @@ public class SoldierZombie implements Bot {
         }
 
         batch.begin();
+        if(alpha < ALPHA_INIT){
+            Color color = batch.getColor();
+            batch.setColor(color.r, color.g, color.b, alpha);
+            drawTexture(batch);
+            batch.setColor(color.r, color.g, color.b, 1.0f);
+        }
+        else{
+            drawTexture(batch);
+        }
+        batch.end();
+    }
+
+    private void drawTexture(SpriteBatch batch){
         batch.draw(texture, MSGame.SCREEN_OFFSET_X + x - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
                 MSGame.SCREEN_OFFSET_Y +
                         GeoHelper.transformCanvasYCoordToGL(y - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
@@ -118,7 +136,6 @@ public class SoldierZombie implements Bot {
                 1 + animation.getCurrentFrame() * spritesetSpriteWidth,
                 1 + animation.getSetOfFrames() * spritesetSpriteHeight,
                 spriteWidth, spriteHeight);
-        batch.end();
     }
 
     @Override
@@ -281,8 +298,8 @@ public class SoldierZombie implements Bot {
 
     @Override
     public void hit(Weapon weapon){
-        hits--;
-        if(hits < 0){
+        hp -= weapon.getHP();
+        if(hp < 0){
             die();
         }
         if(isAction < 4){  //if an enemy is not dead...
@@ -363,13 +380,12 @@ public class SoldierZombie implements Bot {
 
         while(animationTickTime > animationTick){
             animationTickTime -= animationTick;
-            /*int alpha = paint.getAlpha();
-            alpha -= 10;
+            alpha -= ALPHA_STEP;
             if(alpha < 0){
+                alpha = 0;
                 platformerScenario.removeBot(this, SpawnBot.SHOTGUN_ZOMBIE);
                 return;
             }
-            paint.setAlpha(alpha);*/
         }
     }
 
@@ -408,19 +424,19 @@ public class SoldierZombie implements Bot {
             bulletY = y + 22;
             bulletDirection = EnemyBullet.DIRECTION_RIGHT;
         }
-        else if(xPos == 2 && yPos == 1){  //up right
+        else if(xPos == 2 && yPos == 1){  //up
             startIdleShootingFrame = 0;
 
             bulletX = x + 31;
             bulletY = y + 5;
-            bulletDirection = EnemyBullet.DIRECTION_UP_RIGHT;
+            bulletDirection = EnemyBullet.DIRECTION_UP;
         }
-        else if(xPos == 2 && yPos == 0){  //down right
+        else if(xPos == 2 && yPos == 0){  //down
             startIdleShootingFrame = 12;
 
             bulletX = x + 28;
             bulletY = y + 48;
-            bulletDirection = EnemyBullet.DIRECTION_DOWN_RIGHT;
+            bulletDirection = EnemyBullet.DIRECTION_DOWN;
         }
         else if(xPos == 0 && yPos == 1){   //up-straight left
             startIdleShootingFrame = 3;

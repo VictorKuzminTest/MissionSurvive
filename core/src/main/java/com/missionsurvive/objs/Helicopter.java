@@ -163,7 +163,7 @@ public class Helicopter implements Bot{
                 scale();
             }
             else{
-                worldX += 2;
+                worldX += 1;
                 if(isBeyondScreen()){
                     action = ACTION_BEYOND_SCREEN;
                 }

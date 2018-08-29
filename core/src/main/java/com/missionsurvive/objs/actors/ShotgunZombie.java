@@ -1,6 +1,8 @@
 package com.missionsurvive.objs.actors;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.Decorator;
@@ -13,6 +15,7 @@ import com.missionsurvive.objs.EnemyBullet;
 import com.missionsurvive.objs.Weapon;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
+import com.missionsurvive.scenarios.SpawnBot;
 import com.missionsurvive.utils.Assets;
 
 import java.util.ArrayList;
@@ -23,6 +26,9 @@ import java.util.List;
  */
 
 public class ShotgunZombie implements Bot {
+
+    public static final float ALPHA_STEP = 0.04f;
+    public static final float ALPHA_INIT = 1.0f;
 
     private int x; //screen coordinates.
     private int y;
@@ -60,6 +66,7 @@ public class ShotgunZombie implements Bot {
     private float zombieDyingTick = 0.5f, zombieDyingTickTime = 0;
     private float shootingTick = 0.2f, shootingTicktime = 0;
     private float betweenActionsTickTime = 1.0f , betweenActionsTick = 1.5f;
+    private float alpha = ALPHA_INIT;
 
     private boolean isNorth, isEast, isSouth, isWest; //переменный, указывающие, какие тайлы мира заблокированы.
     private MapTer northTer, eastTer, southTer, westTer; //переменные, хранящие MapTer смежных с героем тайлов.
@@ -111,6 +118,19 @@ public class ShotgunZombie implements Bot {
         }
 
         batch.begin();
+        if(alpha < ALPHA_INIT){
+            Color color = batch.getColor();
+            batch.setColor(color.r, color.g, color.b, alpha);
+            drawTexture(batch);
+            batch.setColor(color.r, color.g, color.b, 1.0f);
+        }
+        else{
+            drawTexture(batch);
+        }
+        batch.end();
+    }
+
+    private void drawTexture(SpriteBatch batch){
         batch.draw(texture, MSGame.SCREEN_OFFSET_X + x - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
                 MSGame.SCREEN_OFFSET_Y +
                         GeoHelper.transformCanvasYCoordToGL(y - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
@@ -118,7 +138,6 @@ public class ShotgunZombie implements Bot {
                 1 + animation.getCurrentFrame() * spritesetSpriteWidth,
                 1 + animation.getSetOfFrames() * spritesetSpriteHeight,
                 spriteWidth, spriteHeight);
-        batch.end();
     }
 
     @Override
@@ -363,13 +382,12 @@ public class ShotgunZombie implements Bot {
 
         while(animationTickTime > animationTick){
             animationTickTime -= animationTick;
-            /*int alpha = paint.getAlpha();
-            alpha -= 10;
+            alpha -= ALPHA_STEP;
             if(alpha < 0){
+                alpha = 0;
                 platformerScenario.removeBot(this, SpawnBot.SHOTGUN_ZOMBIE);
                 return;
             }
-            paint.setAlpha(alpha);*/
         }
     }
 
@@ -408,19 +426,19 @@ public class ShotgunZombie implements Bot {
             bulletY = y + 22;
             bulletDirection = EnemyBullet.DIRECTION_RIGHT;
         }
-        else if(xPos == 2 && yPos == 1){  //up right
+        else if(xPos == 2 && yPos == 1){  //up
             startIdleShootingFrame = 0;
 
             bulletX = x + 31;
             bulletY = y + 5;
-            bulletDirection = EnemyBullet.DIRECTION_UP_RIGHT;
+            bulletDirection = EnemyBullet.DIRECTION_UP;
         }
-        else if(xPos == 2 && yPos == 0){  //down right
+        else if(xPos == 2 && yPos == 0){  //down
             startIdleShootingFrame = 12;
 
             bulletX = x + 28;
             bulletY = y + 48;
-            bulletDirection = EnemyBullet.DIRECTION_DOWN_RIGHT;
+            bulletDirection = EnemyBullet.DIRECTION_DOWN;
         }
         else if(xPos == 0 && yPos == 1){   //up-straight left
             startIdleShootingFrame = 3;

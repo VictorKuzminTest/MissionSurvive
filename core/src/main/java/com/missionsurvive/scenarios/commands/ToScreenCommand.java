@@ -24,7 +24,7 @@ public class ToScreenCommand implements  Command {
         switch (screenId){
             case TO_EDITOR_SCREEN:
                 Assets.getGame().setScreen(
-                        new EditorScreen(Assets.getGame(), 35, 300));
+                        new EditorScreen(Assets.getGame(), 400, 23));
                 break;
             case TO_SCROLLER_SCREEN:
                 Assets.getGame().setScreen(new ScrollerScreen(Assets.getGame()));

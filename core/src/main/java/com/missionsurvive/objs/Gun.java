@@ -174,4 +174,9 @@ public class Gun implements Weapon{
     public List<Weapon> getWeapon() {
         return bullets;
     }
+
+    @Override
+    public int getHP() {
+        return 0;
+    }
 }

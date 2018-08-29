@@ -1,5 +1,6 @@
 package com.missionsurvive.objs.actors;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.MSGame;
@@ -16,6 +17,8 @@ import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.SpawnBot;
 import com.missionsurvive.utils.Assets;
 
+import java.util.Random;
+
 /**
  * Created by kuzmin on 03.05.18.
  */
@@ -24,6 +27,16 @@ public class Zombie implements Bot {
 
     public static final int EAST = 0;
     public static final int WEST = 1;
+    public static final float ALPHA_STEP = 0.04f;
+    public static final float ALPHA_INIT = 1.0f;
+
+    private ObjAnimation animation;
+    private MapEditor mapEditor;
+    private EnemyScenario enemyScenario;
+    private PlatformerScenario platformerScenario;
+    private Texture texture;
+    private Random random = new Random();
+
     private int x;
     private int y;
     private int spritesetSpriteWidth;
@@ -32,12 +45,6 @@ public class Zombie implements Bot {
     private int spriteHeight;
     private int hitboxWidth;
     private int hitboxHeight;
-    ObjAnimation animation;
-    MapEditor mapEditor;
-    private EnemyScenario enemyScenario;
-    private PlatformerScenario platformerScenario;
-    private Texture texture;
-
     private int halfHeroHeight; //"half...", because basically we need to know the half of "real" object width-height to calculate bounding (colliding) points.
     private int halfHeroWidth;
     private int centerX, centerY, top, bottom, left, right;  //ограничивающие точки "тела" героя (top, bootom, left, right). centerX-centerY - центр героя.
@@ -59,25 +66,29 @@ public class Zombie implements Bot {
 
     private int[] actions; //массив, в котором содержится инфа о действиях игрока и количестве фреймах в них (номер элемента массива - row, содержание элемента - количество фреймов).
     private int numDirections; //количество направлений для действий (сторон света).
-    private int numActions; //количество действий.
-    private int currentAction; //currentAction
+    private int numActions;
+    private int currentAction;
     private int direction; //direction of action.  0 - right, 1 - left.
-    private int runningSpeed = 2; //скорость бега в пикселях.
+    private int runningSpeed;
     private int fallingSpeed = 3; //falling speed in pixels.
     private int hits;
 
     private int startFallingFrame = 0, numFallingFrames = 1;
 
     private float zombieDyingTick = 0.5f, zombieDyingTickTime = 0;
+    private float alpha = ALPHA_INIT;
 
     private boolean isNorth, isEast, isSouth, isWest; //переменный, указывающие, какие тайлы мира заблокированы.
+    private boolean isRunning = false;
+    private boolean isDead = false;
+
     private MapTer northTer, eastTer, southTer, westTer; //переменные, хранящие MapTer смежных с героем тайлов.
 
-    private int isAction; //this variable determines the action our hero is using.
-    private boolean isRunning = false;
+    private int isAction; //this variable determines the action zombie is using.
     private int targetX = -1, targetY = -1;
 
-    public Zombie(String assetName, MapEditor mapEditor, int x, int y, int direction) {
+    public Zombie(String assetName, MapEditor mapEditor,
+                  int x, int y, int direction, int speedRunning) {
         this.x = x;
         this.y = y;
         if(assetName != null){
@@ -92,6 +103,7 @@ public class Zombie implements Bot {
         halfHeroHeight = hitboxHeight / 2;
         halfHeroWidth = hitboxWidth / 2;
         hits = 0;
+        runningSpeed = speedRunning;
         this.mapEditor = mapEditor;
 
         setPos();
@@ -120,6 +132,19 @@ public class Zombie implements Bot {
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
         batch.begin();
+        if(alpha < ALPHA_INIT){
+            Color color = batch.getColor();
+            batch.setColor(color.r, color.g, color.b, alpha);
+            drawTexture(batch);
+            batch.setColor(color.r, color.g, color.b, 1.0f);
+        }
+        else{
+            drawTexture(batch);
+        }
+        batch.end();
+    }
+
+    public void drawTexture(SpriteBatch batch){
         batch.draw(texture, MSGame.SCREEN_OFFSET_X + x - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
                 MSGame.SCREEN_OFFSET_Y +
                         GeoHelper.transformCanvasYCoordToGL(y - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
@@ -127,7 +152,6 @@ public class Zombie implements Bot {
                 1 + animation.getCurrentFrame() * spritesetSpriteWidth,
                 1 + animation.getSetOfFrames() * spritesetSpriteHeight,
                 spriteWidth, spriteHeight);
-        batch.end();
     }
 
     @Override
@@ -232,8 +256,10 @@ public class Zombie implements Bot {
                 this.targetY = platformerScenario.getTargetY() + mapEditor.getScrollLevel1Map().getWorldOffsetY();
                 setDirection(targetX);
             }
-            hero.die();
-            isAction = 4;   //biting
+            if(!isDead){
+                hero.die();
+                isAction = 4;   //biting
+            }
         }
     }
 
@@ -256,7 +282,15 @@ public class Zombie implements Bot {
 
 
     public void calculateVectorX(int speedInPixels, MapEditor mapEditor){
-        if(direction == EAST){  //east
+        if(direction == EAST){
+            //it changes direction, when center x of a zombie is greater than the right side of a screen.
+            if(centerX > MSGame.SCREEN_WIDTH){
+                enemyScenario.setDirection(centerX, centerY, 16, EAST);
+                targetX = enemyScenario.getTargetX();
+                setDirection(targetX);
+                vectorX = speedInPixels;
+                return;
+            }
             if(eastTer != null){
                 if(eastTer.isBlocked()){
                     if(!eastTer.isLadder()){
@@ -270,7 +304,7 @@ public class Zombie implements Bot {
                         }
                     }
                 }
-                else{  //в ином случае: пусть герой ещо пробежит со своей "крейсерской" скоростью.
+                else{  //в ином случае: пусть герой еще пробежит со своей "крейсерской" скоростью.
                     vectorX = speedInPixels;
                     return;
                 }
@@ -278,7 +312,15 @@ public class Zombie implements Bot {
             vectorX = speedInPixels;
             return;
         }
-        else if(direction == WEST){ //west
+        else if(direction == WEST){
+            //it changes direction, when center x of a zombie is less than the left side of a screen:
+            if(centerX < 0){
+                enemyScenario.setDirection(centerX, centerY, 16, WEST);
+                targetX = enemyScenario.getTargetX();
+                setDirection(targetX);
+                vectorX = speedInPixels;
+                return;
+            }
             if(westTer != null){ //на всякий случай сначала проверяем на null.
                 if(westTer.isBlocked()){
                     if(!westTer.isLadder()){
@@ -301,7 +343,6 @@ public class Zombie implements Bot {
             return;
         }
     }
-
 
     public void calculateVectorY(int direction, int speedInPixels, MapEditor mapEditor){
         if(!isSouth){
@@ -327,6 +368,7 @@ public class Zombie implements Bot {
     public void die(){
         if(isAction < 6){  //not dying
             isAction = 6;  //dying
+            isDead = true;
         }
     }
 
@@ -532,13 +574,12 @@ public class Zombie implements Bot {
 
         while(animationTickTime > animationTick){
             animationTickTime -= animationTick;
-            /*int alpha = paint.getAlpha();
-            alpha -= 10;
+            alpha -= ALPHA_STEP;
             if(alpha < 0){
+                alpha = 0;
                 platformerScenario.removeBot(this, SpawnBot.ZOMBIE);
                 return;
             }
-            paint.setAlpha(alpha);*/
         }
     }
 
@@ -598,7 +639,6 @@ public class Zombie implements Bot {
         }
     }
 
-
     public void setSetOfFrames(int setOfFrames){
         animation.setSetOfFrames(setOfFrames);
     }
@@ -610,7 +650,6 @@ public class Zombie implements Bot {
         targetX = enemyScenario.getTargetX();
         setDirection(targetX);
     }
-
 
     public void tilemapCollision(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
 

@@ -38,6 +38,9 @@ public class Hero implements GameObject {
             ACTION_JUMPING = 3, ACTION_SHOOTING = 4, ACTION_DYING = 5, ACTION_DEAD = 6,
             ACTION_BEYOND_SCREEN = 7, ACTION_IDLE_BACK = 8;
 
+    //correction for shooting relatively y axis:
+    public static final int SHOOT_CORRECTION_Y = 13;
+
     public static final float IRRESISTIBLE_TICK = 3.0f;
 
     public static final int NUM_JUMPING_ITERATIONS = 5;
@@ -736,7 +739,8 @@ public class Hero implements GameObject {
 
     public void setStartShootingFrame(int left, int top, int right, int bottom){
         int xPos = GeoHelper.inBoundsSpaceX(hitbox.getCenterX(), left, right);
-        int yPos = GeoHelper.inBoundsSpaceY(hitbox.getCenterY(), top, bottom);
+        int yPos = GeoHelper.inBoundsSpaceY(hitbox.getCenterY() - SHOOT_CORRECTION_Y,
+                top, bottom);
 
         if(xPos == 1 && yPos == 1){    //up-straight right
             startShootingFrame = 4;

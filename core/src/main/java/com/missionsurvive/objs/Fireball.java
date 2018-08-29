@@ -61,6 +61,7 @@ public class Fireball implements Weapon{
     private int numMovingFrames = 5, numHitFrames = 5;
     private int action;
     private int whichAsset;
+    private int hp;
 
     private float movingTickTime = 0;
     private float animationTickTime = 0;
@@ -75,6 +76,7 @@ public class Fireball implements Weapon{
         spritesetSpriteWidth = spriteWidth + 2;
         spritesetSpriteHeight = spriteHeight + 2;
 
+        hp = 3;
         speed = 8;
         deltaSpread = 4;
         hitbox = new Hitbox(x, y, 9, 9, 4, 4);
@@ -383,6 +385,11 @@ public class Fireball implements Weapon{
     @Override
     public List<Weapon> getWeapon() {
         return null;
+    }
+
+    @Override
+    public int getHP() {
+        return hp;
     }
 
     /** The cases for fireball moving direction:

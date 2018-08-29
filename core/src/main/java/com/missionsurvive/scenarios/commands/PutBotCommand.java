@@ -99,12 +99,14 @@ public class PutBotCommand implements Command{
             else if(bot.equalsIgnoreCase("l1b")){
                 putBot(SpawnScenario.LEVEL_1_SCENE, 0);
             }
+            else if(bot.equalsIgnoreCase("helicopter")){
+                putBot(SpawnScenario.LEVEL_2_SCENE, 0);
+            }
             else if(bot.equalsIgnoreCase("l3b")){
-                putBot(SpawnBot.LEVEL_3_BOSS, Zombie.EAST);
+                putBot(SpawnScenario.LEVEL_3_SCENE, Zombie.EAST);
             }
             else if(bot.equalsIgnoreCase("l5b")){
-                putBot(SpawnBot.LEVEL_5_BOSS, Zombie.EAST);
-                //putBot(SpawnScenario.SCENE_TEST, Zombie.EAST);
+                putBot(SpawnScenario.LEVEL_5_SCENE, Zombie.EAST);
             }
             else if(bot.equalsIgnoreCase("powerup")){
                 if(direction.equalsIgnoreCase("eastlife")){
@@ -124,10 +126,7 @@ public class PutBotCommand implements Command{
                 putBot(SpawnBot.WRECKAGE, 0);
             }
             else if(bot.equalsIgnoreCase("l6b")){
-                putBot(SpawnBot.LEVEL_6_BOSS, 0);
-            }
-            else if(bot.equalsIgnoreCase("helicopter")){
-                putBot(SpawnScenario.LEVEL_2_SCENE, 0);
+                putBot(SpawnScenario.LEVEL_6_SCENE, 0);
             }
             else if(bot.equalsIgnoreCase("endGame")){
                 putBot(SpawnScenario.END_GAME_SCENE, 0);

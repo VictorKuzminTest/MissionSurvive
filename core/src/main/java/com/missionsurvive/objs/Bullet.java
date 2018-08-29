@@ -42,6 +42,7 @@ public class Bullet implements Weapon{
     private int drawingWidth, drawingHeight;
     private int frameCount = 0;
     private int action;
+    private int hp;
 
     public Bullet(String assetName, PlatformerScenario platformerScenario){
         this.platformerScenario = platformerScenario;
@@ -53,6 +54,7 @@ public class Bullet implements Weapon{
         absoluteValueX = 0;
         absoluteValueY = 0;
         speed = 8;
+        hp = 1;
 
         screenWidth = 480;
         screenHeight = 320;
@@ -279,6 +281,11 @@ public class Bullet implements Weapon{
     @Override
     public List<Weapon> getWeapon() {
         return null;
+    }
+
+    @Override
+    public int getHP() {
+        return hp;
     }
 
     /** The cases for bullet moving direction:

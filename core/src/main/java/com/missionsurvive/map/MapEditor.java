@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.scenarios.Spawn;
 import com.missionsurvive.scenarios.SpawnBot;
+import com.missionsurvive.scenarios.SpawnScenario;
 import com.missionsurvive.utils.Assets;
 
 import java.util.ArrayList;
@@ -23,7 +24,6 @@ public class MapEditor implements Map{
     private ArrayList<TextureRegion[][]> tilesets = new ArrayList<TextureRegion[][]>();
     private MapLayers layers;
     private TiledMapTileLayer foreground;
-    //private TextureRegion lev3;
     private ScrollMap scrollLevel1Map;
     private MapTer[][] mapTers;
     private Spawn[][] spawns;
@@ -70,10 +70,6 @@ public class MapEditor implements Map{
 
         map = new TiledMap();
         layers = map.getLayers();
-
-        /*Texture lev3Tex = Assets.getTextures()[Assets.getWhichTexture("lev3")];
-        lev3Tex.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        lev3 = new TextureRegion(lev3Tex, 0, 0, 480, 320);*/
     }
 
     public void newMapTers(int width, int height){
@@ -90,15 +86,10 @@ public class MapEditor implements Map{
         return foreground;
     }
 
-    /*public TextureRegion getlev3(){
-        return lev3;
-    }*/
-
     public void newForeground(int width, int height, int tileWidth, int tileHeight){
         foreground = new TiledMapTileLayer(width, height, tileWidth, tileHeight);
         layers.add(foreground);
     }
-
 
     @Override
     public void addNewTileset(String asset, int tileWidth, int tileHeight){
@@ -158,7 +149,6 @@ public class MapEditor implements Map{
             return isLoaded = false;
         }
 
-        //-MapTer[][] mapTer = null;
         String assetName = null;
 
         String fragmentDelims = "\\:";
@@ -241,8 +231,15 @@ public class MapEditor implements Map{
                     mapTers[row][col].setLadder(true);
                 }
                 if(fragmentTokens[whichChar + 6].equalsIgnoreCase("enemy")){
-                    spawns[row][col] = new SpawnBot(Integer.parseInt(fragmentTokens[whichChar + 7]),
-                    Integer.parseInt(fragmentTokens[whichChar + 8]), row, col);
+                    int botId = Integer.parseInt(fragmentTokens[whichChar + 7]);
+                    if(botId < 1000){
+                        spawns[row][col] = new SpawnBot(botId,
+                                Integer.parseInt(fragmentTokens[whichChar + 8]), row, col);
+                    }
+                    else{
+                        spawns[row][col] = new SpawnScenario(botId,
+                                Integer.parseInt(fragmentTokens[whichChar + 8]), row, col);
+                    }
                 }
 
                 //-if(Integer.parseInt(fragmentTokens[whichChar + 4]) >=  0){
@@ -265,7 +262,6 @@ public class MapEditor implements Map{
                 //-}
             }
         }
-        //-game.getCurrentScreen().setMap(); //set new map to screen.         //+
         return isLoaded;
     }
 
