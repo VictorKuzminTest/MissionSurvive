@@ -66,7 +66,7 @@ public class L1B implements Bot{
     private int direction; //direction of action.  0 - right, 1 - left.
     private int runningSpeed = 4; //скорость бега в пикселях.
     private int fallingSpeed = 1; //falling speed in pixels.
-    private int hits;
+    private int hp = 10;
 
     private float zombieDyingTick = 0.1f, zombieDyingTickTime = 0;
 
@@ -91,7 +91,6 @@ public class L1B implements Bot{
         hitboxHeight = 60;
         halfHeroHeight = hitboxHeight / 2;
         halfHeroWidth = hitboxWidth / 2;
-        hits = 10;
 
         this.mapEditor = mapEditor;
 
@@ -342,8 +341,8 @@ public class L1B implements Bot{
     }
 
     public void hit(Weapon weapon){
-        hits--;
-        if(hits < 0){
+        hp -= weapon.getHP();
+        if(hp < 0){
             die();
         }
         if(isAction < ACTION_DEAD){  //if an enemy is not dead...

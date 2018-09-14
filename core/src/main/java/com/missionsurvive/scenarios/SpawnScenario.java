@@ -2,10 +2,15 @@ package com.missionsurvive.scenarios;
 
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.objs.Helicopter;
-import com.missionsurvive.objs.triggers.TriggerBoss;
-import com.missionsurvive.objs.triggers.TriggerEndGame;
+import com.missionsurvive.objs.actors.L5B;
+import com.missionsurvive.objs.actors.L6B;
+import com.missionsurvive.objs.triggers.TriggerL1B;
+import com.missionsurvive.objs.triggers.TriggerEndLev6;
 import com.missionsurvive.objs.triggers.TriggerHelicopter;
 import com.missionsurvive.objs.actors.L1B;
+import com.missionsurvive.objs.triggers.TriggerL3B;
+import com.missionsurvive.objs.triggers.TriggerL5B;
+import com.missionsurvive.objs.triggers.TriggerL6B;
 
 /**
  * Created by kuzmin on 17.05.18.
@@ -41,7 +46,7 @@ public class SpawnScenario implements Spawn {
                     L1B l1b = new L1B("l1b", mapEditor, col * 16, row * 16);
                     scenario.addBot(l1b, 0);
                     scenario.addBot(
-                            new TriggerBoss(l1b, scenario, col * 16, row * 16),
+                            new TriggerL1B(l1b, scenario, col * 16, row * 16),
                             0);
                     scenario.setScroll(false, false);
 
@@ -62,9 +67,43 @@ public class SpawnScenario implements Spawn {
                     isFirstTimeSpawn = false;
                 }
                 break;
+            case LEVEL_3_SCENE:
+                if(isFirstTimeSpawn) {
+                    scenario.addBot(
+                            new TriggerL3B(scenario,
+                                    col * 16, row * 16), 0);
+                    scenario.setScroll(false, false);
+
+                    isFirstTimeSpawn = false;
+                }
+                break;
+            case LEVEL_5_SCENE:
+                if(isFirstTimeSpawn){
+                    L5B l5b = new L5B("l5b", mapEditor,
+                            col * 16, row * 16);
+                    scenario.addBot(l5b, 0);
+                    scenario.addBot(
+                            new TriggerL5B(l5b, scenario, col * 16, row * 16),
+                            0);
+                    scenario.setScroll(false, false);
+
+                    isFirstTimeSpawn = false;
+                }
+                break;
+            case LEVEL_6_SCENE:
+                if(isFirstTimeSpawn){
+                    L6B l6b = new L6B("l6b", mapEditor,
+                            col * 16, row *16);
+                    scenario.addBot(l6b, 0);
+                    scenario.addBot(new TriggerL6B(l6b, scenario,
+                            col * 16, row * 16), 0);
+                    scenario.setScroll(false, false);
+                    isFirstTimeSpawn = false;
+                }
+                break;
             case END_GAME_SCENE:
                 if(isFirstTimeSpawn){
-                    scenario.addBot(new TriggerEndGame(), 0);
+                    scenario.addBot(new TriggerEndLev6(), 0);
                     isFirstTimeSpawn = false;
                 }
                 break;

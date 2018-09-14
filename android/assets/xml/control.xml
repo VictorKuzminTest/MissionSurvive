@@ -1,77 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control>
-    
-    <controlPanel screen = "Menu"
-                  name = "MainMenu">
-        <button
-            assetName = "clear"
-            buttonType = "ACTION"
-            x = "64"
-            y = "128"
-            width = "200"
-            height = "45"
-            action = "EditorScreen">
-        </button>
-        <button
-            assetName = "clear"
-            buttonType = "ACTION"
-            x = "64"
-            y = "175"
-            width = "200"
-            height = "45"
-            action = "ScrollerScreen">
-        </button>
-    </controlPanel>
 
-    <controlPanel screen = "ScrollerScreen"
-        name = "ScrollerControls">
-        <icon
-            iconName = "live"
-            assetName = "powerup"
-            x = "10"
-            y = "10"
-            srcX = "0"
-            srcY = "0"
-            width = "32"
-            height = "32">
-        </icon>
-        <icon
-            iconName = "x"
-            assetName = "digits"
-            x = "42"
-            y = "18"
-            srcX = "10"
-            srcY = "0"
-            width = "16"
-            height = "16">
-        </icon>
-        <icon
-            iconName = "liveDigit1"
-            assetName = "digits"
-            x = "56"
-            y = "18"
-            width = "16"
-            height = "16">
-        </icon>
-        <icon
-            iconName = "liveDigit2"
-            assetName = "digits"
-            x = "67"
-            y = "18"
-            width = "16"
-            height = "16">
-        </icon>
-        <listbuttons
-            listingName = "editorControl"
-            x = "10"
-            y = "50"
-            width = "34"
-            height = "300"
-            layout = "vertical">
-        </listbuttons>
-    </controlPanel>
-
-    <controlPanel screen = "PlatformerScreen"
+    <controlPanel screen = "EditorScreen"
                   name = "mapEditorControls">
         <icon
             iconName = "live"
@@ -127,6 +57,46 @@
         </listbuttons>
     </controlPanel>
 
+    <controlPanel screen = "PlatformerScreen"
+        name = "gameControls">
+        <icon
+            iconName = "live"
+            assetName = "powerup"
+            x = "10"
+            y = "10"
+            srcX = "0"
+            srcY = "0"
+            width = "32"
+            height = "32">
+        </icon>
+        <icon
+            iconName = "x"
+            assetName = "digits"
+            x = "42"
+            y = "18"
+            srcX = "181"
+            srcY = "1"
+            width = "16"
+            height = "16">
+        </icon>
+        <icon
+            iconName = "liveDigit1"
+            assetName = "digits"
+            x = "56"
+            y = "18"
+            width = "16"
+            height = "16">
+        </icon>
+        <icon
+            iconName = "liveDigit2"
+            assetName = "digits"
+            x = "67"
+            y = "18"
+            width = "16"
+            height = "16">
+        </icon>
+    </controlPanel>
+
     <controlPanel screen = "GameMenuScreen"
         name = "StartGameMenu">
         <button
@@ -148,6 +118,7 @@
             action = "quitGame">
         </button>
     </controlPanel>
+
     <controlPanel screen = "GameMenuScreen"
         name = "DifficultyGameMenu">
         <button
@@ -178,10 +149,11 @@
             action = "ToStartGameMenu">
         </button>
     </controlPanel>
+
     <controlPanel screen = "GameMenuScreen"
-        name = "ChooseLevelMenu">
+        name = "ChooseLevelMenuBeginner">
         <listbuttons
-            listingName = "chooseLevel"
+            listingName = "chooseLevelBeginner"
             x = "80"
             y = "115"
             width = "320"
@@ -199,6 +171,29 @@
             action = "ToDifficultyGameMenuFromChoose">
         </button>
     </controlPanel>
+
+    <controlPanel screen = "GameMenuScreen"
+        name = "ChooseLevelMenuExperienced">
+        <listbuttons
+            listingName = "chooseLevelExperienced"
+            x = "80"
+            y = "115"
+            width = "320"
+            height = "100"
+            spaceBetweeButtons = "10"
+            layout = "horizontal">
+        </listbuttons>
+        <button
+            assetName = "art"
+            x = "400"
+            y = "280"
+            srcY = "432"
+            width = "66"
+            height = "26"
+            action = "ToDifficultyGameMenuFromChoose">
+        </button>
+    </controlPanel>
+
     <controlPanel screen = "PlatformerScreen"
         name = "EndLevelMenu">
         <rect
@@ -215,7 +210,7 @@
         <icon
             iconName = "clear"
             assetName = "art"
-            x = "250"
+            x = "200"
             y = "70"
             srcX = "155"
             srcY = "322"
@@ -224,7 +219,7 @@
         </icon>
         <button
             assetName = "art"
-            x = "354"
+            x = "304"
             y = "224"
             srcX = "155"
             srcY = "349"

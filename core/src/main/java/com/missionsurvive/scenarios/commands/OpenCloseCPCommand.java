@@ -24,16 +24,21 @@ public class OpenCloseCPCommand implements Command{
                 openClosePanel("StartGameMenu", false);
                 openClosePanel("DifficultyGameMenu", true);
             }
-            else if(this.key.equalsIgnoreCase("ToChooseLevelMenu")){
+            else if(this.key.equalsIgnoreCase("ToChooseLevelMenuBeginner")){
                 openClosePanel("DifficultyGameMenu", false);
-                openClosePanel("ChooseLevelMenu", true);
+                openClosePanel("ChooseLevelMenuBeginner", true);
+            }
+            else if(this.key.equalsIgnoreCase("ToChooseLevelMenuExperienced")){
+                openClosePanel("DifficultyGameMenu", false);
+                openClosePanel("ChooseLevelMenuExperienced", true);
             }
             else if(this.key.equalsIgnoreCase("ToStartGameMenu")){
                 openClosePanel("DifficultyGameMenu", false);
                 openClosePanel("StartGameMenu", true);
             }
             else if(this.key.equalsIgnoreCase("ToDifficultyGameMenuFromChoose")){
-                openClosePanel("ChooseLevelMenu", false);
+                openClosePanel("ChooseLevelMenuBeginner", false);
+                openClosePanel("ChooseLevelMenuExperienced", false);
                 openClosePanel("DifficultyGameMenu", true);
             }
         }

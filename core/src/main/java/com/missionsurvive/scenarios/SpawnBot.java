@@ -48,7 +48,7 @@ public class SpawnBot implements Spawn{
     public void spawnBot(Scenario scenario, MapEditor mapEditor, float deltaTime){
         switch (whichBot) {
             case ZOMBIE:
-                spawnZombie(scenario, mapEditor, deltaTime, col * 16 - 20, row * 16 - 70);
+                spawnZombie(scenario, mapEditor, deltaTime, col * 16 - 20, row * 16 - 53);
                 break;
             case SHOTGUN_ZOMBIE:
                 if(isFirstTimeSpawn){ //so we generate only one time
@@ -68,37 +68,6 @@ public class SpawnBot implements Spawn{
                     isFirstTimeSpawn = false;
                 }
                 break;
-            /*case LEVEL_1_BOSS:
-                if(isFirstTimeSpawn){ //so we generate only one time
-                    scenario.addBot(
-                            new L1B("l1b", mapEditor, col * 16, row * 16),
-                            LEVEL_1_BOSS);
-                    isFirstTimeSpawn = false;
-                }
-                break;
-            case LEVEL_3_BOSS:
-                if(isFirstTimeSpawn){ //so we generate only one time
-                    scenario.addBot(
-                            new L3B("l3b", mapEditor, col * 16, row * 16),
-                            LEVEL_3_BOSS);
-                    isFirstTimeSpawn = false;
-                }
-                break;
-            case LEVEL_5_BOSS:
-                if(isFirstTimeSpawn){ //so we generate only one time
-                    scenario.addBot(
-                            new L5B("l5b", mapEditor, col * 16, row * 16),
-                            LEVEL_5_BOSS);
-                    isFirstTimeSpawn = false;
-                }
-                break;
-            case LEVEL_6_BOSS:
-                if(isFirstTimeSpawn){ //so we generate only one time
-                    scenario.addBot(new L6B("l6b", mapEditor,
-                            col * 16, row * 16), LEVEL_6_BOSS);
-                    isFirstTimeSpawn = false;
-                }
-                break;*/
             case POWER_UP_LIFE:
                 if(isFirstTimeSpawn){ //so we generate only one time
                     spawnPowerUp(scenario, mapEditor);

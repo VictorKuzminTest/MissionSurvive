@@ -1,11 +1,10 @@
 package com.missionsurvive.scenarios;
 
+import com.missionsurvive.framework.ControlPanel;
 import com.missionsurvive.framework.TouchControl;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.geom.Hitbox;
 import com.missionsurvive.map.Map;
-import com.missionsurvive.map.MapEditor;
-import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.Blockage;
 import com.missionsurvive.objs.Bot;
 import com.missionsurvive.objs.Obstacle;
@@ -30,6 +29,8 @@ public class ScrollerScenario implements Scenario {
     private Random random = new Random();
     private ScrollerScreen scrollerScreen;
     private Moto moto;
+    private PlayScript playScript;
+    private ControlScenario controlScenario;
     private float obstacleTickTime = 0, obstacleTick =  4.0f;
     private float movingTearTickTime = 0, movingTearTick = 0.005f;
     private int switchSection = 0, switchScene = 0;
@@ -51,8 +52,10 @@ public class ScrollerScenario implements Scenario {
     private int spriteWidth = 96, spriteHeight = 80;
     private int startScreenY = 89;
 
-    public ScrollerScenario(ScrollerScreen scrollerScreen, int screenX, int screenY){
+    public ScrollerScenario(ScrollerScreen scrollerScreen, PlayScript playScript,
+                            int screenX, int screenY){
         this.scrollerScreen = scrollerScreen;
+        this.playScript = playScript;
         newObstacles(screenX, screenY);
     }
 
@@ -120,19 +123,19 @@ public class ScrollerScenario implements Scenario {
 
     @Override
     public void setControlScenario(ControlScenario controlScenario) {
-
+        this.controlScenario = controlScenario;
     }
 
     @Override
     public ControlScenario getControlScenario() {
-        return null;
+        return controlScenario;
     }
 
     /**
      * Generates new motorcycle.
      */
     public void newMoto(int x, int y){
-        moto = new Moto("motorcycle", this, x, y);
+        moto = new Moto("motorcycle", this, playScript, x, y);
     }
 
     public Moto getMoto(){
@@ -238,47 +241,47 @@ public class ScrollerScenario implements Scenario {
                 }
                 switch (currentSection.get(switchScene).obstacleId){
                     case PlaceObstacle.CAR_TOP_11:
-                        placeCar(currentSection, carTop11, 100, PlaceObstacle.CAR_TOP);
+                        placeCar(currentSection, carTop11);
                         switchScene++;
                         break;
                     case PlaceObstacle.CAR_TOP_12:
-                        placeCar(currentSection, carTop12, 100, PlaceObstacle.CAR_TOP);
+                        placeCar(currentSection, carTop12);
                         switchScene++;
                         break;
                     case PlaceObstacle.CAR_MIDDLE_11:
-                        placeCar(currentSection, carMiddle11, 100, PlaceObstacle.CAR_MIDDLE);
+                        placeCar(currentSection, carMiddle11);
                         switchScene++;
                         break;
                     case PlaceObstacle.CAR_MIDDLE_12:
-                        placeCar(currentSection, carMiddle12, 100, PlaceObstacle.CAR_MIDDLE);
+                        placeCar(currentSection, carMiddle12);
                         switchScene++;
                         break;
                     case PlaceObstacle.CAR_BOTTOM_11:
-                        placeCar(currentSection, carBottom11, 133, PlaceObstacle.CAR_BOTTOM);
+                        placeCar(currentSection, carBottom11);
                         switchScene++;
                         break;
                     case PlaceObstacle.CAR_BOTTOM_12:
-                        placeCar(currentSection, carBottom12, 133, PlaceObstacle.CAR_BOTTOM);
+                        placeCar(currentSection, carBottom12);
                         switchScene++;
                         break;
                     case PlaceObstacle.CAR_SURR_11:
-                        placeCar(currentSection, carTop11, 100, PlaceObstacle.CAR_TOP);
-                        placeCar(currentSection, carMiddle11, 130, PlaceObstacle.CAR_MIDDLE);
+                        placeCar(currentSection, carTop11);
+                        placeCar(currentSection, carMiddle11);
                         switchScene++;
                         break;
                     case PlaceObstacle.CAR_SURR_12:
-                        placeCar(currentSection, carTop12, 100, PlaceObstacle.CAR_TOP);
-                        placeCar(currentSection, carMiddle12, 130, PlaceObstacle.CAR_MIDDLE);
+                        placeCar(currentSection, carTop12);
+                        placeCar(currentSection, carMiddle12);
                         switchScene++;
                         break;
                     case PlaceObstacle.CAR_SURR_21:
-                        placeCar(currentSection, carMiddle21, 100, PlaceObstacle.CAR_MIDDLE);
-                        placeCar(currentSection, carBottom11, 133, PlaceObstacle.CAR_BOTTOM);
+                        placeCar(currentSection, carMiddle21);
+                        placeCar(currentSection, carBottom11);
                         switchScene++;
                         break;
                     case PlaceObstacle.CAR_SURR_22:
-                        placeCar(currentSection, carMiddle22, 100, PlaceObstacle.CAR_MIDDLE);
-                        placeCar(currentSection, carBottom12, 133, PlaceObstacle.CAR_BOTTOM);
+                        placeCar(currentSection, carMiddle22);
+                        placeCar(currentSection, carBottom12);
                         switchScene++;
                         break;
                     case PlaceObstacle.TEAR:
@@ -329,6 +332,18 @@ public class ScrollerScenario implements Scenario {
                 break;
             case 3: currentSection = section4;
                 break;
+            default: showEndLevelPanel();
+                break;
+        }
+    }
+
+    public void showEndLevelPanel(){
+        int numPanels = getControlScenario().getControlPanels().size();
+        for(int i  = 0; i < numPanels; i++){
+            ControlPanel cp = controlScenario.getControlPanels().get(i);
+            if(cp.getName().equalsIgnoreCase("EndLevelMenu")){
+                cp.setActivated(true);
+            }
         }
     }
 
@@ -365,11 +380,11 @@ public class ScrollerScenario implements Scenario {
         }
     }
 
-    public void placeCar(ArrayList<PlaceObstacle> section, Obstacle car, int offsetY, int position){
+    public void placeCar(ArrayList<PlaceObstacle> section, Obstacle car){
         if(!car.isPlaced()){
             car.setAssetY(getRandomCar());
             car.placeObstacle(section.get(switchScene).screenX,
-                    offsetY + position * obstacleHeight);
+                    section.get(switchScene).screenY);
 
             obstacleTickTime = 0;
         }
@@ -430,12 +445,12 @@ public class ScrollerScenario implements Scenario {
     }
 
     public void newAttempt(){
-        if(moto.getLives() >= 0){
+        if(moto.getLives() >= -1){
             startSection();
         }
         else{
             startLevel();
-            moto.setLives(4);
+            playScript.newLives();
         }
         moto.setDead(false);
         moto.setScreenX(150);
@@ -469,12 +484,14 @@ public class ScrollerScenario implements Scenario {
         private float tick;
         private int obstacleId, rocketId;
         private int screenX;
+        private int screenY;
         private boolean isRandom;
 
-        public PlaceObstacle(int obstacleId, float tick, int screenX) {
+        public PlaceObstacle(int obstacleId, float tick, int screenX, int screenY) {
             this.tick = tick;
             this.obstacleId = obstacleId;
             this.screenX = screenX;
+            this.screenY = screenY;
         }
 
         public PlaceObstacle(int obstacleId, int rocketId, float tick, boolean isRandom) {
@@ -486,16 +503,32 @@ public class ScrollerScenario implements Scenario {
     }
 
     public void setSection1(){
-        /*section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 2.5f, 900));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 900, 150));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.5f, 900, 210));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.8f, 900, 150));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.5f, 800, 100));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.5f, 800, 150));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 1.5f, 800, 250));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.3f, 800, 180));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.3f, 750, 120));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.3f, 750, 105));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.3f, 800, 180));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.5f, 700, 105));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 1.0f, 800, 250));
+        //pair
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.3f, 750, 150));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.2f, 750, 210));
+        section1.add(new PlaceObstacle(PlaceObstacle.TEAR, 2.0f, 900, 0));
+
+        /*section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 2.5f, 900));
         section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 2.5f, 900));
         section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 2.0f, 900));
         section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 2.0f, 900));
         section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 2.0f, 900));
         section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 2.0f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 2.0f, 900));
+        section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 2.0f, 900));*/
 
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.5f, 900));
+        /*section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.5f, 900));
         section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.5f, 900));
         section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.5f, 900));
         section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 1.5f, 900));
@@ -615,7 +648,7 @@ public class ScrollerScenario implements Scenario {
 
     public void setSection4(){
         /*section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 5.0f, 900));*/
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 1.0f, 900));
+        /*section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 1.0f, 900));
         section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.0f, 900));
 
         section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 3.5f, 900));
@@ -692,6 +725,6 @@ public class ScrollerScenario implements Scenario {
         section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 0.88f, 760));
         section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 0.88f, 760));
         section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.88f, 700));
+        section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.88f, 700));*/
     }
 }

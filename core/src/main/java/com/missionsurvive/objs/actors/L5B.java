@@ -25,6 +25,9 @@ import java.util.Random;
 
 public class L5B implements Bot {
 
+    public static final int ACTION_DEAD = 5;
+    public static final int ACTION_DYING = 4;
+
     private int x; //screen coordinates.
     private int y;
     private int spritesetSpriteWidth;
@@ -66,7 +69,7 @@ public class L5B implements Bot {
     private int direction; //direction of action.  0 - right, 1 - left.
     private int runningSpeed = 2; //скорость бега в пикселях.
     private int fallingSpeed = 7; //falling speed in pixels.
-    private int hits;
+    private int hp = 10;
 
     private int startFallingFrame = 0, numFallingFrames = 1;
 
@@ -93,7 +96,6 @@ public class L5B implements Bot {
         hitboxHeight = 50;
         halfHeroHeight = hitboxHeight / 2;
         halfHeroWidth = hitboxWidth / 2;
-        hits = 10;
 
         this.mapEditor = mapEditor;
 
@@ -217,7 +219,9 @@ public class L5B implements Bot {
 
     @Override
     public void collide(Hero hero){
-        hero.die();
+        if(isAction < ACTION_DYING){
+            hero.die();
+        }
     }
 
     public void calculateVectorX(int direction, int speedInPixels, MapEditor mapEditor){
@@ -354,8 +358,8 @@ public class L5B implements Bot {
     }
 
     public void hit(Weapon weapon){
-        hits--;
-        if(hits < 0){
+        hp -= weapon.getHP();
+        if(hp < 0){
             die();
         }
         if(isAction < 5){  //if an enemy is not dead...
@@ -393,12 +397,10 @@ public class L5B implements Bot {
 
     @Override
     public void run(){
-        if(isAction < 4){ //if zombie is not dying.
+        if(isAction < ACTION_DYING){ //if zombie is not dying.
             if(!platformerScenario.getHero().equals(null)){
-                if(platformerScenario.getHero().isAction() != 2){  //if our player is not currently jumping.
-                    this.targetX = platformerScenario.getTargetX() + mapEditor.getScrollLevel1Map().getWorldOffsetX();
-                    this.targetY = platformerScenario.getTargetY() + mapEditor.getScrollLevel1Map().getWorldOffsetY();
-                }
+                this.targetX = platformerScenario.getTargetX()
+                        + mapEditor.getScrollLevel1Map().getWorldOffsetX();
             }
             if(targetX > 0){
                 isRunning = true;
@@ -485,24 +487,22 @@ public class L5B implements Bot {
     }
 
     public void shoot(){
-        if(isAction < 4){ //if zombie is not dying.
+        if(isAction < ACTION_DYING){ //if zombie is not dying.
             if(!platformerScenario.getHero().equals(null)){
-                if(platformerScenario.getHero().isAction() != 2){  //if our player is not currently jumping.
-                    this.targetX = platformerScenario.getTargetX() + mapEditor.getScrollLevel1Map().getWorldOffsetX();
-                    this.targetY = platformerScenario.getTargetY() + mapEditor.getScrollLevel1Map().getWorldOffsetY();
-                    setDirection(targetX);
-                    if(direction == 0){ //right
-                        bulletX = x + 56;
-                        bulletY = y + 23;
-                        bulletDirection = EnemyBullet.DIRECTION_RIGHT;
-                    }
-                    else{ //left
-                        bulletX = x + 2;
-                        bulletY = y + 23;
-                        bulletDirection = EnemyBullet.DIRECTION_LEFT;
-                    }
-                    isAction = 3;
+                this.targetX = platformerScenario.getTargetX()
+                        + mapEditor.getScrollLevel1Map().getWorldOffsetX();
+                setDirection(targetX);
+                if(direction == 0){ //right
+                    bulletX = x + 56;
+                    bulletY = y + 23;
+                    bulletDirection = EnemyBullet.DIRECTION_RIGHT;
                 }
+                else{ //left
+                    bulletX = x + 2;
+                    bulletY = y + 23;
+                    bulletDirection = EnemyBullet.DIRECTION_LEFT;
+                }
+                isAction = 3;
             }
         }
     }
@@ -637,7 +637,7 @@ public class L5B implements Bot {
 
     @Override
     public int isAction() {
-        return 0;
+        return isAction;
     }
 
     @Override

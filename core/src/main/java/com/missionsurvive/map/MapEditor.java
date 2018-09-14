@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.math.Vector2;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.scenarios.Spawn;
 import com.missionsurvive.scenarios.SpawnBot;
@@ -138,6 +139,24 @@ public class MapEditor implements Map{
         mapTers[row][col].setSrcY(-1);
     }
 
+    private void setLev2(String assetName, float  startX, float startY ){
+        Texture lev2Texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
+        lev2Texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        TextureRegion bg2 = new TextureRegion(lev2Texture, 0, 0, 256, 256);
+        lev2 = new ParallaxBackground(new ParallaxLayer[]{
+                new ParallaxLayer(bg2, new Vector2(1, 1), new Vector2(startX, startY), new Vector2(0, 0))
+        }, 480, 320, new Vector2(1, 0));
+    }
+
+    private void setLev3(String assetName){
+        Texture lev3Texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
+        lev3Texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        TextureRegion bg3 = new TextureRegion(lev3Texture, 1, 1, 480, 320);
+        lev3 = new ParallaxBackground(new ParallaxLayer[]{
+                new ParallaxLayer(bg3, new Vector2(1, 1), new Vector2(0, 0)),
+        }, 480, 320, new Vector2(0.5f, 0));
+    }
+
     /** Getting 3 map levels from text String.
      * @param mapTerInString
      */
@@ -148,8 +167,6 @@ public class MapEditor implements Map{
         if(mapTerInString == null){
             return isLoaded = false;
         }
-
-        String assetName = null;
 
         String fragmentDelims = "\\:";
 
@@ -169,37 +186,22 @@ public class MapEditor implements Map{
 
                 isLoaded = true;
             }
-
-            //-if(fragmentTokens[whichChar].equalsIgnoreCase("scroll")){
-            //-    scrollLevel1Map.setWorldOffset(Integer.parseInt(fragmentTokens[whichChar + 1]),
-            //-            Integer.parseInt(fragmentTokens[whichChar + 2]));
-            //-}
-
-            //-if(fragmentTokens[whichChar].equalsIgnoreCase("vertical")){
-            //-    isHorizontal = false;
-            //-}
-            //-if(fragmentTokens[whichChar].equalsIgnoreCase("level1MapTer")){
-            //-    mapTer = level1Ter;
-            //-    assetName = fragmentTokens[whichChar + 1];
-            //-}
-            //-if(fragmentTokens[whichChar].equalsIgnoreCase("level2MapTer")){
-            //-    mapTer = level2Ter;
-            //-    assetName = fragmentTokens[whichChar + 1];
-            //-}
-            //-if(fragmentTokens[whichChar].equalsIgnoreCase("level3MapTer")){
-            //-    mapTer = level3Ter;
-            //-    assetName = fragmentTokens[whichChar + 1];
-            //-}
-
-            if(fragmentTokens[whichChar]. equalsIgnoreCase("level1MapTer")){
-                //newForeground(worldWidth, worldHeight, 16, 16);
+            if(fragmentTokens[whichChar].equalsIgnoreCase("scroll")){
+                scrollLevel1Map.setWorldOffset(Integer.parseInt(fragmentTokens[whichChar + 1]),
+                        Integer.parseInt(fragmentTokens[whichChar + 2]));
             }
-
-            //temporary return if to not drawing other layers above layer 1:
-            //if(fragmentTokens[whichChar].equalsIgnoreCase("level2MapTer")){
-            //    return;
-            //}
-
+            if(fragmentTokens[whichChar].equalsIgnoreCase("vertical")){
+                isHorizontal = false;
+            }
+            if(fragmentTokens[whichChar].equalsIgnoreCase("level2MapTer")){
+                String assetName = fragmentTokens[whichChar + 1];
+                int startX = Integer.parseInt(fragmentTokens[whichChar + 2]);
+                int startY = Integer.parseInt(fragmentTokens[whichChar + 3]);
+                setLev2(assetName, startX, startY);
+            }
+            if(fragmentTokens[whichChar].equalsIgnoreCase("level3MapTer")){
+                setLev3(fragmentTokens[whichChar + 1]);
+            }
 
             if(fragmentTokens[whichChar].equalsIgnoreCase("row")){
                 row = Integer.parseInt(fragmentTokens[whichChar + 1]); //+1, because we have integer after String "row" saved in our txt file.
@@ -241,25 +243,6 @@ public class MapEditor implements Map{
                                 Integer.parseInt(fragmentTokens[whichChar + 8]), row, col);
                     }
                 }
-
-                //-if(Integer.parseInt(fragmentTokens[whichChar + 4]) >=  0){
-                //-    int assetY = Integer.parseInt(fragmentTokens[whichChar + 4]);
-                //-    int assetX = Integer.parseInt(fragmentTokens[whichChar + 5]);
-
-                //-    MapUtils.addMapObject(mapTer[row][col], new MapObject(assetName, col, row, assetX, assetY, 18, 18, 16, 16, 0, 0, null));
-                //-}
-                //-if(fragmentTokens[whichChar + 6].equalsIgnoreCase("blocked")){
-                //-    mapTer[row][col].setBlocked(true);
-                //-}
-                //-if(fragmentTokens[whichChar + 6].equalsIgnoreCase("ladder")){
-                //-    mapTer[row][col].setBlocked(true);
-                //-    mapTer[row][col].setLadder(true);
-                //-}
-                //-if(fragmentTokens[whichChar + 6].equalsIgnoreCase("enemy")){
-                //-    mapTer[row][col].setEditing(true);
-                //-    spawns[row][col] = new SpawnBot(Integer.parseInt(fragmentTokens[whichChar + 7]),
-                //-            Integer.parseInt(fragmentTokens[whichChar + 8]), row, col);
-                //-}
             }
         }
         return isLoaded;
@@ -352,6 +335,7 @@ public class MapEditor implements Map{
         lev2.updateCamera(1);
     }
 
+
     public void setCamPositionY(){
         gameCam.position.y = worldHeight * 16 + MSGame.SCREEN_OFFSET_Y - scrollLevel1Map.getWorldOffsetY();
     }
@@ -412,5 +396,18 @@ public class MapEditor implements Map{
 
     public void setGameCam(ParallaxCamera gameCam) {
         this.gameCam = gameCam;
+    }
+
+    @Override
+    public ParallaxBackground getBackground(String name) {
+        if(name != null){
+            if(name.equalsIgnoreCase("lev2")){
+                return lev2;
+            }
+            else if(name.equalsIgnoreCase("lev3")){
+                return lev3;
+            }
+        }
+        return null;
     }
 }

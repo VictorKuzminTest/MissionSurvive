@@ -11,40 +11,46 @@ import com.missionsurvive.utils.Commands;
  */
 
 public class ChooseStageListingBuilder implements ListingBuilder{
+
+    public static final int DIFFICULTY_BEGINNER = 0;
+    public static final int DIFFICULTY_EXPERIENCED = 1;
+
     private int buttonWidth = 102;
     private int buttonHeight = 90;
+    private int difficulty;
+
+    public ChooseStageListingBuilder(int difficulty){
+        this.difficulty = difficulty;
+    }
 
     @Override
     public void addButtons(ListButtons listButtons) {
-        //first lev:
-        int assetX = 1;
-        int assetY = 1;
-        Command toLev1Command = Commands.getCommand("ToLevel");
-        listButtons.addNewButton("levels", 0, 0, assetX, assetY, buttonWidth, buttonHeight, toLev1Command);
+        switch (difficulty){
+            case DIFFICULTY_BEGINNER:
+                addNewButton(listButtons, 1, 1, 0, "ToLevel1Beginner");
+                addNewButton(listButtons, 1 + (buttonWidth + 2) * 1, 1, 1, "ToLevel2Beginner");
+                addNewButton(listButtons, 1 + (buttonWidth + 2) * 2, 1, 2, "ToLevel3Beginner");
+                addNewButton(listButtons, 1, 1 + (buttonHeight + 2) * 1, 3, "ToLevel4Beginner");
+                addNewButton(listButtons, 1 + (buttonWidth + 2) * 1,
+                        1 + (buttonHeight + 2) * 1, 4, "ToLevel5Beginner");
+                break;
+            case DIFFICULTY_EXPERIENCED:
+                addNewButton(listButtons, 1, 1, 0, "ToLevel1Experienced");
+                addNewButton(listButtons, 1 + (buttonWidth + 2) * 1, 1, 1, "ToLevel2Experienced");
+                addNewButton(listButtons, 1 + (buttonWidth + 2) * 2, 1, 2, "ToLevel3Experienced");
+                addNewButton(listButtons, 1, 1 + (buttonHeight + 2) * 1, 3, "ToLevel4Experienced");
+                addNewButton(listButtons, 1 + (buttonWidth + 2) * 1,
+                        1 + (buttonHeight + 2) * 1, 4, "ToLevel5Experienced");
+                addNewButton(listButtons, 1 + (buttonWidth + 2) * 2,
+                        1 + (buttonHeight + 2) * 1, 5, "ToLevel6");
+                break;
+        }
+    }
 
-        //sec lev:
-        assetX = 1 + (buttonWidth + 2) * 1;
-        assetY = 1;
-        listButtons.addNewButton("levels", 1, 0, assetX, assetY, buttonWidth, buttonHeight, null);
-
-        //third lev:
-        assetX = 1 + (buttonWidth + 2) * 2;
-        assetY = 1;
-        listButtons.addNewButton("levels", 2, 0, assetX, assetY, buttonWidth, buttonHeight, null);
-
-        //fourth lev:
-        assetX = 1;
-        assetY = 1 + (buttonHeight + 2) * 1;
-        listButtons.addNewButton("levels", 3, 0, assetX, assetY, buttonWidth, buttonHeight, null);
-
-        //fiv lev:
-        assetX = 1 + (buttonWidth + 2) * 1;
-        assetY = 1 + (buttonHeight + 2) * 1;
-        listButtons.addNewButton("levels", 4, 0, assetX, assetY, buttonWidth, buttonHeight, null);
-
-        //six lev:
-        assetX = 1 + (buttonWidth + 2) * 2;
-        assetY = 1 + (buttonHeight + 2) * 1;
-        listButtons.addNewButton("levels", 5, 0, assetX, assetY, buttonWidth, buttonHeight, null);
+    public void addNewButton(ListButtons listButtons,
+                             int assetX, int assetY, int col, String commandName){
+        Command command = Commands.getCommand(commandName);
+        listButtons.addNewButton("levels", col, 0,
+                assetX, assetY, buttonWidth, buttonHeight, command);
     }
 }

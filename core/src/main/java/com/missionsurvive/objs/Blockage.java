@@ -51,7 +51,7 @@ public class Blockage extends Obstacle{
     @Override
     public void drawObject(SpriteBatch batch, int screenX, int screenY){
         batch.begin();
-        batch.draw(texture, MSGame.SCREEN_OFFSET_X + super.getScreenX(),
+        batch.draw(texture, MSGame.SCREEN_OFFSET_X + screenX,
                 MSGame.SCREEN_OFFSET_Y +
                         GeoHelper.transformCanvasYCoordToGL(super.getScreenY(), MSGame.SCREEN_HEIGHT, spriteHeight),
                 1 + 0 * spritesetSpriteWidth,

@@ -15,7 +15,6 @@ import com.missionsurvive.scenarios.commands.ShowHideBotPosCommand;
 import com.missionsurvive.scenarios.commands.ShowPopupCommand;
 import com.missionsurvive.scenarios.commands.ShowLayerCommand;
 import com.missionsurvive.scenarios.commands.ToLevelCommand;
-import com.missionsurvive.scenarios.commands.ToScreenCommand;
 import com.missionsurvive.scenarios.commands.WithTileCommand;
 
 /**
@@ -27,26 +26,56 @@ public class Commands {
     public static Command getCommand(String action){
         if(action != null){
             Command command;
-            if(action.equalsIgnoreCase("EditorScreen")){
-                return command = new ToScreenCommand(ToScreenCommand.TO_EDITOR_SCREEN);
-            }
-            else if(action.equalsIgnoreCase("ScrollerScreen")){
-                return command = new ToScreenCommand(ToScreenCommand.TO_SCROLLER_SCREEN);
-            }
-            else if(action.equalsIgnoreCase("ToDifficultyGameMenuFromStart")){
+            if(action.equalsIgnoreCase("ToDifficultyGameMenuFromStart")){
                 return command = new OpenCloseCPCommand("ToDifficultyGameMenuFromStart", null);
             }
             else if(action.equalsIgnoreCase("ToStartGameMenu")){
                 return command = new OpenCloseCPCommand("ToStartGameMenu", null);
             }
             else if(action.equalsIgnoreCase("beginner")){
-                return command = new OpenCloseCPCommand("ToChooseLevelMenu", null);
+                return command = new OpenCloseCPCommand("ToChooseLevelMenuBeginner", null);
+            }
+            else if(action.equalsIgnoreCase("experienced")){
+                return command = new OpenCloseCPCommand("ToChooseLevelMenuExperienced", null);
             }
             else if(action.equalsIgnoreCase("ToDifficultyGameMenuFromChoose")){
                 return command = new OpenCloseCPCommand("ToDifficultyGameMenuFromChoose", null);
             }
-            else if(action.equalsIgnoreCase("ToLevel")){
-                return command = new ToLevelCommand();
+            else if(action.equalsIgnoreCase("ToLevel1Beginner")){
+                return command = new ToLevelCommand("levs/level11");
+            }
+            else if(action.equalsIgnoreCase("ToLevel1Experienced")){
+                return command = new ToLevelCommand("levs/level12");
+            }
+            else if(action.equalsIgnoreCase("ToLevel2Beginner")){
+                return command = new ToLevelCommand("levs/level21");
+            }
+            else if(action.equalsIgnoreCase("ToLevel2Experienced")){
+                return command = new ToLevelCommand("levs/level22");
+            }
+            else if(action.equalsIgnoreCase("ToLevel3Beginner")){
+                return command = new ToLevelCommand("levs/level31");
+            }
+            else if(action.equalsIgnoreCase("ToLevel3Experienced")){
+                return command = new ToLevelCommand("levs/level32");
+            }
+            else if(action.equalsIgnoreCase("ToLevel4Beginner")){
+                return command = new ToLevelCommand("ToLevel4Beginner");
+            }
+            else if(action.equalsIgnoreCase("ToLevel4Experienced")){
+                return command = new ToLevelCommand("ToLevel4Experienced");
+            }
+            else if(action.equalsIgnoreCase("ToLevel5Beginner")){
+                return command = new ToLevelCommand("levs/level51");
+            }
+            else if(action.equalsIgnoreCase("ToLevel5Experienced")){
+                return command = new ToLevelCommand("levs/level52");
+            }
+            else if(action.equalsIgnoreCase("ToLevel6")){
+                return command = new ToLevelCommand("levs/level6");
+            }
+            else if(action.equalsIgnoreCase("NextLevel")){
+                return command = new ToLevelCommand("NextLevel");
             }
             else if(action.equalsIgnoreCase("PlayProjectCommand")){
                 return command = new PlayProjectCommand();

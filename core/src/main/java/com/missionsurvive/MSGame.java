@@ -4,10 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.XML;
 import com.missionsurvive.framework.impl.AndroidXML;
-import com.missionsurvive.screens.EditorMenuScreen;
-import com.missionsurvive.screens.GameMenuScreen;
+import com.missionsurvive.scenarios.PlayScript;
+import com.missionsurvive.screens.EditorScreen;
 import com.missionsurvive.screens.ScreenFactory;
-import com.missionsurvive.tests.screens.ButtonsTestScreen;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Controls;
 
@@ -35,17 +34,18 @@ public class MSGame extends Game {
 		Controls.setControls(this);
 		Assets.setGame(this);
 
-		screenFactory = new ScreenFactory(this);
+		PlayScript playScript = new PlayScript();
+		screenFactory = new ScreenFactory(this, playScript);
 
 		//test screens:
 		//setScreen(new TestScreen(this));
 		//setScreen(new ButtonsTestScreen(this));
 
 		//start editor screen:
-		setScreen(new EditorMenuScreen(this));
+        //setScreen(screenFactory.newScreen("LoadingLevelScreen", null, "EditorScreen"));
 
 		//start game screen:
-		//setScreen(screenFactory.newScreen("GameMenuScreen", null));
+		setScreen(screenFactory.newScreen("GameMenuScreen",null, null));
 	}
 
 	@Override

@@ -7,6 +7,8 @@ import com.missionsurvive.map.MapTer;
 import com.missionsurvive.map.ScrollMap;
 import com.missionsurvive.objs.actors.Hero;
 
+import sun.rmi.runtime.Log;
+
 /**
  * Created by kuzmin on 03.05.18.
  */
@@ -35,13 +37,18 @@ public class HeroPhysics implements Physics {
 
 
     public Vector calculateWhenRunning(MapTer mapTer, ScrollMap scrollMap,
-                                       int vectStartX, int vectStartY, Vector vector, int tileSize){
+                                       int vectStartX, int vectStartY,
+                                       Vector vector, int tileSize){
         if(mapTer != null){
             if(mapTer.isLadder()){
                 short offsetX = 4;
                 if(vector.getX() < 0){
                     offsetX = -4;
                 }
+                cutVector(vectStartX, vectStartY, vector,
+                        getBorderX(mapTer, scrollMap, vector.getX()),
+                        getBorderY(mapTer, scrollMap, vector.getY()));
+
                 vector.set(vector.getX() + offsetX, -tileSize);
             }
             else{
@@ -50,7 +57,6 @@ public class HeroPhysics implements Physics {
                         getBorderY(mapTer, scrollMap, vector.getY()));
             }
         }
-
         return vector;
     }
 
@@ -58,45 +64,24 @@ public class HeroPhysics implements Physics {
     public Vector calculateWhenJumpingOrFalling(MapTer mapTer, ScrollMap scrollMap,
                                                 int vectStartX, int vectStartY, Vector vector, int tileSize){
         if(mapTer != null){
-            //offset x of a vector for hero couldn't fall into the trap
-            //between tiles:
-            short offsetX = 2;                                         //+
-            if(vector.getX() < 0){                                     //+
-                offsetX = -2;                                          //+
-            }                                                          //+
             //calculate vector for a ladder:
             if(mapTer.isLadder()){
                 //if object moves for straight forward or down:
                 if(vector.getY() >= 0){
-                    //if object is not inside the ladder:
-                    //-if(!GeoHelper.inBoundsVolume(vectStartX, vectStartY, mapTer.getLeft(scrollMap),
-                    //-       mapTer.getTop(scrollMap), tileSize, tileSize)){
-
                     cutVector(vectStartX, vectStartY, vector,
                             getBorderX(mapTer, scrollMap, vector.getX()),
                             getBorderY(mapTer, scrollMap, vector.getY()));
-
-                    vector.setX(vector.getX() - offsetX);                        //+
-                    vector.setY(vector.getY() - 2);   //y offset                 //+
-                    //-}
                 }
             }
             else{
-                short offsetY = 2;
-                if(vector.getY() < 0){
-                    offsetY = -2;
-                }
-
                 cutVector(vectStartX, vectStartY, vector,
                         getBorderX(mapTer, scrollMap, vector.getX()),
                         getBorderY(mapTer, scrollMap, vector.getY()));
-
-                vector.setX(vector.getX() - offsetX);                           //+
-                vector.setY(vector.getY() - offsetY);                           //+
             }
         }
         return vector;
     }
+
 
 
     /**
@@ -109,8 +94,8 @@ public class HeroPhysics implements Physics {
      */
     public void cutVector(int startX, int startY, Vector vector,
                           int borderX, int borderY){
-        int initX = vector.getX();
-        int initY = vector.getY();
+        float initX = vector.getX();
+        float initY = vector.getY();
         boolean isVertical = false;
 
         short correctionX = 1;
@@ -123,10 +108,10 @@ public class HeroPhysics implements Physics {
             correctionX = -1;
         }
 
-        if(initY == 0){  //if vector is horizontal.
+        if(initY == 0){  //if vertical side.
             isVertical = true;
         }
-        else if (initX == 0){  //if vector is vertical.
+        else if (initX == 0){  //if horizontal side.
             isVertical = false;
         }
         else{
@@ -218,7 +203,7 @@ public class HeroPhysics implements Physics {
 
     public int getCol(MapTer[][] map, ScrollMap scrollMap, int coordX, int tileWidth){
         return GeoHelper.checkRowCol((coordX + scrollMap.getWorldOffsetX())
-                / tileWidth, map[0].length);
+                        / tileWidth, map[0].length);
     }
 
 

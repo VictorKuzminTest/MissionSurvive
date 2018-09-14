@@ -74,8 +74,8 @@ public class Hero implements GameObject {
     private int isAction; //this variable determines the action our hero is using.
     private int tileSize = 16;
     private int speedRunning = 2;
-    private int speedJumpingY = 7; //12; //10;
-    private int speedJumpingX = 3; //4; //3; //6;
+    private int speedJumpingY = 7;
+    private int speedJumpingX = 3;
     private int speedFallingY = 5;
     private int speedFallingX = 0;
     private int numShootingFrames = 4;
@@ -86,7 +86,7 @@ public class Hero implements GameObject {
 
     private float animationTick = 0.08f;
     private float animationTickTime = 0;
-    private float movingTick =  0.03f;
+    private float movingTick = 0.03f;
     private float movingTickTime = 0;
     private float shootingTick = 0.3f;
     private float shootingTickTime = shootingTick;
@@ -231,7 +231,9 @@ public class Hero implements GameObject {
         }
     }
 
-    public void move(MapTer[][] map, MapEditor mapEditor, int worldWidth, int worldHeight, float deltaTime) {
+    public void move(MapTer[][] map, MapEditor mapEditor,
+                     int worldWidth, int worldHeight, float deltaTime) {
+
         movingTickTime += deltaTime;
 
         while(movingTickTime > movingTick) {
@@ -248,6 +250,7 @@ public class Hero implements GameObject {
                     break;
                 case ACTION_DEAD:
                     speedFallingX = 0;
+                    movingVector.set(fallingVector);
                     falling(map, mapEditor, tileSize);
                     break;
                 case ACTION_RUNNING:
@@ -360,23 +363,35 @@ public class Hero implements GameObject {
 
     public void fall(MapTer[][] map, ScrollMap scrollMap, int tileSize){
         if(isAction != ACTION_JUMPING){
-            physics.calculateVector(map, scrollMap, hitbox.getCenterX(), hitbox.getBottom(),
-                    fallingVector.set(speedFallingX, speedFallingY), tileSize, ACTION_JUMPING);
-
+            //with this "if" we check whether hero is still on the ground (if not
+            // we can assign speed falling x),
+            //otherwise it could fall into between tiles gap:
+            if(isAction != ACTION_FALLING){
+                physics.calculateVector(map, scrollMap,
+                        hitbox.getCenterX(), hitbox.getBottom(),
+                        fallingVector.set(0, speedFallingY),
+                        tileSize, ACTION_JUMPING);
+            }
+            else{
+                physics.calculateVector(map, scrollMap,
+                        hitbox.getCenterX(), hitbox.getBottom(),
+                        fallingVector.set(speedFallingX, speedFallingY),
+                        tileSize, ACTION_JUMPING);
+            }
             //if hero is not on the ground (falling):
             if(fallingVector.getY() > 0){
                 setActionAndAnimationFrames(ACTION_FALLING, SPRITES_FALLING, 0);
                 movingVector.set(fallingVector);
             }
             else{
-                fallingVector.setX(speedFallingX);
-                movingVector.set(fallingVector);
                 if(isAction != ACTION_SHOOTING){
                     if(isRunning){
-                        setActionAndAnimationFrames(ACTION_RUNNING, SPRITES_RUN, 0);
+                        setActionAndAnimationFrames(ACTION_RUNNING,
+                                SPRITES_RUN, 0);
                     }
                     else{
-                        setActionAndAnimationFrames(ACTION_IDLE, SPRITES_IDLE, 0);
+                        setActionAndAnimationFrames(ACTION_IDLE, SPRITES_IDLE,
+                                0);
                     }
                 }
             }
@@ -437,7 +452,8 @@ public class Hero implements GameObject {
         int jumpingX = directionX * jumpingVector.getX();
         int jumpingY = directionY * jumpingVector.getY();
         movingVector.set(jumpingX, jumpingY);
-        calculateMovingVector(map, mapEditor.getScrollLevel1Map(), tileSize, ACTION_JUMPING);
+        calculateMovingVector(map, mapEditor.getScrollLevel1Map(),
+                tileSize, ACTION_JUMPING);
 
         //when collides tile while going down, sets action to ACTION_FALLING (also reset jumpIterCount):
         if(directionY > 0){

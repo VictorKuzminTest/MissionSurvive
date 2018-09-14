@@ -9,6 +9,7 @@ import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.geom.Hitbox;
 import com.missionsurvive.objs.GameObject;
 import com.missionsurvive.objs.Obstacle;
+import com.missionsurvive.scenarios.PlayScript;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.ScrollerScenario;
 import com.missionsurvive.utils.Assets;
@@ -28,8 +29,6 @@ public class Moto implements GameObject{
     public static final int JUMPING_HEIGHT= 77;
 
     public static final int MOVING_STRAIGHT = 0, MOVING_TILT = 1, JUMPING_START = 2, SMASHED = 3;
-
-    private int lives = 4;
 
     private int screenX, screenY, limitTop = 120, limitBottom = 300, screenWidth;
     private int hitOffsX;
@@ -53,13 +52,16 @@ public class Moto implements GameObject{
     private int direction;
     private FlyingHero flyingHero;
     private Texture texture;
+    private PlayScript playScript;
 
     private int[] spritesRows; //each element of this array contains the number of sprites in a row.
     private int numDirections;
     private int numActions;
     private ScrollerScenario scenario;
 
-    public Moto(String assetName, Scenario scenario, int screenX, int screenY){
+    public Moto(String assetName, Scenario scenario, PlayScript playScript,
+                int screenX, int screenY){
+        this.playScript = playScript;
         this.screenX = screenX;
         this.screenY = screenY;
         if(assetName != null){
@@ -385,7 +387,6 @@ public class Moto implements GameObject{
         }
     }
 
-
     /**
      * This method is used when users take off the screen his finger.
      * touchTickTime is equal back 0.03f, because moto has to react immediately when user touches screen again.
@@ -394,7 +395,6 @@ public class Moto implements GameObject{
         isTouched = false;
         touchTickTime = touchTick;
     }
-
 
     public int calcDestX(int speedInPixels, int direction){
         switch (direction) {
@@ -468,16 +468,12 @@ public class Moto implements GameObject{
         }
     }
 
-    public void setLives(int lives){
-        this.lives = lives;
-    }
-
     public void decreaseLives(){
-        lives--;
+        playScript.subtractLife();
     }
 
     public int getLives(){
-        return lives;
+        return playScript.getLives();
     }
 
     public void setScreenX(int screenX){
@@ -513,5 +509,4 @@ public class Moto implements GameObject{
         isAction = RUNNING_ACTION;
         maneuver = MOVING_STRAIGHT;
     }
-
 }

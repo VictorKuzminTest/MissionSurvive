@@ -12,12 +12,16 @@ import com.missionsurvive.framework.TouchControl;
 import com.missionsurvive.framework.impl.DrawerFacade;
 import com.missionsurvive.map.Map;
 import com.missionsurvive.map.MapEditor;
+import com.missionsurvive.map.ParallaxBackground;
 import com.missionsurvive.map.ParallaxCamera;
 import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.PlayScript;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.SpawnBot;
+import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
+import com.missionsurvive.scenarios.controlscenarios.GameCS;
+import com.missionsurvive.scenarios.controlscenarios.MapEditorCS;
 
 /**
  * Created by kuzmin on 31.05.18.
@@ -28,11 +32,14 @@ public class PlatformerScreen extends GameScreen implements Screen {
     private MSGame game;
     private DrawerFacade drawerFacade;
     private ParallaxCamera gameCam;
+    private ParallaxBackground lev2;
+    private ParallaxBackground lev3;
     private Viewport gamePort;
     private TiledMapRenderer renderer;
     private Map map;
     private PlayScript playScript;
     private Scenario platformerScenario;
+    private ControlScenario controlScenario;
     private TouchControl touchControl;
     private Hero hero;
 
@@ -41,8 +48,9 @@ public class PlatformerScreen extends GameScreen implements Screen {
     //transforming real coords into logic:
     private float scaleX, scaleY;
 
-    public PlatformerScreen(MSGame game, Map map){
+    public PlatformerScreen(MSGame game, PlayScript playScript, Map map){
         this.game = game;
+        this.playScript = playScript;
 
         scaleX = (float) MSGame.SCREEN_WIDTH / Gdx.graphics.getBackBufferWidth();
         scaleY = (float)MSGame.SCREEN_HEIGHT / Gdx.graphics.getBackBufferHeight();
@@ -52,6 +60,8 @@ public class PlatformerScreen extends GameScreen implements Screen {
         this.map = map;
         worldHeight = map.getLevel1Ter().length;
         worldWidth = map.getLevel1Ter()[0].length;
+        lev2 = map.getBackground("lev2");
+        lev3 = map.getBackground("lev3");
 
         gameCam = new ParallaxCamera(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT); //extends OrthographicCamera
         gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
@@ -62,13 +72,16 @@ public class PlatformerScreen extends GameScreen implements Screen {
         ((MapEditor)map).setGameCam(gameCam);
 
         touchControl = new TouchControl(scaleX, scaleY);
-        playScript = new PlayScript(this);
+        this.playScript.setScreen(this, "gameControls");
         platformerScenario = new PlatformerScenario((MapEditor)map, playScript, touchControl);
+        controlScenario = new GameCS();
+        platformerScenario.setControlScenario(controlScenario);
 
         putPlayer(100, 150);
     }
 
     public void update(float deltaTime) {
+        controlScenario.onTouchPanels(deltaTime, scaleX, scaleY);
         platformerScenario.update(map, touchControl, deltaTime);
     }
 
@@ -81,9 +94,12 @@ public class PlatformerScreen extends GameScreen implements Screen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //CHECK IF IT IS REALLY NEEDED EVERY TIME THE WORLD RENDERS!!!!!!!!!
-        game.getSpriteBatch().enableBlending();
-        game.getSpriteBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        if(lev3 != null){
+            lev3.render();
+        }
+        if(lev2 != null){
+            lev2.render();
+        }
 
         gameCam.update();
         renderer.setView(gameCam);
@@ -103,6 +119,11 @@ public class PlatformerScreen extends GameScreen implements Screen {
     public void render(float delta) {
         update(delta);
         drawWorld();
+        drawInterfaces();
+    }
+
+    private void drawInterfaces() {
+        controlScenario.drawPanels(game.getSpriteBatch());
     }
 
     @Override

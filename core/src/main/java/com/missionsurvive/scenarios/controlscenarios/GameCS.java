@@ -1,43 +1,38 @@
 package com.missionsurvive.scenarios.controlscenarios;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.ControlPanel;
-import com.missionsurvive.framework.impl.ListButtons;
 import com.missionsurvive.utils.Controls;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kuzmin on 07.05.18.
- */
+public class GameCS implements ControlScenario{
+    private static final int HUD = 0;
 
-public class ScrollerCS implements ControlScenario {
+    private List<ControlPanel> listOfPanels;
 
-    private List<ControlPanel> listOfPanels = new ArrayList<ControlPanel>();
-    private ListingBuilder listingBuilder;
-
-    public ScrollerCS(Screen screen){
+    public GameCS(){
+        listOfPanels = new ArrayList<ControlPanel>();
         setControlPanels();
-        listingBuilder = new ScrollerScreenListingBuilder(screen);
-        ListButtons controlList = listOfPanels.get(0).getListButtons("editorControl");
-        listingBuilder.addButtons(controlList);
     }
 
     @Override
     public List<ControlPanel> getControlPanels() {
-        return null;
+        return listOfPanels;
     }
 
     @Override
     public void setControlPanels() {
         for(int i = 0; i < Controls.controlPanels.length; i++){
-            if(Controls.controlPanels[i].getName().equalsIgnoreCase("ScrollerControls")){
+            if(Controls.controlPanels[i].getName().equalsIgnoreCase("gameControls")){
+                listOfPanels.add(Controls.controlPanels[i]);
+            }
+            else if(Controls.controlPanels[i].getName().equalsIgnoreCase("EndLevelMenu")){
                 listOfPanels.add(Controls.controlPanels[i]);
             }
         }
-        listOfPanels.get(0).setActivated(true);
+        listOfPanels.get(HUD).setActivated(true);
     }
 
     @Override
@@ -52,15 +47,16 @@ public class ScrollerCS implements ControlScenario {
     }
 
     @Override
-    public boolean onTouchPanels(float delta, float scaleX, float scaleY) {
+    public boolean onTouchPanels(float deltaTime, float scaleX, float scaleY) {
+        boolean onTouch = false;
         int numPanels = listOfPanels.size();
         for(int whichPanel = 0; whichPanel < numPanels; whichPanel++){
             ControlPanel controlPanel = listOfPanels.get(whichPanel);
             if(controlPanel.isActivated() == true){
-                controlPanel.onTouch(delta, scaleX, scaleY);
+                onTouch = controlPanel.onTouch(deltaTime, scaleX, scaleY);
             }
         }
-        return false;
+        return onTouch;
     }
 
     @Override

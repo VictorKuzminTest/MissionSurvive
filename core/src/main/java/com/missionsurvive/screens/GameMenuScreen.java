@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.missionsurvive.MSGame;
+import com.missionsurvive.scenarios.PlayScript;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
-import com.missionsurvive.scenarios.controlscenarios.EditorMenuCS;
 import com.missionsurvive.scenarios.controlscenarios.GameMenuCS;
 import com.missionsurvive.utils.Assets;
 
@@ -24,13 +24,15 @@ public class GameMenuScreen implements Screen {
     private Viewport gamePort;
     private ControlScenario controlScenario;
     private Texture texture;
+    private PlayScript playScript;
 
     //for transforming real pixel touch coords into logic pixel coords:
     private float scaleX;
     private float scaleY;
 
-    public GameMenuScreen(MSGame game){
+    public GameMenuScreen(MSGame game, PlayScript playScript){
         this.game = game;
+        this.playScript = playScript;
 
         gameCam = new OrthographicCamera();
         gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);

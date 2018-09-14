@@ -26,6 +26,10 @@ import java.util.List;
 
 public class L3B implements Bot {
 
+    private final int SHOOTING_SPRITES = 0, DYING_SPRITES = 1;
+    public static final int IDLE_ACTION = 0, FALLING_ACTION = 1, SHOOTING_ACTION = 2, START_DYING_ACTION = 3,
+            BETWEEN_DYING_ACTION = 4, END_DYING_ACTION = 5, DEAD = 6;
+
     private int x;
     private int y;
     private int spritesetSpriteWidth;
@@ -49,17 +53,13 @@ public class L3B implements Bot {
     private static float movingTick =  0.03f;
     private float betweenShotsTickTime = 0 , betweenShotsTick = 2.0f;
 
-    private final int SHOOTING_SPRITES = 0, DYING_SPRITES = 1;
-    private final int IDLE_ACTION = 0, FALLING_ACTION = 1, SHOOTING_ACTION = 2, START_DYING_ACTION = 3,
-            BETWEEN_DYING_ACTION = 4, END_DYING_ACTION = 5, DEAD = 6;
-
     private int[] spritesRows; //each element of this array contains the number of sprites in a row.
     private int numDirections; //количество направлений для действий (сторон света).
     private int numActions; //количество действий.
     private int currentAction; //currentAction
     private int direction; //direction of action.  0 - right, 1 - left.
     private int fallingSpeed = 7; //falling speed in pixels.
-    private int hits;
+    private int hp = 10;
 
     private float StartDyingTick = 0.1f, StartDyingTickTime = 0,
             betweenDyingTick = 1.5f, betweenDyingTickTime = 0, EndDyingTick = 0.1f,
@@ -80,7 +80,6 @@ public class L3B implements Bot {
         spriteHeight = 110;
         spritesetSpriteWidth = spriteWidth + 2;
         spritesetSpriteHeight = spriteHeight + 2;
-        hits = 10;
 
         hitbox = new Hitbox(x, y, 40, 80, 20, 17);
 
@@ -206,7 +205,9 @@ public class L3B implements Bot {
 
     @Override
     public void collide(Hero hero){
-
+        if(isAction < START_DYING_ACTION){
+            hero.die();
+        }
     }
 
 
@@ -324,8 +325,8 @@ public class L3B implements Bot {
 
     @Override
     public void hit(Weapon weapon){
-        hits--;
-        if(hits < 0){
+        hp -= weapon.getHP();
+        if(hp < 0){
             die();
         }
         if(isAction < DEAD){  //if an enemy is not dead...
@@ -399,7 +400,7 @@ public class L3B implements Bot {
             isAction = SHOOTING_ACTION;
 
             bulletX = x + 2;
-            bulletY = y + 23;
+            bulletY = y + 56;
             bulletDirection = EnemyBullet.DIRECTION_LEFT;
         }
     }
@@ -493,7 +494,7 @@ public class L3B implements Bot {
 
     @Override
     public int getSpriteWidth(){
-        return spriteWidth;
+        return spriteWidth - 70;
     }
 
     @Override
@@ -538,7 +539,7 @@ public class L3B implements Bot {
 
     @Override
     public int isAction() {
-        return 0;
+        return isAction;
     }
 
     @Override

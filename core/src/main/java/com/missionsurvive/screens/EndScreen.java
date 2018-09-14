@@ -12,6 +12,7 @@ import com.missionsurvive.framework.impl.DrawerFacade;
 import com.missionsurvive.map.Map;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.ParallaxCamera;
+import com.missionsurvive.scenarios.PlayScript;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.EndGameScenario;
 
@@ -24,11 +25,13 @@ public class EndScreen extends GameScreen implements Screen {
     private TiledMapRenderer renderer;
     private Map map;
     private Scenario endGameScenario;
+    private PlayScript playScript;
 
     private int worldHeight;
 
-    public EndScreen(MSGame game, Map map){
+    public EndScreen(MSGame game, PlayScript playScript, Map map){
         this.game = game;
+        this.playScript = playScript;
         drawerFacade = new DrawerFacade();
         this.map = map;
 

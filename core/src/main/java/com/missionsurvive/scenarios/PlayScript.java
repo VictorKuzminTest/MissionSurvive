@@ -13,18 +13,18 @@ import com.missionsurvive.utils.Controls;
 
 public class PlayScript {
 
-    private int lives;
+    private int lives = 1;
     private GameScreen gameScreen;
     private ControlPanel controlPanel;
 
-    public PlayScript(GameScreen gameScreen) {
+    public void setScreen(GameScreen gameScreen, String controlPanelName){
         this.gameScreen = gameScreen;
-        controlPanel = getControlPanel("mapEditorControls");
-        setLives(3);
+        controlPanel = getControlPanel(controlPanelName);
+        setLivesIcon();
     }
 
-    public void setLives(int lives){
-        this.lives = lives;
+    public void newLives(){
+        lives = 1;
         setLivesIcon();
     }
 
@@ -64,7 +64,7 @@ public class PlayScript {
      * @return
      */
     public int getXYToResurrect(int rowCol, int objOffsetValue, int worldOffsetXY){
-        return rowCol * (16 - 1) - objOffsetValue - worldOffsetXY;
+        return rowCol * 16 - objOffsetValue - worldOffsetXY;
     }
 
     /**
@@ -100,7 +100,7 @@ public class PlayScript {
      */
     public ControlPanel getControlPanel(String name){
         for(int i = 0; i < Controls.controlPanels.length; i++){
-            if(Controls.controlPanels[i].getName().equalsIgnoreCase("mapEditorControls")){
+            if(Controls.controlPanels[i].getName().equalsIgnoreCase(name)){
                 this.controlPanel = Controls.controlPanels[i];
             }
         }

@@ -12,15 +12,15 @@ import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.utils.Assets;
 
-public class TriggerEndGame implements Bot {
+public class TriggerEndLev6 implements Bot {
 
     private Map map;
 
-    public TriggerEndGame(){
+    public TriggerEndLev6(){
         MSGame game = Assets.getGame();
         map = new MapEditor(35, 23);
         ((MapEditor)map).initMap(35, 23);
-        game.setScreen(game.getScreenFactory().newScreen("EndScreen", map));
+        game.setScreen(game.getScreenFactory().newScreen("EndScreen", map, null));
     }
 
     @Override

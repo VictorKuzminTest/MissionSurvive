@@ -19,4 +19,6 @@ public interface Map {
     public boolean loadMap(String mapTerInString);
 
     public String saveMap();
+
+    public ParallaxBackground getBackground(String name);
 }

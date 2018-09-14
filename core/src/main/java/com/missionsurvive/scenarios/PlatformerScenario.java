@@ -169,6 +169,9 @@ public class PlatformerScenario implements Scenario {
             currentMapTer = hero.getPreviosMapTer();
             playScript.resurrectHero(currentMapTer, mapEditor, hero);
         }
+        else{
+            playScript.subtractLife();
+        }
     }
 
     public void updateHero(MapEditor mapEditor, int worldWidth, int worldHeight,

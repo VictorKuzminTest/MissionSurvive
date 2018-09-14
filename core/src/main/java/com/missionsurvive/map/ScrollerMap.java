@@ -1,9 +1,5 @@
 package com.missionsurvive.map;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.missionsurvive.scenarios.controlscenarios.ScrollerCS;
-import com.missionsurvive.utils.Assets;
-
 import java.util.Random;
 
 /**
@@ -146,6 +142,11 @@ public class ScrollerMap implements Map{
 
     @Override
     public String saveMap() {
+        return null;
+    }
+
+    @Override
+    public ParallaxBackground getBackground(String name) {
         return null;
     }
 }

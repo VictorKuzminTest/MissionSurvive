@@ -333,10 +333,10 @@ public class Zombie implements Bot {
                             return;
                         }
                     }
-                    else{
-                        vectorX = speedInPixels;
-                        return;
-                    }
+                }
+                else{
+                    vectorX = speedInPixels;
+                    return;
                 }
             }
             vectorX = speedInPixels;
@@ -352,7 +352,7 @@ public class Zombie implements Bot {
         else{
             if(southTer != null){
                 int southTerTop = southTer.getTop(mapEditor.getScrollLevel1Map());
-                if((bottom + speedInPixels) > southTerTop){  //если при runningSpeed герой окажется внутри тайла... В данном случае - это (bottom + speedInPixels) > southTerTop).
+                if((bottom + speedInPixels) >= southTerTop){  //если при runningSpeed герой окажется внутри тайла... В данном случае - это (bottom + speedInPixels) > southTerTop).
                     vectorY = southTerTop - bottom;  //vectorX изменит свое значение ровно до позиции столкновения с тайлом.
                     return;
                 }

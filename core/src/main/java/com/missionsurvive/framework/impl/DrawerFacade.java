@@ -16,6 +16,7 @@ import com.missionsurvive.scenarios.SpawnBot;
 import com.missionsurvive.scenarios.SpawnScenario;
 import com.missionsurvive.utils.Assets;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public class DrawerFacade {
     private Texture l6bTexture = Assets.getTextures()[Assets.getWhichTexture("l6b")];
 
     private ShapeRenderer hitBox;
+    private ShapeRenderer heroHitbox;
 
     private float scaleToDrawX, scaleToDrawY;
     private int tileWidth = 16;
@@ -46,6 +48,9 @@ public class DrawerFacade {
                 / MSGame.SCREEN_HEIGHT;
         hitBox = new ShapeRenderer();
         hitBox.setColor(0, 0, 0, 0.5f);
+
+        heroHitbox = new ShapeRenderer();
+        heroHitbox.setColor(0, 1, 0, 0.5f);
     }
 
     public void drawHero(Hero hero, SpriteBatch batch){
@@ -56,12 +61,8 @@ public class DrawerFacade {
             else{
                 hero.drawObject(batch, 0, 0, 0, 0);
             }
-            //Hitbox and vector of legs of a hero:
-            /*Hitbox hitbox = hero.getHitbox();
-            g.drawRect(hitbox.getLeft(), hitbox.getTop(),
-                    hitbox.getHitboxWidth(), hitbox.getHitboxHeight(), 0, hitbox.getPaint()); //draw hitbox.
-            g.drawRect(hitbox.getCenterX(), hitbox.getBottom(),  //draw colliding center.
-                    2, 2, Color.RED, hitbox.getPaint());*/
+
+            drawHeroHitbox(hero);
 
             int numBullets = hero.getWeapon().size();
             for(short i = 0; i < numBullets; i++){
@@ -69,6 +70,7 @@ public class DrawerFacade {
             }
         }
     }
+
 
     public void drawWreckages(List<Bot> wreckages, SpriteBatch batch){
         int numWreckages = wreckages.size();
@@ -200,5 +202,22 @@ public class DrawerFacade {
                         MSGame.SCREEN_HEIGHT, height) * scaleToDrawY,
                 width * scaleToDrawX, height * scaleToDrawY);
         hitBox.end();
+    }
+
+    public void drawHeroHitbox(Hero hero){
+        int left = hero.getLeft();
+        int top = hero.getTop();
+        int width = hero.getHitboxWidth();
+        int height = hero.getHitboxHeight();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        heroHitbox.begin(ShapeRenderer.ShapeType.Filled);
+        heroHitbox.rect(left * scaleToDrawX,
+                GeoHelper.transformCanvasYCoordToGL(top,
+                        MSGame.SCREEN_HEIGHT, height) * scaleToDrawY,
+                width * scaleToDrawX, height * scaleToDrawY);
+        heroHitbox.end();
     }
 }

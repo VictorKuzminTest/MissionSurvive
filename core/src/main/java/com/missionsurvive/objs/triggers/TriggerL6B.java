@@ -9,20 +9,17 @@ import com.missionsurvive.objs.Bot;
 import com.missionsurvive.objs.Weapon;
 import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.objs.actors.L1B;
+import com.missionsurvive.objs.actors.L6B;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
-import com.missionsurvive.scenarios.commands.Command;
 
-/**
- * Created by kuzmin on 09.06.18.
- * Auto scrolling of the screen to some target.
- */
-public class TriggerBoss implements Bot {
+public class TriggerL6B implements Bot {
 
     public static final float SCROLLING_TICK = 0.03f;
 
     private PlatformerScenario scenario;
     private Bot bot;
+    private TriggerEndLev6 endLev6;
 
     private int speedScrollingX = 2;
     private int x;
@@ -31,7 +28,7 @@ public class TriggerBoss implements Bot {
 
     private float scrollingTickTime;
 
-    public TriggerBoss(Bot bot, Scenario scenario, int x, int y){
+    public TriggerL6B(Bot bot, Scenario scenario, int x, int y){
         this.x = x;
         endScrollX = x + numTilesToScroll * 16;
         this.scenario = (PlatformerScenario) scenario;
@@ -39,13 +36,7 @@ public class TriggerBoss implements Bot {
     }
 
     @Override
-    public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
-
-    }
-
-    @Override
-    public void moving(float deltaTime, MapTer[][] mapTer, MapEditor mapEditor,
-                       int worldWidth, int worldHeight) {
+    public void moving(float deltaTime, MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight) {
         scrollingTickTime += deltaTime;
         while(scrollingTickTime > SCROLLING_TICK){
             scrollingTickTime -= SCROLLING_TICK;
@@ -57,19 +48,8 @@ public class TriggerBoss implements Bot {
                 scenario.getHero().setX(scenario.getHero().getX() - speedScrollingX);
             }
 
-            if(bot.isAction() == L1B.ACTION_DEAD){
-                showEndLevelPanel();
-                scenario.removeBot(this, 0);
-            }
-        }
-    }
-
-    public void showEndLevelPanel(){
-        int numPanels = scenario.getControlScenario().getControlPanels().size();
-        for(int i  = 0; i < numPanels; i++){
-            ControlPanel cp = scenario.getControlScenario().getControlPanels().get(i);
-            if(cp.getName().equalsIgnoreCase("EndLevelMenu")){
-                cp.setActivated(true);
+            if(bot.isAction() == L6B.ACTION_DEAD){
+                endLev6 = new TriggerEndLev6();
             }
         }
     }
@@ -82,21 +62,6 @@ public class TriggerBoss implements Bot {
     }
 
     @Override
-    public void drawObject(SpriteBatch batch, int screenX, int screenY) {
-
-    }
-
-    @Override
-    public boolean onTouch() {
-        return false;
-    }
-
-    @Override
-    public void update(float deltaTime) {
-
-    }
-
-    @Override
     public void collide(Hero hero) {
 
     }
@@ -104,11 +69,6 @@ public class TriggerBoss implements Bot {
     @Override
     public void hit(Weapon weapon) {
 
-    }
-
-    @Override
-    public Decorator getDecorator() {
-        return null;
     }
 
     @Override
@@ -179,5 +139,30 @@ public class TriggerBoss implements Bot {
     @Override
     public int isAction() {
         return 0;
+    }
+
+    @Override
+    public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
+
+    }
+
+    @Override
+    public void drawObject(SpriteBatch batch, int screenX, int screenY) {
+
+    }
+
+    @Override
+    public boolean onTouch() {
+        return false;
+    }
+
+    @Override
+    public void update(float deltaTime) {
+
+    }
+
+    @Override
+    public Decorator getDecorator() {
+        return null;
     }
 }

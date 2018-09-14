@@ -80,7 +80,7 @@ public class EditorScreen extends GameScreen implements Screen {
     private boolean isScrollBlocked;
     private boolean isShowingObjPos = true;
 
-    public EditorScreen(MSGame game, int width, int height) {
+    public EditorScreen(MSGame game, PlayScript playScript) {
         this.game = game;
 
         scaleX = (float) MSGame.SCREEN_WIDTH / Gdx.graphics.getBackBufferWidth();
@@ -89,8 +89,8 @@ public class EditorScreen extends GameScreen implements Screen {
         scaleToDrawY = (float)Gdx.graphics.getBackBufferHeight() / MSGame.SCREEN_HEIGHT;
 
         drawerFacade = new DrawerFacade();
-        worldWidth = width;
-        worldHeight = height;
+        worldWidth = 35;
+        worldHeight = 300;
 
         gameCam = new ParallaxCamera(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT); //extends OrthographicCamera
         gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
@@ -121,11 +121,12 @@ public class EditorScreen extends GameScreen implements Screen {
         }, 480, 320, new Vector2(1, 0));
 
         map = new MapEditor(lev3, lev2, gameCam, worldWidth, worldHeight);
-        playScript = new PlayScript(this);
+        this.playScript = playScript;
+        this.playScript.setScreen(this, "mapEditorControls");
         renderer = new OrthogonalTiledMapRenderer(((MapEditor)map).getMap());
         touchControl = new TouchControl(scaleX, scaleY);
         platformerScenario = new PlatformerScenario((MapEditor)map,
-                playScript, touchControl);
+                this.playScript, touchControl);
         controlScenario = new MapEditorCS(this, map, platformerScenario);
         platformerScenario.setControlScenario(controlScenario);
 
@@ -178,22 +179,6 @@ public class EditorScreen extends GameScreen implements Screen {
             game.getSpriteBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             lev3.render();
             lev2.render();
-        }
-
-        switch(tilesetLayerToDraw){
-            case FIRST_LAYER:
-                break;
-            default:
-                /*int backgroundOffset = (int)mapEditor.getBackgroundOffset();
-                g.drawPixmap(Assets.pixmaps[this.whichAsset], 0, 0, backgroundOffset, 0,
-                        480 - backgroundOffset, 321, null);
-                g.drawPixmap(Assets.pixmaps[this.whichAsset], (480 - 1) - backgroundOffset, 0, 0, 0,
-                        (backgroundOffset + 2), 321, null); //(background + 2) because only in this case background is fully drawn on the screen.
-
-                //draw tileset for platformer:
-                drawRoundedTileset(level2Ter, scrollLevel2Map, level2TileRect, false);
-                drawTileset(level1Ter, scrollLevel1Map, level1TileRect, false);*/
-                break;
         }
 
         gameCam.update();

@@ -24,6 +24,7 @@ public class Assets {
     private static String[] texNames; //array that contains names of textures.
     private static XML xml;
     private static MSGame thisGame;
+    private static String currentLevel;
 
     public static void setMapAssets(MSGame game){
         xml = game.getXMLParser();
@@ -68,6 +69,14 @@ public class Assets {
             }
         }
         return 0;
+    }
+
+    public static void setCurrentLevel(String level){
+        currentLevel = level;
+    }
+
+    public static String getCurrentLevel(){
+        return currentLevel;
     }
 
 }

@@ -11,6 +11,7 @@ import com.missionsurvive.MSGame;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.map.Map;
 import com.missionsurvive.map.MapEditor;
+import com.missionsurvive.scenarios.PlayScript;
 import com.missionsurvive.scenarios.commands.Command;
 import com.missionsurvive.scenarios.commands.LoadFromAssetsLibGdx;
 import com.missionsurvive.scenarios.commands.SaveLoadMapCommand;
@@ -28,6 +29,8 @@ public class LoadingLevelScreen implements Screen {
     private Texture texture;
     private Map map;
     private Command loadMapCommand;
+    private String assetName;
+    private PlayScript playScript;
 
     private int iconX = 330;
     private int iconY = 290;
@@ -36,16 +39,57 @@ public class LoadingLevelScreen implements Screen {
     private int assetWidth = 148;
     private int assetHeight = 26;
 
-    public LoadingLevelScreen(MSGame game){
+    public LoadingLevelScreen(MSGame game, PlayScript playScript, String assetName){
         this.game = game;
+        this.playScript = playScript;
 
         gameCam = new OrthographicCamera();
         gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
 
         texture = Assets.getTextures()[Assets.getWhichTexture("art")];
         loadMapCommand = new LoadFromAssetsLibGdx();
+        setAssetName(assetName);
 
         map = new MapEditor();
+    }
+
+    public void setAssetName(String assetName){
+        if(assetName.equalsIgnoreCase("NextLevel")){
+            if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level11")){
+                this.assetName = "levs/level21";
+            }
+            else if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level21")){
+                this.assetName = "levs/level31";
+            }
+            else if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level31")){
+                this.assetName = "ToLevel4Beginner";
+            }
+            else if(Assets.getCurrentLevel().equalsIgnoreCase("ToLevel4Beginner")){
+                this.assetName = "levs/level51";
+            }
+            if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level12")){
+                this.assetName = "levs/level22";
+            }
+            else if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level22")){
+                this.assetName = "levs/level32";
+            }
+            else if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level32")){
+                this.assetName = "ToLevel4Experienced";
+            }
+            else if(Assets.getCurrentLevel().equalsIgnoreCase("ToLevel4Experienced")){
+                this.assetName = "levs/level52";
+            }
+            else if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level52")){
+                this.assetName = "levs/level6";
+            }
+            else if(Assets.getCurrentLevel().equalsIgnoreCase("EditorScreen")){
+                this.assetName = "EditorScreen";
+            }
+        }
+        else{
+            this.assetName = assetName;
+        }
+        Assets.setCurrentLevel(this.assetName);
     }
 
     @Override
@@ -54,8 +98,19 @@ public class LoadingLevelScreen implements Screen {
     }
 
     public void update(float delta){
-        if(map.loadMap(loadMapCommand.execute(null, "levs/lev1"))){
-            game.setScreen(game.getScreenFactory().newScreen("PlatformerScreen", map));
+        if(assetName.equalsIgnoreCase("EditorScreen")){
+            game.setScreen(game.getScreenFactory().newScreen("EditorScreen", null, null));
+        }
+        else if(assetName.equalsIgnoreCase("ToLevel4Beginner")){
+            game.setScreen(game.getScreenFactory().newScreen("ScrollerScreen", null, null));
+        }
+        else if(assetName.equalsIgnoreCase("ToLevel4Experienced")){
+            game.setScreen(game.getScreenFactory().newScreen("ScrollerScreen", null, null));
+        }
+        else{
+            if(map.loadMap(loadMapCommand.execute(null, assetName))){
+                game.setScreen(game.getScreenFactory().newScreen("PlatformerScreen", map, null));
+            }
         }
     }
 

@@ -16,17 +16,29 @@ import java.util.List;
 public class GameMenuCS implements ControlScenario{
 
     public static final int START_MENU = 0;
-    public static final int CHOOSE_LEVEL_MENU = 2;
+    public static final int CHOOSE_LEVEL_MENU_BEGINNER = 2;
+    public static final int CHOOSE_LEVEL_MENU_EXPERIENCED = 3;
 
     private List<ControlPanel> listOfPanels = new ArrayList<ControlPanel>();
-    private ListingBuilder chooseStageListingBuilder;
+    private ListingBuilder chooseStageListingBuilderBeginner;
+    private ListingBuilder chooseStageListingBuilderExperienced;
 
     public GameMenuCS(){
         setControlPanels();
 
-        chooseStageListingBuilder = new ChooseStageListingBuilder();
-        ListButtons tilesetList = listOfPanels.get(CHOOSE_LEVEL_MENU).getListButtons("chooseLevel");
-        chooseStageListingBuilder.addButtons(tilesetList);
+        //we create two builders for choosing levels: beginner, experienced.
+        chooseStageListingBuilderBeginner = new ChooseStageListingBuilder(
+                ChooseStageListingBuilder.DIFFICULTY_BEGINNER);
+        chooseStageListingBuilderExperienced = new ChooseStageListingBuilder(
+                ChooseStageListingBuilder.DIFFICULTY_EXPERIENCED);
+
+        ListButtons chooseLevelListBeginner = listOfPanels.get(CHOOSE_LEVEL_MENU_BEGINNER)
+                .getListButtons("chooseLevelBeginner");
+        chooseStageListingBuilderBeginner.addButtons(chooseLevelListBeginner);
+
+        ListButtons chooseLevelListExperienced = listOfPanels.get(CHOOSE_LEVEL_MENU_EXPERIENCED)
+                .getListButtons("chooseLevelExperienced");
+        chooseStageListingBuilderExperienced.addButtons(chooseLevelListExperienced);
     }
 
     @Override

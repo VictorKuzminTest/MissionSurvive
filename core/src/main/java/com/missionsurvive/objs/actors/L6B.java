@@ -26,8 +26,11 @@ import com.missionsurvive.utils.Assets;
 
 public class L6B implements Bot {
 
+    public static final int WAIT_FOR_ATTACK = 22;
+    public static final int WAIT_AFTER_DYING = 100;
+
     public static final int SPEED_MOVING = 2;
-    public static final int SPEED_ATTACKING = 5;
+    public static final int SPEED_ATTACKING = 6;
 
     public static final int DISTANCE_ABOVE = 0;
 
@@ -49,6 +52,8 @@ public class L6B implements Bot {
     public static final int ACTION_ATTACK = 2;
     public static final int ACTION_GOBACK = 3;
     public static final int ACTION_DYING = 4;
+    public static final int ACTION_WAIT_AFTER_DYING = 5;
+    public static final int ACTION_DEAD = 6;
 
     private Hitbox hitbox;
     private Vector movingVector;
@@ -73,6 +78,8 @@ public class L6B implements Bot {
     private int action;
     private int hitpoints;
     private int numBursts;
+    private int waitAfterDying;
+    private int waitForAttack;
 
     private float movingTickTime = 0;
     private float movingTick = 0.03f;
@@ -83,10 +90,10 @@ public class L6B implements Bot {
         this.worldX = worldX;
         this.worldY = worldY;
         movingVector = new Vector2(SPEED_MOVING, SPEED_ATTACKING);
-        hitbox = new Hitbox(worldX, worldY, 50, 50, 0, 0);
+        hitbox = new Hitbox(worldX, worldY, 26, 48, 31, 47);
         this.mapEditor = mapEditor;
         directionX = DIRECTION_LEFT;
-        hitpoints = 0;
+        hitpoints = 10;
         setAnimation();
         rocketLauncher = new RocketLauncher();
 
@@ -174,7 +181,7 @@ public class L6B implements Bot {
     public void moving(float deltaTime, MapTer[][] mapTer, MapEditor mapEditor,
                        int worldWidth, int worldHeight) {
 
-        if(action != ACTION_DYING){
+        if(action < ACTION_DYING){
             rocketLauncher.shoot(deltaTime, mapEditor.getScrollLevel1Map().getWorldOffsetX());
             hit(rocketLauncher.getRocket());
         }
@@ -193,7 +200,14 @@ public class L6B implements Bot {
                     persue();
                     break;
                 case ACTION_WAIT:
-                    gettingReadyToAttack();
+                    setTargetX(platformerScenario.getHero());
+                    if(directionX == DIRECTION_ABOVE){
+                        gettingReadyToAttack();
+                    }
+                    else{
+                        waitForAttack = 0;
+                        action = ACTION_PERSUE;
+                    }
                     break;
                 case ACTION_ATTACK:
                     attacking();
@@ -204,12 +218,15 @@ public class L6B implements Bot {
                 case ACTION_DYING:
                     dying();
                     break;
+                case ACTION_WAIT_AFTER_DYING:
+                    waitAfterDying();
+                    break;
             }
         }
     }
 
     private void dying() {
-        if(numBursts < 10){
+        if(numBursts < 20){
             if(burstAnimation.getCurrentFrame() == 4){
                 burstAnimation.setCurrentFrame(0);
                 numBursts++;
@@ -221,12 +238,24 @@ public class L6B implements Bot {
         else{
             isBurning = false;
             dyingAnimation.animate(0, 6);
+            if(dyingAnimation.getCurrentFrame() == 6){
+                action = ACTION_WAIT_AFTER_DYING;
+            }
+        }
+    }
+
+    public void waitAfterDying(){
+        waitAfterDying++;
+        if(waitAfterDying > WAIT_AFTER_DYING){
+            action = ACTION_DEAD;
         }
     }
 
     @Override
     public void collide(Hero hero) {
-
+        if(action < ACTION_DYING){
+            hero.die();
+        }
     }
 
     @Override
@@ -530,8 +559,13 @@ public class L6B implements Bot {
                 action = ACTION_WAIT;
                 break;
             case ACTION_WAIT:
-                action = ACTION_ATTACK;
-                setAnimationFrames(SPRITES_ATTACK);
+                waitForAttack++;
+                if(waitForAttack > WAIT_FOR_ATTACK){
+                    waitForAttack = 0;
+                    action = ACTION_ATTACK;
+                    setAnimationFrames(SPRITES_ATTACK);
+                }
+                break;
         }
     }
 
@@ -567,7 +601,7 @@ public class L6B implements Bot {
             while(shootingTickTime > shootingTick){
                 shootingTickTime -= shootingTick;
 
-                rocket.shoot(480 + offsetX, 210, EnemyBullet.DIRECTION_LEFT);
+                rocket.shoot(480 + offsetX, 240, EnemyBullet.DIRECTION_LEFT);
             }
         }
 

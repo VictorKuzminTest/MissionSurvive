@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -16,19 +14,17 @@ import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.TouchControl;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.map.Map;
-import com.missionsurvive.map.MapEditor;
-import com.missionsurvive.map.MapTer;
 import com.missionsurvive.map.ParallaxBackground;
 import com.missionsurvive.map.ParallaxCamera;
 import com.missionsurvive.map.ParallaxLayer;
 import com.missionsurvive.map.ScrollMap;
 import com.missionsurvive.map.ScrollerMap;
-import com.missionsurvive.objs.GameObject;
 import com.missionsurvive.objs.Obstacle;
 import com.missionsurvive.objs.actors.Moto;
+import com.missionsurvive.scenarios.PlayScript;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 import com.missionsurvive.scenarios.Scenario;
-import com.missionsurvive.scenarios.controlscenarios.ScrollerCS;
+import com.missionsurvive.scenarios.controlscenarios.GameCS;
 import com.missionsurvive.scenarios.ScrollerScenario;
 import com.missionsurvive.utils.Assets;
 
@@ -52,6 +48,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
     private Map map;
     private ControlScenario controlScenario;
     private ScrollerScenario scrollerScenario;
+    private PlayScript playScript;
 
     private int noStartCol = -1, noEndCol = -1;
     private int screenWidth;
@@ -64,16 +61,19 @@ public class ScrollerScreen extends GameScreen implements Screen {
     private boolean blink;
     private boolean onPause;
 
-    public ScrollerScreen(MSGame game) {
+    public ScrollerScreen(MSGame game, PlayScript playScript) {
         this.game = game;
+        this.playScript = playScript;
 
         scaleX = (float) MSGame.SCREEN_WIDTH / Gdx.graphics.getBackBufferWidth();
         scaleY = (float)MSGame.SCREEN_HEIGHT / Gdx.graphics.getBackBufferHeight();
 
-        scrollerScenario = new ScrollerScenario(this, 500, 220);
+        scrollerScenario = new ScrollerScenario(this, this.playScript,
+                500, 220);
         map = new ScrollerMap();
         touchControl = new TouchControl(scaleX, scaleY);
-        controlScenario = new ScrollerCS(this);
+        controlScenario = new GameCS();
+        scrollerScenario.setControlScenario(controlScenario);
 
         bgTexture = Assets.getTextures()[Assets.getWhichTexture("ocean")];
         texture = Assets.getTextures()[Assets.getWhichTexture("bridge")];
@@ -89,6 +89,9 @@ public class ScrollerScreen extends GameScreen implements Screen {
         background = new ParallaxBackground(new ParallaxLayer[]{
                 new ParallaxLayer(bg, new Vector2(1, 1), new Vector2(0, 0)),
         }, 480, 320, new Vector2(50, 0));
+
+        this.playScript.setScreen(this, "gameControls");
+        putPlayer(100, 150);
     }
 
     public void update(float deltaTime) {
@@ -99,7 +102,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
     }
 
     /**
-     * the method is used only to set the blinking of the obstacle.
+     * the method is used only to set the blinking of an obstacle.
      * @param deltaTime
      */
     public void updateObstacleBlinking(float deltaTime){
@@ -129,7 +132,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
             drawObstacles(scrollerScenario.getObstacles(), game.getSpriteBatch());
 
             if(moto.isDead()){
-                if(moto.getLives() < 0){ //lost continue
+                if(moto.getLives() < -1){ //lost continue
                     drawDeathScreen(1);
                 }
                 else{ //just lost life
