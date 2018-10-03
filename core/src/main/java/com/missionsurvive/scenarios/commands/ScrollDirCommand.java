@@ -2,6 +2,7 @@ package com.missionsurvive.scenarios.commands;
 
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
+import com.missionsurvive.screens.GameScreen;
 
 /**
  * Created by kuzmin on 17.05.18.
@@ -26,4 +27,8 @@ public class ScrollDirCommand implements Command{
         platformerScenario = (PlatformerScenario)scenario;
     }
 
+    @Override
+    public void setScreen(GameScreen gameScreen) {
+
+    }
 }

@@ -12,6 +12,7 @@ import com.missionsurvive.scenarios.PlayScript;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 import com.missionsurvive.scenarios.controlscenarios.GameMenuCS;
 import com.missionsurvive.utils.Assets;
+import com.missionsurvive.utils.Progress;
 
 /**
  * Created by kuzmin on 31.05.18.
@@ -33,6 +34,7 @@ public class GameMenuScreen implements Screen {
     public GameMenuScreen(MSGame game, PlayScript playScript){
         this.game = game;
         this.playScript = playScript;
+        this.playScript.newLives();
 
         gameCam = new OrthographicCamera();
         gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
@@ -41,6 +43,7 @@ public class GameMenuScreen implements Screen {
 
         scaleX = (float)480 / Gdx.graphics.getBackBufferWidth();
         scaleY = (float)320 / Gdx.graphics.getBackBufferHeight();
+        Progress.loadProgress();
 
         controlScenario = new GameMenuCS();
     }

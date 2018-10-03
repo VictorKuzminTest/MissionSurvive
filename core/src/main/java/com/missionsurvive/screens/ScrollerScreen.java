@@ -13,12 +13,14 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.TouchControl;
 import com.missionsurvive.geom.GeoHelper;
+import com.missionsurvive.geom.Hitbox;
 import com.missionsurvive.map.Map;
 import com.missionsurvive.map.ParallaxBackground;
 import com.missionsurvive.map.ParallaxCamera;
 import com.missionsurvive.map.ParallaxLayer;
 import com.missionsurvive.map.ScrollMap;
 import com.missionsurvive.map.ScrollerMap;
+import com.missionsurvive.objs.Bot;
 import com.missionsurvive.objs.Obstacle;
 import com.missionsurvive.objs.actors.Moto;
 import com.missionsurvive.scenarios.PlayScript;
@@ -49,6 +51,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
     private ControlScenario controlScenario;
     private ScrollerScenario scrollerScenario;
     private PlayScript playScript;
+    private ShapeRenderer hitBoxRect;
 
     private int noStartCol = -1, noEndCol = -1;
     private int screenWidth;
@@ -57,22 +60,30 @@ public class ScrollerScreen extends GameScreen implements Screen {
     private float darkenTickTime = 0, darkenTick = 0.1f;
     private float blinkTickTime, blinkTick = 0.1f; //floats for obstacle blink.
     private float scaleX, scaleY;
+    private float scaleToDrawX, scaleToDrawY;
 
     private boolean blink;
     private boolean onPause;
 
-    public ScrollerScreen(MSGame game, PlayScript playScript) {
+    public ScrollerScreen(MSGame game, PlayScript playScript, String difficulty) {
         this.game = game;
         this.playScript = playScript;
 
         scaleX = (float) MSGame.SCREEN_WIDTH / Gdx.graphics.getBackBufferWidth();
         scaleY = (float)MSGame.SCREEN_HEIGHT / Gdx.graphics.getBackBufferHeight();
 
+        scaleToDrawX = (float)Gdx.graphics.getBackBufferWidth()
+                / MSGame.SCREEN_WIDTH;
+        scaleToDrawY = (float)Gdx.graphics.getBackBufferHeight()
+                / MSGame.SCREEN_HEIGHT;
+        hitBoxRect = new ShapeRenderer();
+        hitBoxRect.setColor(0, 0, 0, 0.5f);
+
         scrollerScenario = new ScrollerScenario(this, this.playScript,
-                500, 220);
+                500, 220, difficulty);
         map = new ScrollerMap();
         touchControl = new TouchControl(scaleX, scaleY);
-        controlScenario = new GameCS();
+        controlScenario = new GameCS(this);
         scrollerScenario.setControlScenario(controlScenario);
 
         bgTexture = Assets.getTextures()[Assets.getWhichTexture("ocean")];
@@ -120,9 +131,10 @@ public class ScrollerScreen extends GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if(!onPause){
-            game.getSpriteBatch().enableBlending();
-            game.getSpriteBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
             background.render(delta);
+        }
+        else{
+            background.render(0);
         }
 
         drawRoundedTileset(game.getSpriteBatch(), map.getScrollMap());
@@ -179,30 +191,21 @@ public class ScrollerScreen extends GameScreen implements Screen {
                         if(!isMotoDrawn){
                             moto.drawObject(batch, 0, 0, 0, 0);
                             isMotoDrawn = true;
-							/*Hitbox motoHitbox = moto.getHitbox();
-							g.drawRect(motoHitbox.getLeft(), motoHitbox.getTop(), motoHitbox.getHitboxWidth(),
-							motoHitbox.getHitboxHeight(), Color.BLACK, null);*/
+                            /*drawing moto hitbox:
+                            drawMotoHitBox();*/
                         }
                         obstacle.drawObject(batch, 0, 0, 0, 0);
-						/*Hitbox obstacleHitbox = obstacle.getHitbox();
-						g.drawRect(obstacleHitbox.getLeft(), obstacleHitbox.getTop(), obstacleHitbox.getHitboxWidth(),
-							obstacleHitbox.getHitboxHeight(), Color.MAGENTA, null);*/
                     }
                     else{
                         obstacle.drawObject(batch, 0, 0, 0, 0);
-						/*Hitbox obstacleHitbox = obstacle.getHitbox();
-						g.drawRect(obstacleHitbox.getLeft(), obstacleHitbox.getTop(), obstacleHitbox.getHitboxWidth(),
-							obstacleHitbox.getHitboxHeight(), Color.MAGENTA, null);*/
                     }
                 }
             }
         }
         if(!isMotoDrawn){
             moto.drawObject(batch, 0, 0, 0, 0);
-			/*Hitbox motoHitbox = moto.getHitbox();
-			g.drawRect(motoHitbox.getLeft(), motoHitbox.getTop(), motoHitbox.getHitboxWidth(),
-					motoHitbox.getHitboxHeight(),
-					Color.BLACK, null);*/
+            /*drawing moto hitbox:
+			drawMotoHitBox();*/
         }
     }
 
@@ -220,10 +223,45 @@ public class ScrollerScreen extends GameScreen implements Screen {
                 }
                 obstacle.drawObject(batch, 0, 0, 0, 0);
             }
-			/*Hitbox obstacleHitbox = obstacle.getHitbox();
-			g.drawRect(obstacleHitbox.getLeft(), obstacleHitbox.getTop(), obstacleHitbox.getHitboxWidth(),
-							obstacleHitbox.getHitboxHeight(), Color.MAGENTA, null);*/
+            /*drawing tear hitbox:
+            drawHitBox(obstacle);*/
         }
+    }
+
+    public void drawHitBox(Obstacle obstacle){
+        Hitbox hitbox = obstacle.getHitbox();
+        int left = hitbox.getLeft();
+        int top = hitbox.getTop();
+        int width = hitbox.getHitboxWidth();
+        int height = hitbox.getHitboxHeight();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        hitBoxRect.begin(ShapeRenderer.ShapeType.Filled);
+        hitBoxRect.rect(left * scaleToDrawX,
+                GeoHelper.transformCanvasYCoordToGL(top,
+                        MSGame.SCREEN_HEIGHT, height) * scaleToDrawY,
+                width * scaleToDrawX, height * scaleToDrawY);
+        hitBoxRect.end();
+    }
+
+    public void drawMotoHitBox(){
+        Hitbox hitbox = moto.getHitbox();
+        int left = hitbox.getLeft();
+        int top = hitbox.getTop();
+        int width = hitbox.getHitboxWidth();
+        int height = hitbox.getHitboxHeight();
+
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        hitBoxRect.begin(ShapeRenderer.ShapeType.Filled);
+        hitBoxRect.rect(left * scaleToDrawX,
+                GeoHelper.transformCanvasYCoordToGL(top,
+                        MSGame.SCREEN_HEIGHT, height) * scaleToDrawY,
+                width * scaleToDrawX, height * scaleToDrawY);
+        hitBoxRect.end();
     }
 
     public void drawRoundedTileset(SpriteBatch batch, ScrollMap scrollMap){
@@ -266,6 +304,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
         moto = scrollerScenario.getMoto();
     }
 
+    @Override
     public boolean onPause(){
         return onPause;
     }
@@ -348,6 +387,11 @@ public class ScrollerScreen extends GameScreen implements Screen {
     }
 
     @Override
+    public void pause(boolean pause) {
+        onPause = pause;
+    }
+
+    @Override
     public void resume() {
 
     }
@@ -357,4 +401,8 @@ public class ScrollerScreen extends GameScreen implements Screen {
 
     }
 
+    @Override
+    public void setScreenPos(int x, int y) {
+
+    }
 }

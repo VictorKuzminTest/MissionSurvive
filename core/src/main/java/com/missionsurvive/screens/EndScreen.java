@@ -11,10 +11,14 @@ import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.impl.DrawerFacade;
 import com.missionsurvive.map.Map;
 import com.missionsurvive.map.MapEditor;
+import com.missionsurvive.map.ParallaxBackground;
 import com.missionsurvive.map.ParallaxCamera;
 import com.missionsurvive.scenarios.PlayScript;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.EndGameScenario;
+import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
+import com.missionsurvive.scenarios.controlscenarios.EndCS;
+import com.missionsurvive.scenarios.controlscenarios.GameCS;
 
 public class EndScreen extends GameScreen implements Screen {
 
@@ -26,16 +30,28 @@ public class EndScreen extends GameScreen implements Screen {
     private Map map;
     private Scenario endGameScenario;
     private PlayScript playScript;
+    private ParallaxBackground lev2;
+    private ParallaxBackground lev3;
+    private ControlScenario controlScenario;
 
-    private int worldHeight;
+    private int worldHeight, worldWidth;
+
+    //transforming real coords into logic:
+    private float scaleX, scaleY;
 
     public EndScreen(MSGame game, PlayScript playScript, Map map){
         this.game = game;
         this.playScript = playScript;
         drawerFacade = new DrawerFacade();
-        this.map = map;
 
+        scaleX = (float) MSGame.SCREEN_WIDTH / Gdx.graphics.getBackBufferWidth();
+        scaleY = (float)MSGame.SCREEN_HEIGHT / Gdx.graphics.getBackBufferHeight();
+
+        this.map = map;
         worldHeight = map.getLevel1Ter().length;
+        worldWidth = map.getLevel1Ter()[0].length;
+        lev2 = map.getBackground("lev2");
+        lev3 = map.getBackground("lev3");
 
         gameCam = new ParallaxCamera(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT); //extends OrthographicCamera
         gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
@@ -44,10 +60,12 @@ public class EndScreen extends GameScreen implements Screen {
         gameCam.position.z = 0;
         renderer = new OrthogonalTiledMapRenderer(((MapEditor)map).getMap());
         ((MapEditor)map).setGameCam(gameCam);
-        endGameScenario = new EndGameScenario((MapEditor) map);
+        controlScenario = new EndCS();
+        endGameScenario = new EndGameScenario((MapEditor) map, controlScenario);
     }
 
     public void update(float deltaTime) {
+        controlScenario.onTouchPanels(deltaTime, scaleX, scaleY);
         endGameScenario.update(map, null, deltaTime);
     }
 
@@ -55,9 +73,12 @@ public class EndScreen extends GameScreen implements Screen {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //CHECK IF IT IS REALLY NEEDED EVERY TIME THE WORLD RENDERS!!!!!!!!!
-        game.getSpriteBatch().enableBlending();
-        game.getSpriteBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        if(lev3 != null){
+            lev3.render();
+        }
+        if(lev2 != null){
+            lev2.render();
+        }
 
         gameCam.update();
         renderer.setView(gameCam);
@@ -76,6 +97,11 @@ public class EndScreen extends GameScreen implements Screen {
     public void render(float delta) {
         update(delta);
         drawWorld();
+        drawInterfaces();
+    }
+
+    private void drawInterfaces() {
+        controlScenario.drawPanels(game.getSpriteBatch());
     }
 
     @Override
@@ -89,8 +115,18 @@ public class EndScreen extends GameScreen implements Screen {
     }
 
     @Override
+    public void pause(boolean pause) {
+
+    }
+
+    @Override
     public void resume() {
 
+    }
+
+    @Override
+    public boolean onPause() {
+        return false;
     }
 
     @Override
@@ -105,6 +141,11 @@ public class EndScreen extends GameScreen implements Screen {
 
     @Override
     public void putPlayer(int x, int y) {
+
+    }
+
+    @Override
+    public void setScreenPos(int x, int y) {
 
     }
 }

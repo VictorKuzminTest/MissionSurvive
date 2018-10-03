@@ -2,6 +2,7 @@ package com.missionsurvive.tests.commands;
 
 import com.missionsurvive.scenarios.commands.Command;
 import com.missionsurvive.framework.Button;
+import com.missionsurvive.screens.GameScreen;
 
 /**
  * Created by kuzmin on 27.04.18.
@@ -41,5 +42,10 @@ public class OnClickButtonLogCommand implements Command{
             System.out.println("row = " + row + " col = " + col);
         }
         return null;
+    }
+
+    @Override
+    public void setScreen(GameScreen gameScreen) {
+
     }
 }

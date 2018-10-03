@@ -18,24 +18,34 @@ public class Tank implements Bot{
 
     public static final int FRAMES_MOVING = 0;
 
+    public static final int ACTION_AWAY = 1;
+
     public static final float ANIMATION_TICK = 0.04f;
+    public static final float SCALE_TICK = 0.1f;
+    public static final float CORRECTION_TICK = 0.1f;
 
     private Animation animation;
     private Animation movingAnimation;
     private Texture texture;
     private MapEditor mapEditor;
 
-    private int worldX;
-    private int worldY;
+    private float worldX;
+    private float worldY;
     private int assetStartX;
     private int spriteWidth;
     private int spriteHeight;
     private int spritesetSpriteWidth;
     private int spritesetSpriteHeight;
-    private int dstWidth;
-    private int dstHeight;
+    private int action;
 
+    private float dstWidth;
+    private float dstHeight;
+    private float scaleIncrementX;
+    private float scaleIncrementY;
+    private float correctionX = 0.55f;
     private float animationTickTime;
+    private float movingTickTime;
+    private float correctionTickTime;
 
     public Tank(String assetName, MapEditor mapEditor, int x, int y){
         worldX = x;
@@ -47,6 +57,8 @@ public class Tank implements Bot{
         spritesetSpriteHeight = spriteHeight + 2;
         dstWidth = spriteWidth;
         dstHeight = spriteHeight;
+        scaleIncrementX = 1;
+        scaleIncrementY = (float)spriteHeight / (float)spriteWidth;
         this.mapEditor = mapEditor;
 
         if(assetName != null){
@@ -67,21 +79,24 @@ public class Tank implements Bot{
     }
 
     @Override
-    public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
-        Animation currentAnimation = animation.getChildren().get(FRAMES_MOVING);
+    public void drawObject(SpriteBatch batch, int col, int row,
+                           int offsetX, int offsetY) {
+        if(action != ACTION_AWAY) {
+            Animation currentAnimation = animation.getChildren().get(FRAMES_MOVING);
 
-        batch.begin();
-        batch.draw(texture, MSGame.SCREEN_OFFSET_X + worldX - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
-                MSGame.SCREEN_OFFSET_Y +
-                        GeoHelper.transformCanvasYCoordToGL(
-                                worldY - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
-                                MSGame.SCREEN_HEIGHT, dstHeight),
-                dstWidth, dstHeight,
-                currentAnimation.getChildren().get(currentAnimation.getCurrentFrame()).getX(),
-                currentAnimation.getChildren().get(currentAnimation.getCurrentFrame()).getY(),
-                spriteWidth, spriteHeight,
-                false, false);
-        batch.end();
+            batch.begin();
+            batch.draw(texture, MSGame.SCREEN_OFFSET_X + worldX - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
+                    MSGame.SCREEN_OFFSET_Y +
+                            GeoHelper.transformCanvasYCoordToGL(
+                                    (int)worldY - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
+                                    MSGame.SCREEN_HEIGHT, (int)dstHeight),
+                    dstWidth, dstHeight,
+                    currentAnimation.getChildren().get(currentAnimation.getCurrentFrame()).getX(),
+                    currentAnimation.getChildren().get(currentAnimation.getCurrentFrame()).getY(),
+                    spriteWidth, spriteHeight,
+                    false, false);
+            batch.end();
+        }
     }
 
     @Override
@@ -91,7 +106,11 @@ public class Tank implements Bot{
 
     @Override
     public void moving(float deltaTime, MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight) {
-        animate(deltaTime);
+        if(action != ACTION_AWAY){
+            setAction();
+            animate(deltaTime);
+            move(deltaTime);
+        }
     }
 
     public void animate(float deltaTime){
@@ -100,6 +119,29 @@ public class Tank implements Bot{
             animationTickTime -= ANIMATION_TICK;
 
             animation.getChildren().get(FRAMES_MOVING).animate(0, 3);
+        }
+    }
+
+    public void move(float deltaTime){
+        movingTickTime += deltaTime;
+        while(movingTickTime > SCALE_TICK){
+            movingTickTime -= SCALE_TICK;
+
+            dstWidth -= scaleIncrementX;
+            dstHeight -= scaleIncrementY;
+        }
+
+        correctionTickTime += deltaTime;
+        while(correctionTickTime > CORRECTION_TICK){
+            correctionTickTime -= CORRECTION_TICK;
+
+            worldX += correctionX;
+        }
+    }
+
+    public void setAction(){
+        if(dstWidth < 2){
+            action = ACTION_AWAY;
         }
     }
 
@@ -180,7 +222,7 @@ public class Tank implements Bot{
 
     @Override
     public int isAction() {
-        return 0;
+        return action;
     }
 
 

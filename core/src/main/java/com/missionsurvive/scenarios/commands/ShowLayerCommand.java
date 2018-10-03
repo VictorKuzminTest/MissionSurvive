@@ -3,6 +3,7 @@ package com.missionsurvive.scenarios.commands;
 import com.badlogic.gdx.Screen;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.screens.EditorScreen;
+import com.missionsurvive.screens.GameScreen;
 
 /**
  * Created by kuzmin on 14.05.18.
@@ -33,5 +34,10 @@ public class ShowLayerCommand implements Command{
     public void setScreenAndLayer(EditorScreen editorScreen, int layer){
         this.screen = editorScreen;
         layerId = layer;
+    }
+
+    @Override
+    public void setScreen(GameScreen gameScreen) {
+
     }
 }

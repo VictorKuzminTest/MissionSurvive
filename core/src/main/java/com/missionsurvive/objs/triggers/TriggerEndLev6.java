@@ -10,6 +10,8 @@ import com.missionsurvive.objs.Bot;
 import com.missionsurvive.objs.Weapon;
 import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.scenarios.Scenario;
+import com.missionsurvive.scenarios.commands.Command;
+import com.missionsurvive.scenarios.commands.LoadFromAssetsLibGdx;
 import com.missionsurvive.utils.Assets;
 
 public class TriggerEndLev6 implements Bot {
@@ -18,9 +20,12 @@ public class TriggerEndLev6 implements Bot {
 
     public TriggerEndLev6(){
         MSGame game = Assets.getGame();
-        map = new MapEditor(35, 23);
-        ((MapEditor)map).initMap(35, 23);
-        game.setScreen(game.getScreenFactory().newScreen("EndScreen", map, null));
+        map = new MapEditor();
+        Command loadMapCommand = new LoadFromAssetsLibGdx();
+        if(map.loadMap(loadMapCommand.execute(null, "levs/end"))){
+            game.setScreen(game.getScreenFactory()
+                    .newScreen("EndScreen", map, null));
+        }
     }
 
     @Override

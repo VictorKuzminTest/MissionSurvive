@@ -158,9 +158,10 @@ public class Rocket extends EnemyBullet {
         return false;
     }
 
-    public boolean shoot(int x, int y, int direction){
+    public boolean shoot(int x, int y,
+                         int worldOffsetX, int worldOffsetY, int direction){
         isDrawing = true;
-        return super.shoot(x, y, direction);
+        return super.shoot(x, y, worldOffsetX, worldOffsetY, direction);
     }
 
     public int getScreenX(){

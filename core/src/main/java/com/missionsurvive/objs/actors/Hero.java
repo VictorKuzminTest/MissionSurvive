@@ -30,6 +30,9 @@ import java.util.List;
 
 public class Hero implements GameObject {
 
+    public static final int FROM_POWERUP = 0;
+    public static final int FROM_PLAYSCRIPT = 1;
+
     public static final int DIRECTION_RIGHT = 0, DIRECTION_LEFT = 1;
     public static final int SPRITES_IDLE = 0, SPRITES_RUN = 1, SPRITES_JUMPING = 2,
             SPRITES_IDLE_SHOOTING = 3, SPRITES_IDLE_BACK = 4,
@@ -299,8 +302,10 @@ public class Hero implements GameObject {
             shootingTickTime -= shootingTick;
 
             if(heroAnimation.getCurrentFrame() % 2 == 0){
-                weapon.shoot(bulletX + mapEditor.getScrollLevel1Map().getWorldOffsetX(),
-                        bulletY + mapEditor.getScrollLevel1Map().getWorldOffsetY(), bulletDirection);
+                int worldOffsetX = mapEditor.getScrollLevel1Map().getWorldOffsetX();
+                int worldOffsetY = mapEditor.getScrollLevel1Map().getWorldOffsetY();
+                weapon.shoot(bulletX + worldOffsetX,
+                        bulletY + worldOffsetY, worldOffsetX, worldOffsetY, bulletDirection);
             }
             if(!isShooting){
                 if(checkFrameToStopShooting()){
@@ -550,6 +555,12 @@ public class Hero implements GameObject {
         }
         else{
             x += movingVector.getX();
+            if(x < 0){
+                x = 0;
+            }
+            else if((x + spriteWidth) > MSGame.SCREEN_WIDTH){
+                x = MSGame.SCREEN_WIDTH - spriteWidth;
+            }
         }
     }
 
@@ -863,8 +874,16 @@ public class Hero implements GameObject {
         platformerScenario.addLife();
     }
 
-    public void addGun(){
-        weapon.update(0);
+    public void addGun(int from){
+        switch (from){
+            case FROM_POWERUP:
+                weapon.update(0);
+                platformerScenario.addGun();
+                break;
+            case FROM_PLAYSCRIPT:
+                weapon.update(0);
+                break;
+        }
     }
 
     public void setPlatformerScenario(PlatformerScenario platformerScenario) {

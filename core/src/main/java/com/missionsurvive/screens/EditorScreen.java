@@ -89,8 +89,8 @@ public class EditorScreen extends GameScreen implements Screen {
         scaleToDrawY = (float)Gdx.graphics.getBackBufferHeight() / MSGame.SCREEN_HEIGHT;
 
         drawerFacade = new DrawerFacade();
-        worldWidth = 35;
-        worldHeight = 300;
+        worldWidth = 300;
+        worldHeight = 23;
 
         gameCam = new ParallaxCamera(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT); //extends OrthographicCamera
         gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
@@ -111,21 +111,21 @@ public class EditorScreen extends GameScreen implements Screen {
         TextureRegion bg3 = new TextureRegion(lev3Texture, 1, 1, 480, 320);
         lev3 = new ParallaxBackground(new ParallaxLayer[]{
                 new ParallaxLayer(bg3, new Vector2(1, 1), new Vector2(0, 0)),
-        }, 480, 320, new Vector2(0.5f, 0));
+        }, 480, 320, new Vector2(0.25f, 0));
 
         Texture lev2Texture = Assets.getTextures()[Assets.getWhichTexture("lev22")];
         lev2Texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         TextureRegion bg2 = new TextureRegion(lev2Texture, 0, 0, 256, 256);
         lev2 = new ParallaxBackground(new ParallaxLayer[]{
                 new ParallaxLayer(bg2, new Vector2(1, 1), new Vector2(0, 128), new Vector2(0, 0))
-        }, 480, 320, new Vector2(1, 0));
+        }, 480, 320, new Vector2(0.5f, 0));
 
         map = new MapEditor(lev3, lev2, gameCam, worldWidth, worldHeight);
         this.playScript = playScript;
         this.playScript.setScreen(this, "mapEditorControls");
         renderer = new OrthogonalTiledMapRenderer(((MapEditor)map).getMap());
         touchControl = new TouchControl(scaleX, scaleY);
-        platformerScenario = new PlatformerScenario((MapEditor)map,
+        platformerScenario = new PlatformerScenario(this, (MapEditor)map,
                 this.playScript, touchControl);
         controlScenario = new MapEditorCS(this, map, platformerScenario);
         platformerScenario.setControlScenario(controlScenario);
@@ -272,6 +272,7 @@ public class EditorScreen extends GameScreen implements Screen {
         }
     }
 
+    @Override
     public boolean onPause(){
         return onPause;
     }
@@ -332,6 +333,11 @@ public class EditorScreen extends GameScreen implements Screen {
     }
 
     @Override
+    public void pause(boolean pause) {
+
+    }
+
+    @Override
     public void resume() {
 
     }
@@ -348,5 +354,10 @@ public class EditorScreen extends GameScreen implements Screen {
 
     public Scenario getPlatformerScenario() {
         return platformerScenario;
+    }
+
+    @Override
+    public void setScreenPos(int x, int y) {
+
     }
 }

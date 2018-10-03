@@ -2,6 +2,7 @@ package com.missionsurvive.scenarios.commands;
 
 import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.ControlPanel;
+import com.missionsurvive.screens.GameScreen;
 import com.missionsurvive.screens.ScreenFactory;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Controls;
@@ -37,5 +38,10 @@ public class ToLevelCommand implements Command{
                 }
             }
         }
+    }
+
+    @Override
+    public void setScreen(GameScreen gameScreen) {
+
     }
 }

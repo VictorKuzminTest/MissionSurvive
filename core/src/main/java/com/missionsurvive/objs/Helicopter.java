@@ -327,6 +327,7 @@ public class Helicopter implements Bot{
 
         public void shoot(int offsetX, int offsetY){
             rocket.shoot(480 + offsetX, hitbox.getCenterY() + offsetY,
+                    offsetX, offsetY,
                     EnemyBullet.DIRECTION_LEFT);
             isShot = true;
         }

@@ -9,6 +9,7 @@ import com.missionsurvive.screens.EditorScreen;
 import com.missionsurvive.screens.ScreenFactory;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Controls;
+import com.missionsurvive.utils.Sounds;
 
 public class MSGame extends Game {
 	public static final int SCREEN_WIDTH = 480;
@@ -31,11 +32,12 @@ public class MSGame extends Game {
 		batch = new SpriteBatch();
         xmlParser = new AndroidXML();
         Assets.setMapAssets(this);
-		Controls.setControls(this);
 		Assets.setGame(this);
+		Controls.setControls(this);
 
 		PlayScript playScript = new PlayScript();
 		screenFactory = new ScreenFactory(this, playScript);
+		Sounds.loadSounds();
 
 		//test screens:
 		//setScreen(new TestScreen(this));

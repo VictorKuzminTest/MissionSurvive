@@ -177,6 +177,14 @@ public class ScrollMap {
         }
     }
 
+    public void setWorldOffsetX(int worldOffsetX){
+        this.worldOffsetX = worldOffsetX;
+    }
+
+    public void setWorldOffsetY(int worldOffsetY){
+        this.worldOffsetY = worldOffsetY;
+    }
+
     public int getWorldOffsetX(){
         return worldOffsetX;
     }

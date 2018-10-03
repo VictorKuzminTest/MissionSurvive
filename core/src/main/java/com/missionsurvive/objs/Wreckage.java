@@ -41,8 +41,7 @@ public class Wreckage implements Bot {
     private int spriteHeight;
     private int spritesetSpriteWidth;
     private int spritesetSpriteHeight;
-    private int whichAsset;
-    private int speedFalling = 9; //7; //5;
+    private int speedFalling = 9;
     private int tileSize = 16;
     private int action;
     private int encounterFrame = 0;
@@ -265,6 +264,8 @@ public class Wreckage implements Bot {
         blinkingTickTime += deltaTime;
         while(blinkingTickTime > BLINKING_TICK){
             blinkingTickTime = 0;
+            hitbox.setPos(x - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
+                    y - mapEditor.getScrollLevel1Map().getWorldOffsetY());
             setActionAndAnimationFrames(ACTION_FALLING);
         }
     }
@@ -293,8 +294,12 @@ public class Wreckage implements Bot {
                 encounterFrame = 0;
                 y = initialY;
                 encounterTickTime = 0;
+                hitbox.setPos(x - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
+                        y - mapEditor.getScrollLevel1Map().getWorldOffsetY());
                 break;
             }
+            hitbox.setPos(x - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
+                    y - mapEditor.getScrollLevel1Map().getWorldOffsetY());
             encounterFrame ++;
             animation.nextFrame();
         }

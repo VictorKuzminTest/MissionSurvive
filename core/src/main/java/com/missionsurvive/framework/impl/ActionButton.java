@@ -1,6 +1,7 @@
 package com.missionsurvive.framework.impl;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -26,6 +27,7 @@ public class ActionButton implements Button, Observer{
     private int srcX, srcY;
     private int buttonWidth;
     private int buttonHeight;
+    private int state;
 
     private float screenXHelper; //helps to accumulate float values (it is used in list of buttons)
     private float screenYHelper;
@@ -53,7 +55,6 @@ public class ActionButton implements Button, Observer{
                 texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
             }
         }
-
         this.command = command;
     }
 
@@ -65,6 +66,11 @@ public class ActionButton implements Button, Observer{
     @Override
     public void setCommand(Command command) {
         this.command = command;
+    }
+
+    @Override
+    public Command getCommand() {
+        return command;
     }
 
     @Override
@@ -80,13 +86,27 @@ public class ActionButton implements Button, Observer{
     @Override
     public void drawButton(SpriteBatch batch) {
         if(texture != null){
-            batch.begin();
-            batch.draw(texture, MSGame.SCREEN_OFFSET_X + screenX,
-                    MSGame.SCREEN_OFFSET_Y + GeoHelper.transformCanvasYCoordToGL(screenY,
-                            MSGame.SCREEN_HEIGHT, buttonHeight),
-                    srcX, srcY,
-                    buttonWidth, buttonHeight);
-            batch.end();
+            if(state > 0 && state < ButtonTouchListener.STATE_DRAGGED_OUTSIDE){
+                batch.begin();
+                Color color = batch.getColor();
+                batch.setColor(0.5f, 0.5f, 0.5f, color.a);
+                batch.draw(texture, MSGame.SCREEN_OFFSET_X + screenX,
+                        MSGame.SCREEN_OFFSET_Y + GeoHelper.transformCanvasYCoordToGL(screenY,
+                                MSGame.SCREEN_HEIGHT, buttonHeight),
+                        srcX, srcY,
+                        buttonWidth, buttonHeight);
+                batch.setColor(color.r, color.g, color.b, color.a);
+                batch.end();
+            }
+            else{
+                batch.begin();
+                batch.draw(texture, MSGame.SCREEN_OFFSET_X + screenX,
+                        MSGame.SCREEN_OFFSET_Y + GeoHelper.transformCanvasYCoordToGL(screenY,
+                                MSGame.SCREEN_HEIGHT, buttonHeight),
+                        srcX, srcY,
+                        buttonWidth, buttonHeight);
+                batch.end();
+            }
         }
         else if(coloredBounds != null){
             drawColoredBounds();
@@ -146,4 +166,8 @@ public class ActionButton implements Button, Observer{
         screenY = (int)screenYHelper;
     }
 
+    @Override
+    public void setState(int state) {
+        this.state = state;
+    }
 }

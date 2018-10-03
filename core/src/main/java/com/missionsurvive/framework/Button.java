@@ -30,4 +30,8 @@ public interface Button{
     public void setStartY(float y);
 
     public void setCommand(Command command);
+
+    public Command getCommand();
+
+    public void setState(int state);
 }

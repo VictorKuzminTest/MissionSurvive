@@ -25,17 +25,19 @@ public class TriggerL3B implements Bot {
     private int endScrollX;
     private int numTilesToScroll = 15;
     private int offsetToSpawn; //offset to spawn the boss.
+    private int hp;
 
     private float scrollingTickTime;
 
     private boolean isSpawned;
 
-    public TriggerL3B(Scenario scenario, int x, int y){
+    public TriggerL3B(Scenario scenario, int x, int y, int hp){
         this.x = x;
         this.y = y;
         offsetToSpawn = x + (9 * 16);
         endScrollX = x + numTilesToScroll * 16;
         this.scenario = (PlatformerScenario) scenario;
+        this.hp = hp;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class TriggerL3B implements Bot {
 
                 if(x >= offsetToSpawn ){
                     if(!isSpawned){
-                        bot = new L3B("l3b", mapEditor, offsetToSpawn, y);
+                        bot = new L3B("l3b", mapEditor, offsetToSpawn, y, hp);
                         scenario.addBot(bot, 0);
                         isSpawned = true;
                     }

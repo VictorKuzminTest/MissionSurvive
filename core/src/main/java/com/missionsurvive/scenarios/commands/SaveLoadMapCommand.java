@@ -2,6 +2,7 @@ package com.missionsurvive.scenarios.commands;
 
 import com.missionsurvive.map.Map;
 import com.missionsurvive.map.MapEditor;
+import com.missionsurvive.screens.GameScreen;
 
 /**
  * Created by kuzmin on 21.05.18.
@@ -34,5 +35,10 @@ public class SaveLoadMapCommand implements Command{
     public void setMap(Map map, int actionId) {
         this.map = map;
         this.actionId = actionId;
+    }
+
+    @Override
+    public void setScreen(GameScreen gameScreen) {
+
     }
 }

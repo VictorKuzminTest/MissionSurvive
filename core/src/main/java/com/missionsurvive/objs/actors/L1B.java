@@ -66,7 +66,7 @@ public class L1B implements Bot{
     private int direction; //direction of action.  0 - right, 1 - left.
     private int runningSpeed = 4; //скорость бега в пикселях.
     private int fallingSpeed = 1; //falling speed in pixels.
-    private int hp = 10;
+    private int hp;
 
     private float zombieDyingTick = 0.1f, zombieDyingTickTime = 0;
 
@@ -77,7 +77,7 @@ public class L1B implements Bot{
     private boolean isRunning = false;
     private int targetX = -1;
 
-    public L1B(String assetName, MapEditor mapEditor, int x, int y) {
+    public L1B(String assetName, MapEditor mapEditor, int x, int y, int hp) {
         this.x = x;
         this.y = y;
         if(assetName != null){
@@ -91,6 +91,7 @@ public class L1B implements Bot{
         hitboxHeight = 60;
         halfHeroHeight = hitboxHeight / 2;
         halfHeroWidth = hitboxWidth / 2;
+        this.hp = hp;
 
         this.mapEditor = mapEditor;
 
@@ -401,19 +402,19 @@ public class L1B implements Bot{
 
 
     public void running(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
-        if(x < targetX){
+        if((x + 31) < targetX){
             calculateVectorX(0, runningSpeed, mapEditor);
             x += vectorX;
-            if(x >= targetX){
+            if((x + 31) >= targetX){
                 stopRunning();
                 return;
             }
             return;
         }
-        if(x > targetX){
+        if((x + 31) > targetX){
             calculateVectorX(1, runningSpeed, mapEditor);
             x -= vectorX;
-            if(x <= targetX){  //so our hero couldn't move over our touchX.
+            if((x + 31) <= targetX){
                 stopRunning();
                 return;
             }
@@ -441,10 +442,10 @@ public class L1B implements Bot{
     }
 
     public void setDirection(int x){
-        if(this.x < x){
+        if((this.x + 31) < x){
             direction = 0;  //right
         }
-        if(this.x > x){
+        if((this.x + 31) > x){
             direction = 1;  //left
         }
     }

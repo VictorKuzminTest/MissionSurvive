@@ -22,6 +22,7 @@ import com.missionsurvive.scenarios.SpawnBot;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 import com.missionsurvive.scenarios.controlscenarios.GameCS;
 import com.missionsurvive.scenarios.controlscenarios.MapEditorCS;
+import com.missionsurvive.utils.Sounds;
 
 /**
  * Created by kuzmin on 31.05.18.
@@ -48,6 +49,8 @@ public class PlatformerScreen extends GameScreen implements Screen {
     //transforming real coords into logic:
     private float scaleX, scaleY;
 
+    private boolean onPause;
+
     public PlatformerScreen(MSGame game, PlayScript playScript, Map map){
         this.game = game;
         this.playScript = playScript;
@@ -65,24 +68,30 @@ public class PlatformerScreen extends GameScreen implements Screen {
 
         gameCam = new ParallaxCamera(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT); //extends OrthographicCamera
         gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
-        gameCam.position.x = -MSGame.SCREEN_OFFSET_X + map.getScrollMap().getWorldOffsetX();
-        gameCam.position.y = worldHeight * 16 + MSGame.SCREEN_OFFSET_Y - map.getScrollMap().getWorldOffsetY();
-        gameCam.position.z = 0;
+        setScreenPos(map.getScrollMap().getWorldOffsetX(), map.getScrollMap().getWorldOffsetY());
         renderer = new OrthogonalTiledMapRenderer(((MapEditor)map).getMap());
         ((MapEditor)map).setGameCam(gameCam);
 
         touchControl = new TouchControl(scaleX, scaleY);
-        this.playScript.setScreen(this, "gameControls");
-        platformerScenario = new PlatformerScenario((MapEditor)map, playScript, touchControl);
-        controlScenario = new GameCS();
+        platformerScenario = new PlatformerScenario(this, (MapEditor)map,
+                playScript, touchControl);
+        controlScenario = new GameCS(this);
         platformerScenario.setControlScenario(controlScenario);
 
         putPlayer(100, 150);
+        this.playScript.setScreen(this, "gameControls");
+        this.playScript.setWeapon(hero);
+        if(Sounds.music != null){
+            Sounds.music.setLooping(true);
+            Sounds.music.play();
+        }
     }
 
     public void update(float deltaTime) {
         controlScenario.onTouchPanels(deltaTime, scaleX, scaleY);
-        platformerScenario.update(map, touchControl, deltaTime);
+        if(!onPause){
+            platformerScenario.update(map, touchControl, deltaTime);
+        }
     }
 
     @Override
@@ -137,6 +146,16 @@ public class PlatformerScreen extends GameScreen implements Screen {
     }
 
     @Override
+    public boolean onPause() {
+        return onPause;
+    }
+
+    @Override
+    public void pause(boolean pause) {
+        onPause = pause;
+    }
+
+    @Override
     public void resume() {
 
     }
@@ -157,5 +176,16 @@ public class PlatformerScreen extends GameScreen implements Screen {
         if(platformerScenario instanceof PlatformerScenario) {
             hero = ((PlatformerScenario) platformerScenario).getHero();
         }
+    }
+
+    @Override
+    public void setScreenPos(int x, int y) {
+        map.getScrollMap().setWorldOffsetX(x);
+        map.getScrollMap().setWorldOffsetY(y);
+        map.getScrollMap().setColOffset();
+        map.getScrollMap().setRowOffset();
+        gameCam.position.x = -MSGame.SCREEN_OFFSET_X + map.getScrollMap().getWorldOffsetX();
+        gameCam.position.y = worldHeight * 16 + MSGame.SCREEN_OFFSET_Y - map.getScrollMap().getWorldOffsetY();
+        gameCam.position.z = 0;
     }
 }

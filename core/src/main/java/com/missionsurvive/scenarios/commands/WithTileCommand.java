@@ -3,6 +3,7 @@ package com.missionsurvive.scenarios.commands;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.scenarios.PlatformerScenario;
+import com.missionsurvive.screens.GameScreen;
 
 import java.util.ArrayList;
 
@@ -79,5 +80,10 @@ public class WithTileCommand implements Command{
                 break;
         }
         mapTerArrayList.clear();
+    }
+
+    @Override
+    public void setScreen(GameScreen gameScreen) {
+
     }
 }

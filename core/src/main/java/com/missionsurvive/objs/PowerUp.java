@@ -207,7 +207,7 @@ public class PowerUp implements Bot{
                     isAction = ACTION_PICKED_UP;
                     break;
                 case POWER_GUN:
-                    hero.addGun();
+                    hero.addGun(Hero.FROM_POWERUP);
                     isAction = ACTION_PICKED_UP;
                     break;
             }

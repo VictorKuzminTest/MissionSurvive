@@ -492,7 +492,9 @@ public class SoldierZombie implements Bot {
 
             if(animation.getCurrentFrame() == (startIdleShootingFrame + 1)){
                 for(int whichBullet = 0; whichBullet < numBullets; whichBullet++){
-                    if(bullets.get(whichBullet).shoot(bulletX, bulletY, bulletDirection)){
+                    if(bullets.get(whichBullet).shoot(bulletX, bulletY,
+                            mapEditor.getScrollLevel1Map().getWorldOffsetX(),
+                            mapEditor.getScrollLevel1Map().getWorldOffsetY(), bulletDirection)){
                         break;
                     }
                 }

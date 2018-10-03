@@ -3,6 +3,7 @@ package com.missionsurvive.scenarios.commands;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.missionsurvive.map.MapEditor;
+import com.missionsurvive.screens.GameScreen;
 
 /**
  * Created by kuzmin on 23.04.18.
@@ -55,5 +56,10 @@ public class LoadFromExternalLibGdx implements com.missionsurvive.scenarios.comm
             mapInString = fileHandle.readString();
         }
         return mapInString;
+    }
+
+    @Override
+    public void setScreen(GameScreen gameScreen) {
+
     }
 }

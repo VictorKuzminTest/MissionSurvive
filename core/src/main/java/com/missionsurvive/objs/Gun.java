@@ -91,38 +91,39 @@ public class Gun implements Weapon{
     }
 
     @Override
-    public boolean shoot(int x, int y, int direction) {
+    public boolean shoot(int x, int y,
+                         int worldOffsetX, int worldOffsetY, int direction) {
         switch(weaponOf){
             case WEAPON_HANDGUN:
-                launch(x, y, direction);
+                launch(x, y, worldOffsetX, worldOffsetY, direction);
                 break;
             case WEAPON_HANDGUN_AUTOMATIC:
-                launchAutomatic(x, y, direction);
+                launchAutomatic(x, y, worldOffsetX, worldOffsetY, direction);
                 break;
             case WEAPON_FIREBALL:
-                launch(x, y, direction);
+                launch(x, y, worldOffsetX, worldOffsetY, direction);
                 break;
             case WEAPON_FIREBALL_SPREAD:
-                launchSpread(x, y, direction);
+                launchSpread(x, y, worldOffsetX, worldOffsetY, direction);
                 break;
         }
         return false;
     }
 
 
-    public void launch(int x, int y, int direction){
+    public void launch(int x, int y,
+                       int worldOffsetX, int worldOffsetY, int direction){
         for(int whichBullet = 0; whichBullet < bullets.size(); whichBullet++){
-            if(bullets.get(whichBullet).shoot(x, y, direction)){
+            if(bullets.get(whichBullet).shoot(x, y, worldOffsetX, worldOffsetY, direction)){
                 return;
             }
         }
     }
 
-
-    public void launchAutomatic(int x, int y, int direction){
+    public void launchAutomatic(int x, int y, int worldOffsetX, int worldOffsetY, int direction){
         int numBullets = 0;
         for(int whichBullet = 0; whichBullet < bullets.size(); whichBullet++){
-            if(bullets.get(whichBullet).shoot(x, y, direction + (numBullets * 10))){
+            if(bullets.get(whichBullet).shoot(x, y, worldOffsetX, worldOffsetY,  direction + (numBullets * 10))){
                 numBullets++;
                 if(numBullets > 1){
                     return;
@@ -131,12 +132,10 @@ public class Gun implements Weapon{
         }
     }
 
-
-
-    public void launchSpread(int x, int y, int direction){
+    public void launchSpread(int x, int y, int worldOffsetX, int worldOffsetY, int direction){
         int numFireballs = 0;
         for(int whichBullet = 0; whichBullet < bullets.size(); whichBullet++){
-            if(bullets.get(whichBullet).shoot(x, y, direction + (numFireballs * 10))){
+            if(bullets.get(whichBullet).shoot(x, y, worldOffsetX, worldOffsetY, direction + (numFireballs * 10))){
                 numFireballs++;
                 if(numFireballs > 2){
                     return;

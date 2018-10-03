@@ -2,6 +2,7 @@ package com.missionsurvive.scenarios.commands;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.missionsurvive.screens.GameScreen;
 
 /**
  * Created by kuzmin on 09.06.18.
@@ -21,5 +22,10 @@ public class LoadFromAssetsLibGdx implements Command{
             mapInString = fileHandle.readString();
         }
         return mapInString;
+    }
+
+    @Override
+    public void setScreen(GameScreen gameScreen) {
+
     }
 }

@@ -61,6 +61,7 @@ public class ButtonTouchListener implements Listener{
                     button.getButtonWidth(), button.getButtonHeight())){
                 currentButton = button;
                 state = STATE_DOWN;
+                currentButton.setState(state);
                 return;
             }
         }
@@ -77,6 +78,7 @@ public class ButtonTouchListener implements Listener{
             else{
                 state = STATE_DRAGGED_OUTSIDE;
             }
+            currentButton.setState(state);
         }
     }
 
@@ -92,6 +94,7 @@ public class ButtonTouchListener implements Listener{
             else{
                 state = STATE_UP_OUTSIDE;
             }
+            currentButton.setState(STATE_NONE);
         }
         currentButton = null;
     }

@@ -80,6 +80,10 @@ public class ControlPanel {
         }
     }
 
+    public Button getButton(int i){
+        return buttons.get(i);
+    }
+
 
     /**
      * We listen to touch events, then we check the state of events occurred.

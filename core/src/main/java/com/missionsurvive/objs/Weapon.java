@@ -18,7 +18,8 @@ public interface Weapon extends  GameObject {
 
     void update(float deltaTime, int worldOffsetX, int worldOffsetY);
 
-    public boolean shoot(int x, int y, int direction);
+    public boolean shoot(int x, int y,
+                         int worldOffsetX, int worldOffsetY, int direction);
 
     public int getX();
 

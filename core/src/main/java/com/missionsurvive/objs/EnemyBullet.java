@@ -204,11 +204,13 @@ public class EnemyBullet implements GameObject{
      * @param direction
      * @return
      */
-    public boolean shoot(int x, int y, int direction){
+    public boolean shoot(int x, int y,
+                         int worldOffsetX, int worldOffsetY, int direction){
         if(this.direction == 0){
             isDrawing = true;
             worldX = x;
             worldY = y;
+            setScreenXY(worldOffsetX, worldOffsetY);
             this.direction = direction;
             setDrawingParams();
             return true;

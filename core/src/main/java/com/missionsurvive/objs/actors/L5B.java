@@ -69,7 +69,7 @@ public class L5B implements Bot {
     private int direction; //direction of action.  0 - right, 1 - left.
     private int runningSpeed = 2; //скорость бега в пикселях.
     private int fallingSpeed = 7; //falling speed in pixels.
-    private int hp = 10;
+    private int hp;
 
     private int startFallingFrame = 0, numFallingFrames = 1;
 
@@ -82,7 +82,7 @@ public class L5B implements Bot {
     private boolean isRunning = false;
     private int targetX = -1, targetY = -1;
 
-    public L5B(String assetName, MapEditor mapEditor, int x, int y) {
+    public L5B(String assetName, MapEditor mapEditor, int x, int y, int hp) {
         this.x = x;
         this.y = y;
         if(assetName != null){
@@ -92,10 +92,11 @@ public class L5B implements Bot {
         spriteHeight = 70;
         spritesetSpriteWidth = spriteWidth + 2;
         spritesetSpriteHeight = spriteHeight + 2;
-        hitboxWidth = 34;
-        hitboxHeight = 50;
+        hitboxWidth = 16;
+        hitboxHeight = 60;
         halfHeroHeight = hitboxHeight / 2;
         halfHeroWidth = hitboxWidth / 2;
+        this.hp = hp;
 
         this.mapEditor = mapEditor;
 
@@ -473,7 +474,7 @@ public class L5B implements Bot {
     }
 
     public void setPos(){
-        left = (x + 13) - mapEditor.getScrollLevel1Map().getWorldOffsetX(); //+13 means, that I calculated approximately the x coordinate of hitbox: (spriteWidth - hitboxWidth) / 2.
+        left = (x + 23) - mapEditor.getScrollLevel1Map().getWorldOffsetX(); //+23 means, that I calculated approximately the x coordinate of hitbox: (spriteWidth - hitboxWidth) / 2.
         top = (y + 10) - mapEditor.getScrollLevel1Map().getWorldOffsetY(); //+10 means, that I calculated approximately the y coordinate of hitbox: (spriteHeight - hitboxHeight) / 2.
         bottom = top + hitboxHeight;
         right = left + hitboxWidth;
@@ -515,7 +516,9 @@ public class L5B implements Bot {
             animation.nextFrame();
             if(animation.getCurrentFrame() == 1){
                 for(int whichBullet = 0; whichBullet < numBullets; whichBullet++){
-                    if(bullets.get(whichBullet).shoot(bulletX, bulletY, bulletDirection)){
+                    if(bullets.get(whichBullet).shoot(bulletX, bulletY,
+                            mapEditor.getScrollLevel1Map().getWorldOffsetX(),
+                            mapEditor.getScrollLevel1Map().getWorldOffsetY(), bulletDirection)){
                         break;
                     }
                 }

@@ -3,6 +3,7 @@ package com.missionsurvive.scenarios;
 import com.missionsurvive.framework.ControlPanel;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
+import com.missionsurvive.objs.Gun;
 import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.screens.GameScreen;
 import com.missionsurvive.utils.Controls;
@@ -13,9 +14,11 @@ import com.missionsurvive.utils.Controls;
 
 public class PlayScript {
 
-    private int lives = 1;
     private GameScreen gameScreen;
     private ControlPanel controlPanel;
+
+    private int lives = 1;
+    private int weaponOf;
 
     public void setScreen(GameScreen gameScreen, String controlPanelName){
         this.gameScreen = gameScreen;
@@ -23,8 +26,16 @@ public class PlayScript {
         setLivesIcon();
     }
 
+    public void setWeapon(Hero hero){
+        for(int i = 0; i < weaponOf; i++){
+            hero.addGun(Hero.FROM_PLAYSCRIPT);
+        }
+    }
+
     public void newLives(){
         lives = 1;
+        weaponOf = Gun.WEAPON_HANDGUN;
+        controlPanel = getControlPanel("gameControls");
         setLivesIcon();
     }
 
@@ -37,8 +48,23 @@ public class PlayScript {
         setLivesIcon();
     }
 
+    public void addGun(){
+        switch (weaponOf){
+            case Gun.WEAPON_HANDGUN:
+                weaponOf++;
+                break;
+            case Gun.WEAPON_HANDGUN_AUTOMATIC:
+                weaponOf++;
+                break;
+            case Gun.WEAPON_FIREBALL:
+                weaponOf++;
+                break;
+        }
+    }
+
     public void subtractLife(){
         lives = lives - 1;
+        weaponOf = Gun.WEAPON_HANDGUN;
         setLivesIcon();
     }
 

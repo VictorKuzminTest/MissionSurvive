@@ -15,6 +15,7 @@ public class AndroidLook implements Look {
     public static final int POPUP_LOAD = 1;
     public static final int POPUP_NEW_MAP = 2;
     public static final int POPUP_NEW_BOT = 3;
+    public static final int POPUP_BUY = 4;
     private List<Popup> popups;
 
     /**
@@ -35,6 +36,9 @@ public class AndroidLook implements Look {
 
         Popup popupNewBot = new PopupBots(activity);
         addPopup(popupNewBot);
+
+        Popup popupBuy = new PopupBuy(activity);
+        addPopup(popupBuy);
     }
 
     @Override

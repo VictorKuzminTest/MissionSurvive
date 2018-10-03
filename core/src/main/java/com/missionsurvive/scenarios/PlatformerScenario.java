@@ -12,6 +12,8 @@ import com.missionsurvive.objs.Weapon;
 import com.missionsurvive.objs.actors.Zombie;
 import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
+import com.missionsurvive.screens.GameScreen;
+import com.missionsurvive.utils.Progress;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,11 @@ import java.util.List;
 public class PlatformerScenario implements Scenario {
 
     public static final int MAX_NUM_ZOMBIES = 3;
+
+    public static final int HORIZONTAL_ONLY = 0;
+    public static final int VERTICAL_ONLY = 1;
+    public static final int NO_SCROLL = 2;
+    public static final int HORIZONTAL_AND_VERTICAL = 3;
 
     private Hero hero;
     private MapTer currentMapTer;
@@ -37,6 +44,11 @@ public class PlatformerScenario implements Scenario {
     private PlayScript playScript;
     private ControlScenario controlScenario;
     private TouchControl touchControl;
+    private GameScreen screen;
+
+    //hte x and y coords to scroll the screen back when start level from the beginning:
+    private int startScreenX, startScreenY;
+    private int scrollId;
 
     private float checkOffScreenTickTime = 0, checkOffscreenTick = 1.0f;
     private float resurrectionTickTime = 0, resurrectionTick = 2.0f;
@@ -45,8 +57,12 @@ public class PlatformerScenario implements Scenario {
     private boolean isVertical = false;
     private boolean isPlayerControl = true;
 
-    public PlatformerScenario(MapEditor mapEditor, PlayScript playScript,
+    public PlatformerScenario(GameScreen screen, MapEditor mapEditor,
+                              PlayScript playScript,
                               TouchControl touchControl){
+        this.screen = screen;
+        startScreenX = mapEditor.getScrollMap().getWorldOffsetX();
+        startScreenY = mapEditor.getScrollMap().getWorldOffsetY();
         this.touchControl = touchControl;
         this.mapEditor = mapEditor;
         this.playScript = playScript;
@@ -54,9 +70,11 @@ public class PlatformerScenario implements Scenario {
 
         if(mapEditor.isHorizontal()){
             setScroll(true, false);
+            scrollId = HORIZONTAL_ONLY;
         }
         else{
             setScroll(false, true);
+            scrollId = VERTICAL_ONLY;
         }
     }
 
@@ -170,7 +188,21 @@ public class PlatformerScenario implements Scenario {
             playScript.resurrectHero(currentMapTer, mapEditor, hero);
         }
         else{
+            //start level from the beginning:
             playScript.subtractLife();
+            playScript.newLives();
+            screen.setScreenPos(startScreenX, startScreenY);
+            switch(scrollId){
+                case HORIZONTAL_ONLY:
+                    isHorizontal = true;
+                    isVertical = false;
+                    break;
+                case VERTICAL_ONLY:
+                    isHorizontal = false;
+                    isVertical = true;
+                    break;
+            }
+            screen.putPlayer(100, 150);
         }
     }
 
@@ -409,7 +441,7 @@ public class PlatformerScenario implements Scenario {
     public void setSpawn(int col, int row, int botId, int direction){
         Spawn spawn;
         if(botId >= SpawnScenario.LEVEL_1_SCENE){
-            spawn = new SpawnScenario(botId, direction, row, col);
+            spawn = new SpawnScenario(botId, direction, Progress.BEGINNER, row, col);
         }
         else{
             spawn = new SpawnBot(botId, direction, row, col);
@@ -444,6 +476,10 @@ public class PlatformerScenario implements Scenario {
 
     public void addLife(){
         playScript.addLife();
+    }
+
+    public void addGun(){
+        playScript.addGun();
     }
 
     @Override

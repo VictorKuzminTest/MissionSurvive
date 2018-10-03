@@ -1,6 +1,8 @@
 package com.missionsurvive;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -24,6 +26,30 @@ public class AndroidLauncher extends AndroidApplication implements ActivityCallb
 
 	public Look getLook(){
 		return look;
+	}
+
+	@Override
+	public String getSharedPrefs(String key) {
+		String value = "";
+		SharedPreferences sharedPreferences = getApplicationContext()
+				.getSharedPreferences(key, Context.MODE_PRIVATE);
+		if(sharedPreferences != null){
+			//value is a value to return if this preference does not exist:
+			value = sharedPreferences.getString(key, value);
+		}
+		return value;
+	}
+
+	@Override
+	public void setIntoSharedPrefs(String key, String value) {
+		SharedPreferences sharedPreferences = getApplicationContext()
+				.getSharedPreferences(key, Context.MODE_PRIVATE);
+
+		if(sharedPreferences != null){
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.putString(key, value);
+			editor.commit();
+		}
 	}
 
 	@Override
@@ -73,6 +99,14 @@ public class AndroidLauncher extends AndroidApplication implements ActivityCallb
 				public void run(){
 					if(!isFinishing()){
 						getLook().getPopups().get(AndroidLook.POPUP_NEW_BOT).show();
+					}
+				}
+			});
+				break;
+			case AndroidLook.POPUP_BUY: this.runOnUiThread(new Runnable(){
+				public void run(){
+					if(!isFinishing()){
+						getLook().getPopups().get(AndroidLook.POPUP_BUY).show();
 					}
 				}
 			});

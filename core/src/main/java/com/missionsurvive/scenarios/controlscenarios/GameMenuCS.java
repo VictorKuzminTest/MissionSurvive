@@ -50,10 +50,19 @@ public class GameMenuCS implements ControlScenario{
     public void setControlPanels() {
         for(int i = 0; i < Controls.controlPanels.length; i++){
             if(Controls.controlPanels[i].getScreen().equalsIgnoreCase("GameMenuScreen")){
-                listOfPanels.add(Controls.controlPanels[i]);
+                ControlPanel controlPanel = Controls.controlPanels[i];
+                listOfPanels.add(controlPanel);
+                if(controlPanel.getName().equalsIgnoreCase("StartGameMenu")){
+                    controlPanel.setActivated(true);
+                }
+                else if(controlPanel.getName().equalsIgnoreCase("buy")){
+                    controlPanel.setActivated(true);
+                }
+                else{
+                    controlPanel.setActivated(false);
+                }
             }
         }
-        listOfPanels.get(START_MENU).setActivated(true);
     }
 
     @Override

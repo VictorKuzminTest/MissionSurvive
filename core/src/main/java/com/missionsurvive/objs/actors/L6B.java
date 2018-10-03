@@ -15,6 +15,7 @@ import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.Bot;
 import com.missionsurvive.objs.EnemyBullet;
 import com.missionsurvive.objs.Rocket;
+import com.missionsurvive.objs.RocketL6B;
 import com.missionsurvive.objs.Weapon;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
@@ -182,7 +183,9 @@ public class L6B implements Bot {
                        int worldWidth, int worldHeight) {
 
         if(action < ACTION_DYING){
-            rocketLauncher.shoot(deltaTime, mapEditor.getScrollLevel1Map().getWorldOffsetX());
+            rocketLauncher.shoot(deltaTime,
+                    mapEditor.getScrollLevel1Map().getWorldOffsetX(),
+                    mapEditor.getScrollLevel1Map().getWorldOffsetY());
             hit(rocketLauncher.getRocket());
         }
 
@@ -263,7 +266,7 @@ public class L6B implements Bot {
 
     }
 
-    private void hit(Rocket rocket){
+    private void hit(RocketL6B rocket){
         if(GeoHelper.overlapRectangles(rocket.getScreenX(), rocket.getScreenY(),
                 rocket.getWidth(),
                 rocket.getHeight(),
@@ -572,17 +575,17 @@ public class L6B implements Bot {
 
     private class RocketLauncher{
 
-        private Rocket rocket;
+        private RocketL6B rocket;
 
         private float shootingTickTime;
         private float shootingTick = 2.0f;
 
         public void setRocket(boolean isTesting){
             if(!isTesting){
-                rocket = new Rocket("rocket", MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT);
+                rocket = new RocketL6B("rocket", MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT);
             }
             else{
-                rocket = new Rocket(null, 480, 320);
+                rocket = new RocketL6B(null, 480, 320);
             }
         }
 
@@ -595,17 +598,17 @@ public class L6B implements Bot {
             rocket.moving(deltaTime, worldOffsetX, worldOffsetY, platformerScenario);
         }
 
-        public void shoot(float deltaTime, int offsetX){
+        public void shoot(float deltaTime, int offsetX, int offsetY){
             shootingTickTime += deltaTime;
 
             while(shootingTickTime > shootingTick){
                 shootingTickTime -= shootingTick;
 
-                rocket.shoot(480 + offsetX, 240, EnemyBullet.DIRECTION_LEFT);
+                rocket.shoot(480 + offsetX, 240, offsetX, offsetY, EnemyBullet.DIRECTION_LEFT);
             }
         }
 
-        public Rocket getRocket(){
+        public RocketL6B getRocket(){
             return rocket;
         }
     }

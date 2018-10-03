@@ -15,6 +15,7 @@ import com.missionsurvive.objs.Tear;
 import com.missionsurvive.objs.actors.Moto;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 import com.missionsurvive.screens.ScrollerScreen;
+import com.missionsurvive.utils.Progress;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,8 @@ import java.util.Random;
  */
 
 public class ScrollerScenario implements Scenario {
+    private static final int BEGINNER = 0;
+    private static final int EXPERIENCED = 1;
 
     private Random random = new Random();
     private ScrollerScreen scrollerScreen;
@@ -51,9 +54,16 @@ public class ScrollerScenario implements Scenario {
     private int carHitboxWidth = 120, carHitboxHeight = 25;
     private int spriteWidth = 96, spriteHeight = 80;
     private int startScreenY = 89;
+    private int difficulty;
 
     public ScrollerScenario(ScrollerScreen scrollerScreen, PlayScript playScript,
-                            int screenX, int screenY){
+                            int screenX, int screenY, String difficulty){
+        if(difficulty.equalsIgnoreCase(Progress.BEGINNER)){
+            this.difficulty = BEGINNER;
+        }
+        else if(difficulty.equalsIgnoreCase(Progress.EXPERIENCED)){
+            this.difficulty = EXPERIENCED;
+        }
         this.scrollerScreen = scrollerScreen;
         this.playScript = playScript;
         newObstacles(screenX, screenY);
@@ -264,26 +274,6 @@ public class ScrollerScenario implements Scenario {
                         placeCar(currentSection, carBottom12);
                         switchScene++;
                         break;
-                    case PlaceObstacle.CAR_SURR_11:
-                        placeCar(currentSection, carTop11);
-                        placeCar(currentSection, carMiddle11);
-                        switchScene++;
-                        break;
-                    case PlaceObstacle.CAR_SURR_12:
-                        placeCar(currentSection, carTop12);
-                        placeCar(currentSection, carMiddle12);
-                        switchScene++;
-                        break;
-                    case PlaceObstacle.CAR_SURR_21:
-                        placeCar(currentSection, carMiddle21);
-                        placeCar(currentSection, carBottom11);
-                        switchScene++;
-                        break;
-                    case PlaceObstacle.CAR_SURR_22:
-                        placeCar(currentSection, carMiddle22);
-                        placeCar(currentSection, carBottom12);
-                        switchScene++;
-                        break;
                     case PlaceObstacle.TEAR:
                         placeTear(scrollerScreen, map);
                         switchScene++;
@@ -475,7 +465,6 @@ public class ScrollerScenario implements Scenario {
     public class PlaceObstacle {
 
         private static final int CAR_TOP = 0, CAR_MIDDLE = 1, CAR_BOTTOM = 2,
-                CAR_SURR_11 = 11, CAR_SURR_12 = 12, CAR_SURR_21 = 21, CAR_SURR_22 = 22,
                 CAR_TOP_11 = 31, CAR_TOP_12 = 32, CAR_BOTTOM_11 = 41, CAR_BOTTOM_12 = 42,
                 CAR_MIDDLE_11 = 51, CAR_MIDDLE_12 = 52, TEAR = 3, ROCKET = 6;
 
@@ -503,228 +492,433 @@ public class ScrollerScenario implements Scenario {
     }
 
     public void setSection1(){
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 900, 150));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.5f, 900, 210));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.8f, 900, 150));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.5f, 800, 100));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.5f, 800, 150));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 1.5f, 800, 250));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.3f, 800, 180));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.3f, 750, 120));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.3f, 750, 105));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.3f, 800, 180));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.5f, 700, 105));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 1.0f, 800, 250));
-        //pair
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.3f, 750, 150));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.2f, 750, 210));
-        section1.add(new PlaceObstacle(PlaceObstacle.TEAR, 2.0f, 900, 0));
+        /*switch(difficulty){
+            case BEGINNER:
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 900, 150));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.5f, 900, 210));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.8f, 900, 150));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.5f, 800, 100));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.5f, 800, 150));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 1.5f, 800, 250));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.3f, 800, 180));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.3f, 750, 120));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.3f, 750, 105));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.3f, 800, 180));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.5f, 700, 105));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 1.0f, 800, 250));
+                //pair - tear
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.3f, 750, 150));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.2f, 750, 210));
+                section1.add(new PlaceObstacle(PlaceObstacle.TEAR, 2.0f, 900, 0));
 
-        /*section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 2.5f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 2.5f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 2.0f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 2.0f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 2.0f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 2.0f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 2.0f, 900));*/
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 5.0f, 900, 150));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.2f, 800, 100));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 800, 210));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 800, 250));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.2f, 800, 150));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.1f, 800, 250));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.1f, 800, 100));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.2f, 750, 250));
+                section1.add(new PlaceObstacle(PlaceObstacle.TEAR, 2.0f, 900, 0));
+                break;
+            case EXPERIENCED:
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 900, 150));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.5f, 900, 210));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.8f, 900, 150));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.5f, 800, 100));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.5f, 800, 150));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 1.5f, 800, 250));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.3f, 800, 180));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.3f, 750, 120));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.3f, 750, 105));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.3f, 800, 180));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.5f, 700, 105));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 1.0f, 800, 250));
+                //pair - tear
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.3f, 750, 150));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.2f, 750, 210));
+                section1.add(new PlaceObstacle(PlaceObstacle.TEAR, 2.0f, 900, 0));
 
-        /*section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.5f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.5f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.5f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 1.5f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.1f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.1f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.1f, 900));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 1.1f, 900));
-
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 2.0f, 750));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 2.0f, 750));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 2.0f, 750));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 1.5f, 750));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 1.5f, 750));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 1.2f, 750));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 1.2f, 750));
-        section1.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 1.2f, 750));
-
-        section1.add(new PlaceObstacle(PlaceObstacle.TEAR, 2.0f, 900));*/
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 5.0f, 900, 150));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.2f, 800, 100));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 800, 210));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 800, 250));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.2f, 800, 150));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.1f, 800, 250));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.1f, 800, 100));
+                section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.2f, 750, 250));
+                section1.add(new PlaceObstacle(PlaceObstacle.TEAR, 2.0f, 900, 0));
+                break;
+        }*/
     }
 
     public void setSection2(){
-        /*section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 6.0f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 1.0f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.0f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.5f, 900));
+        /*switch (difficulty){
+            case BEGINNER:
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 6.0f, 900, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.4f, 900, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 800, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 800, 105));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.9f, 900, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
+                //repeat the abive part in mirror
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 4.0f, 900, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.4f, 900, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 800, 105));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 800, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.9f, 900, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
 
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 4.0f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 1.2f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.2f, 900));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.5f, 800, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.1f, 800, 100));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.4f, 750, 120));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.6f, 800, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.6f, 800, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 750, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.8f, 750, 200));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 750, 100));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.6f, 800, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.2f, 750, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
+                //with tear
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.6f, 800, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 800, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.0f, 800, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 800, 100));
+                section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.5f, 900, 0));
+                //with tear
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 4.0f, 800, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 800, 100));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.0f, 800, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 800, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.5f, 900, 0));
+                //with tear
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 4.0f, 800, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 800, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.0f, 800, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 800, 100));
+                section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.5f, 900, 0));
+                break;
+            case EXPERIENCED:
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 6.0f, 900, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.4f, 900, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 800, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 800, 105));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.9f, 900, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
+                //repeat the abive part in mirror
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 4.0f, 900, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.4f, 900, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 800, 105));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 800, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.9f, 900, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
 
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 4.0f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 1.2f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.1f, 900));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.5f, 800, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.1f, 800, 100));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.4f, 750, 120));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.6f, 800, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.6f, 800, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 750, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.8f, 750, 200));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 750, 100));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.6f, 800, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.2f, 750, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
+                //with tear
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.6f, 800, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 800, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.0f, 800, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 800, 100));
+                section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.5f, 900, 0));
+                //with tear
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 4.0f, 800, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 800, 100));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.0f, 800, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 800, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.5f, 900, 0));
+                //with tear
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 4.0f, 800, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 800, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.0f, 800, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 800, 100));
+                section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.5f, 900, 0));
 
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 4.0f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 1.0f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.1f, 900));
-
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 4.0f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 1.0f, 900));
-        section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.1f, 900));
-
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 4.0f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 1.1f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 1.1f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 1.1f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 1.1f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 1.1f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 1.1f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 1.1f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 1.1f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 1.1f, 800));
-        section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.1f, 800));*/
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 4.0f, 600, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.1f, 600, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.1f, 600, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.1f, 500, 100));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 500, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.1f, 500, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 1.0f, 500, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.1f, 500, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.1f, 500, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.0f, 500, 100));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 500, 210));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.1f, 600, 250));
+                section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.8f, 700, 0));
+                break;
+        }*/
     }
 
     public void setSection3(){
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 5.0f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 1.5f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 1.5f, true));
+        /*switch (difficulty){
+            case BEGINNER:
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 5.0f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 1.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 1.5f, true));
 
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.0f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 1.5f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.0f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 1.5f, true));
 
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 1.5f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 1.5f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 1.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 1.5f, true));
 
-        /*section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.0f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.8f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 0.8f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.8f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 0.8f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.2f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.2f, false));
 
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.0f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.5f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 0.5f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.5f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 0.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.2f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.2f, false));
 
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 1.5f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.5f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 0.5f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.5f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 0.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.2f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.2f, false));
+                break;
+            case EXPERIENCED:
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 5.0f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 1.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 1.5f, true));
 
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 1.5f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.2f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 0.2f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.2f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 0.2f, true));
-        //new:
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.0f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.2f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 0.2f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.2f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 0.2f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.0f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 1.5f, true));
 
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.0f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.2f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 0.2f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.2f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 0.2f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 1.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 1.5f, true));
 
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.0f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.2f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 0.2f, false));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.2f, true));
-        section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 0.2f, true));*/
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.2f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.2f, false));
+
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.2f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.2f, false));
+
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.2f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.2f, false));
+                //new for experienced:
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.2f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 0.2f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 0.2f, true));
+
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.2f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 0.2f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 0.2f, true));
+
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 2.5f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 0.8f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 0.8f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.8f, false));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 0.8f, false));
+                break;
+        }*/
     }
 
     public void setSection4(){
-        /*section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 5.0f, 900));*/
-        /*section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 1.0f, 900));
-        section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.0f, 900));
+        switch (difficulty){
+            case BEGINNER:
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 800, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.5f, 800, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 800, 250));
 
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 3.5f, 900));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 1.0f, 900));
-        section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.0f, 900));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 2.0f, 800, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.5f, 800, 250));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 800, 100));
 
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 3.5f, 900));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 1.0f, 900));
-        section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.0f, 900));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 2.0f, 800, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.5f, 800, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 800, 250));
 
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 3.5f, 900));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 1.0f, 900));
-        section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.0f, 900));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 2.5f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.5f, 460, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 460, 250));
 
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.5f, 900));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 750));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.8f, 750));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 500));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 750));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.8f, 700));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.8f, 500));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 500));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 700));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 700));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 700));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.8f, 650));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 650));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.8f, 650));
-        //copy
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 900));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 750));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.8f, 750));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 500));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 750));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.8f, 700));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.8f, 500));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 500));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 700));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 700));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 700));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.8f, 650));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 650));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 600));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.8f, 650));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.1f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.5f, 460, 250));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 460, 100));
 
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 2.0f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_11, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_21, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_12, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.CAR_SURR_22, 0.88f, 760));
-        section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.88f, 700));*/
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.1f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.5f, 460, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 460, 250));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.1f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.5f, 460, 250));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 460, 100));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.8f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.1f, 460, 250));
+                section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.8f, 900, 0));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 3.0f, 460, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 460, 160));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.8f, 900, 0));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 3.0f, 460, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.1f, 460, 255));
+                section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.8f, 900, 0));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.6f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.5f, 460, 260));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 460, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.5f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.1f, 460, 120));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.1f, 460, 190));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.4f, 460, 270));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.6f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.5f, 460, 110));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 460, 270));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.5f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.1f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.1f, 460, 190));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.4f, 460, 270));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.6f, 460, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.3f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.5f, 460, 260));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.5f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.2f, 460, 210));
+                //End:
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 5.0f, 480, 1500));
+                break;
+            case EXPERIENCED:
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 800, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.5f, 800, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 800, 250));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 2.0f, 800, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.5f, 800, 250));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 800, 100));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 2.0f, 800, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.5f, 800, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 800, 250));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 2.5f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.5f, 460, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 460, 250));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.1f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.5f, 460, 250));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 460, 100));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.1f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.5f, 460, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 460, 250));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 1.1f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.5f, 460, 250));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 460, 100));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.8f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.1f, 460, 250));
+                section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.8f, 900, 0));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 3.0f, 460, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 460, 160));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.8f, 900, 0));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 3.0f, 460, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.1f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.1f, 460, 255));
+                section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.8f, 900, 0));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.6f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.5f, 460, 260));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.1f, 460, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.5f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.1f, 460, 120));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.1f, 460, 190));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.4f, 460, 270));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.8f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.6f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.5f, 460, 110));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 460, 270));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.5f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.1f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.1f, 460, 190));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.4f, 460, 270));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.6f, 460, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.3f, 460, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.5f, 460, 260));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 0.5f, 460, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.2f, 460, 210));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 3.0f, 480, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.1f, 480, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 480, 255));
+                section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.8f, 900, 0));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 3.0f, 480, 100));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 0.1f, 480, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.1f, 480, 255));
+                section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.8f, 900, 0));
+
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 480, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 480, 210));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 480, 255));
+                section4.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.8f, 900, 0));
+                //End:
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 5.0f, 480, 1500));
+                break;
+        }
     }
 }

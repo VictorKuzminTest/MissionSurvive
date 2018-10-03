@@ -9,6 +9,7 @@ import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.geom.Hitbox;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.utils.Assets;
+import com.missionsurvive.utils.Sounds;
 
 import java.util.List;
 
@@ -60,7 +61,6 @@ public class Fireball implements Weapon{
     private int screenHeight = 320;
     private int numMovingFrames = 5, numHitFrames = 5;
     private int action;
-    private int whichAsset;
     private int hp;
 
     private float movingTickTime = 0;
@@ -208,7 +208,9 @@ public class Fireball implements Weapon{
             setScreenXY(worldOffsetX, worldOffsetY);
             hitbox.setPos(screenX, screenY);
             goAway();
-            platformerScenario.shotEnemy(this);
+            if(direction != DIRECTION_NONE){ //if our bullet is going somewhere, we  check it for intersections with the objects.
+                platformerScenario.shotEnemy(this);
+            }
         }
     }
 
@@ -254,15 +256,17 @@ public class Fireball implements Weapon{
     }
 
     @Override
-    public boolean shoot(int x, int y, int direction) {
+    public boolean shoot(int x, int y,
+                         int worldOffsetX, int worldOffsetY, int direction) {
         if(action == ACTION_NONE){
-
+            Sounds.fireball.play();
             setMovingPos(direction);
-
             action = ACTION_MOVE;
             this.x = x;
             this.y = y;
             this.direction = direction % 10;
+            setScreenXY(worldOffsetX, worldOffsetY);
+            hitbox.setPos(screenX, screenY);
             return true;
         }
         return false;

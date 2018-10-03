@@ -12,6 +12,8 @@ import com.missionsurvive.scenarios.Spawn;
 import com.missionsurvive.scenarios.SpawnBot;
 import com.missionsurvive.scenarios.SpawnScenario;
 import com.missionsurvive.utils.Assets;
+import com.missionsurvive.utils.Progress;
+import com.missionsurvive.utils.Sounds;
 
 import java.util.ArrayList;
 
@@ -145,7 +147,7 @@ public class MapEditor implements Map{
         TextureRegion bg2 = new TextureRegion(lev2Texture, 0, 0, 256, 256);
         lev2 = new ParallaxBackground(new ParallaxLayer[]{
                 new ParallaxLayer(bg2, new Vector2(1, 1), new Vector2(startX, startY), new Vector2(0, 0))
-        }, 480, 320, new Vector2(1, 0));
+        }, 480, 320, new Vector2(0.5f, 0));
     }
 
     private void setLev3(String assetName){
@@ -154,7 +156,7 @@ public class MapEditor implements Map{
         TextureRegion bg3 = new TextureRegion(lev3Texture, 1, 1, 480, 320);
         lev3 = new ParallaxBackground(new ParallaxLayer[]{
                 new ParallaxLayer(bg3, new Vector2(1, 1), new Vector2(0, 0)),
-        }, 480, 320, new Vector2(0.5f, 0));
+        }, 480, 320, new Vector2(0.25f, 0));
     }
 
     /** Getting 3 map levels from text String.
@@ -163,6 +165,7 @@ public class MapEditor implements Map{
     @Override
     public boolean loadMap(String mapTerInString){
         isLoaded = false;
+        String difficulty = Progress.BEGINNER;
 
         if(mapTerInString == null){
             return isLoaded = false;
@@ -190,6 +193,9 @@ public class MapEditor implements Map{
                 scrollLevel1Map.setWorldOffset(Integer.parseInt(fragmentTokens[whichChar + 1]),
                         Integer.parseInt(fragmentTokens[whichChar + 2]));
             }
+            if(fragmentTokens[whichChar].equalsIgnoreCase("difficulty")){
+                difficulty = fragmentTokens[whichChar + 1];
+            }
             if(fragmentTokens[whichChar].equalsIgnoreCase("vertical")){
                 isHorizontal = false;
             }
@@ -201,6 +207,9 @@ public class MapEditor implements Map{
             }
             if(fragmentTokens[whichChar].equalsIgnoreCase("level3MapTer")){
                 setLev3(fragmentTokens[whichChar + 1]);
+            }
+            if(fragmentTokens[whichChar].equalsIgnoreCase("music")){
+                Sounds.loadMusic(fragmentTokens[whichChar + 1]);
             }
 
             if(fragmentTokens[whichChar].equalsIgnoreCase("row")){
@@ -240,7 +249,7 @@ public class MapEditor implements Map{
                     }
                     else{
                         spawns[row][col] = new SpawnScenario(botId,
-                                Integer.parseInt(fragmentTokens[whichChar + 8]), row, col);
+                                Integer.parseInt(fragmentTokens[whichChar + 8]), difficulty, row, col);
                     }
                 }
             }
@@ -329,12 +338,11 @@ public class MapEditor implements Map{
     /**
      * sets position of a foreground to see.
      */
-    public void setCamPositionX(){
+    public void setCamPositionX(float x){
         gameCam.position.x = -MSGame.SCREEN_OFFSET_X + scrollLevel1Map.getWorldOffsetX();
-        lev3.updateCamera(1);
-        lev2.updateCamera(1);
+        lev3.updateCamera(x);
+        lev2.updateCamera(x);
     }
-
 
     public void setCamPositionY(){
         gameCam.position.y = worldHeight * 16 + MSGame.SCREEN_OFFSET_Y - scrollLevel1Map.getWorldOffsetY();
@@ -349,7 +357,7 @@ public class MapEditor implements Map{
     @Override
     public void horizontScroll(float delta, int x){
         scrollLevel1Map.setWorldOffset(x, 0);
-        setCamPositionX();
+        setCamPositionX(x);
     }
 
     @Override

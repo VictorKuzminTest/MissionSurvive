@@ -204,4 +204,10 @@
         path = "int/digits.png"
         pixmapformat = "ARGB4444">
     </asset>
+    <asset
+        type = "int"
+        name = "pause"
+        path = "int/pause.png"
+        pixmapformat = "ARGB4444">
+    </asset>
 </assets>

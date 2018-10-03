@@ -3,6 +3,7 @@ package com.missionsurvive.scenarios.commands;
 import com.badlogic.gdx.Screen;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.screens.EditorScreen;
+import com.missionsurvive.screens.GameScreen;
 import com.missionsurvive.screens.ScrollerScreen;
 
 /**
@@ -61,5 +62,10 @@ public class PlayProjectCommand implements  Command{
         if(screen instanceof EditorScreen){
             playId = PLAY_PLATFORMER;
         }
+    }
+
+    @Override
+    public void setScreen(GameScreen gameScreen) {
+
     }
 }

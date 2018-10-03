@@ -32,7 +32,7 @@ public class ScreenFactory {
             screen = new PlatformerScreen(game, playScript, map);
         }
         else if(screenName.equalsIgnoreCase("ScrollerScreen")){
-            screen = new ScrollerScreen(game, playScript);
+            screen = new ScrollerScreen(game, playScript, value);
         }
         else if(screenName.equalsIgnoreCase("EndScreen")){
             screen = new EndScreen(game, playScript, map);

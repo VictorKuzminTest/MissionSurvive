@@ -2,6 +2,7 @@ package com.missionsurvive.scenarios.controlscenarios;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.ControlPanel;
+import com.missionsurvive.screens.GameScreen;
 import com.missionsurvive.utils.Controls;
 
 import java.util.ArrayList;
@@ -11,9 +12,11 @@ public class GameCS implements ControlScenario{
     private static final int HUD = 0;
 
     private List<ControlPanel> listOfPanels;
+    private GameScreen gameScreen;
 
-    public GameCS(){
+    public GameCS(GameScreen gameScreen){
         listOfPanels = new ArrayList<ControlPanel>();
+        this.gameScreen = gameScreen;
         setControlPanels();
     }
 
@@ -27,9 +30,14 @@ public class GameCS implements ControlScenario{
         for(int i = 0; i < Controls.controlPanels.length; i++){
             if(Controls.controlPanels[i].getName().equalsIgnoreCase("gameControls")){
                 listOfPanels.add(Controls.controlPanels[i]);
+                Controls.controlPanels[i].getButton(1).getCommand().setScreen(gameScreen);
             }
             else if(Controls.controlPanels[i].getName().equalsIgnoreCase("EndLevelMenu")){
                 listOfPanels.add(Controls.controlPanels[i]);
+            }
+            else if(Controls.controlPanels[i].getName().equalsIgnoreCase("pause")){
+                listOfPanels.add(Controls.controlPanels[i]);
+                Controls.controlPanels[i].getButton(1).getCommand().setScreen(gameScreen);
             }
         }
         listOfPanels.get(HUD).setActivated(true);

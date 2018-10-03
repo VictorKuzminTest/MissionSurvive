@@ -3,6 +3,7 @@ package com.missionsurvive.utils;
 
 import com.missionsurvive.scenarios.commands.BlockLayersCommand;
 import com.missionsurvive.scenarios.commands.Command;
+import com.missionsurvive.scenarios.commands.EndGameCommand;
 import com.missionsurvive.scenarios.commands.OpenCloseCPCommand;
 import com.missionsurvive.scenarios.commands.PlayProjectCommand;
 import com.missionsurvive.scenarios.commands.PutPlayerCommand;
@@ -12,6 +13,7 @@ import com.missionsurvive.scenarios.commands.PutBotCommand;
 import com.missionsurvive.scenarios.commands.PutTileCommand;
 import com.missionsurvive.scenarios.commands.ScrollDirCommand;
 import com.missionsurvive.scenarios.commands.ShowHideBotPosCommand;
+import com.missionsurvive.scenarios.commands.PauseMenuCommand;
 import com.missionsurvive.scenarios.commands.ShowPopupCommand;
 import com.missionsurvive.scenarios.commands.ShowLayerCommand;
 import com.missionsurvive.scenarios.commands.ToLevelCommand;
@@ -31,6 +33,21 @@ public class Commands {
             }
             else if(action.equalsIgnoreCase("ToStartGameMenu")){
                 return command = new OpenCloseCPCommand("ToStartGameMenu", null);
+            }
+            else if(action.equalsIgnoreCase("EndGame")){
+                return command = new EndGameCommand();
+            }
+            else if(action.equalsIgnoreCase("buy")){
+                return command = new ShowPopupCommand(ShowPopupCommand.POPUP_BUY);
+            }
+            else if(action.equalsIgnoreCase("exit")){
+                return command = new PauseMenuCommand("exit");
+            }
+            else if(action.equalsIgnoreCase("pause")){
+                return command = new PauseMenuCommand("pause");
+            }
+            else if(action.equalsIgnoreCase("resume")){
+                return command = new PauseMenuCommand("resume");
             }
             else if(action.equalsIgnoreCase("beginner")){
                 return command = new OpenCloseCPCommand("ToChooseLevelMenuBeginner", null);
@@ -71,7 +88,7 @@ public class Commands {
             else if(action.equalsIgnoreCase("ToLevel5Experienced")){
                 return command = new ToLevelCommand("levs/level52");
             }
-            else if(action.equalsIgnoreCase("ToLevel6")){
+            else if(action.equalsIgnoreCase("ToLevel6Experienced")){
                 return command = new ToLevelCommand("levs/level6");
             }
             else if(action.equalsIgnoreCase("NextLevel")){

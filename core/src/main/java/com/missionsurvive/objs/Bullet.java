@@ -7,6 +7,7 @@ import com.missionsurvive.framework.Decorator;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.utils.Assets;
+import com.missionsurvive.utils.Sounds;
 
 import java.util.List;
 
@@ -206,8 +207,10 @@ public class Bullet implements Weapon{
 
 
     @Override
-    public boolean shoot(int x, int y, int direction){
+    public boolean shoot(int x, int y,
+                         int worldOffsetX, int worldOffsetY, int direction){
         if(action == ACTION_NONE){
+            Sounds.gun.play();
             this.x = x;
             this.y = y;
             this.direction = direction % 10;
@@ -215,6 +218,7 @@ public class Bullet implements Weapon{
             drawingHeight = 4;
             absoluteValueX = 0;
             setAction(direction);
+            setScreenXY(worldOffsetX, worldOffsetY);
             return true;
         }
         return false;

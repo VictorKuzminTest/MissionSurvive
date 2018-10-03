@@ -59,7 +59,7 @@ public class L3B implements Bot {
     private int currentAction; //currentAction
     private int direction; //direction of action.  0 - right, 1 - left.
     private int fallingSpeed = 7; //falling speed in pixels.
-    private int hp = 10;
+    private int hp;
 
     private float StartDyingTick = 0.1f, StartDyingTickTime = 0,
             betweenDyingTick = 1.5f, betweenDyingTickTime = 0, EndDyingTick = 0.1f,
@@ -70,7 +70,7 @@ public class L3B implements Bot {
 
     private int isAction; //this variable determines the action our hero is using.
 
-    public L3B(String assetName, MapEditor mapEditor, int x, int y) {
+    public L3B(String assetName, MapEditor mapEditor, int x, int y, int hp) {
         this.x = x;
         this.y = y;
         if(assetName != null){
@@ -80,6 +80,7 @@ public class L3B implements Bot {
         spriteHeight = 110;
         spritesetSpriteWidth = spriteWidth + 2;
         spritesetSpriteHeight = spriteHeight + 2;
+        this.hp = hp;
 
         hitbox = new Hitbox(x, y, 40, 80, 20, 17);
 
@@ -414,7 +415,9 @@ public class L3B implements Bot {
             animation.nextFrame();
             if(animation.getCurrentFrame() == 1){
                 for(int whichBullet = 0; whichBullet < numBullets; whichBullet++){
-                    if(bullets.get(whichBullet).shoot(bulletX, bulletY, bulletDirection)){
+                    if(bullets.get(whichBullet).shoot(bulletX, bulletY,
+                            mapEditor.getScrollLevel1Map().getWorldOffsetX(),
+                            mapEditor.getScrollLevel1Map().getWorldOffsetY(), bulletDirection)){
                         break;
                     }
                 }

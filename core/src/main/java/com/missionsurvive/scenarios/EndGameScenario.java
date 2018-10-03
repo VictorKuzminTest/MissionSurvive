@@ -7,16 +7,19 @@ import com.missionsurvive.objs.Bot;
 import com.missionsurvive.objs.Tank;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
+import com.missionsurvive.scenarios.controlscenarios.EndCS;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EndGameScenario implements Scenario {
 
+    private ControlScenario controlScenario;
     private List<Bot> bots = new ArrayList<Bot>();
 
-    public EndGameScenario(MapEditor mapEditor){
-        bots.add(new Tank("helicopter", mapEditor, 100, 100));
+    public EndGameScenario(MapEditor mapEditor, ControlScenario controlScenario){
+        bots.add(new Tank("helicopter", mapEditor, 180, 175));
+        this.controlScenario = controlScenario;
     }
 
     @Override
@@ -24,6 +27,9 @@ public class EndGameScenario implements Scenario {
         for(int enemyNum = 0; enemyNum < bots.size(); enemyNum++){
             bots.get(enemyNum).moving(deltaTime,
                     null, null, 0, 0);
+        }
+        if(bots.get(0).isAction() == Tank.ACTION_AWAY){
+            controlScenario.getControlPanels().get(EndCS.END_GAME_PANEL).setActivated(true);
         }
     }
 

@@ -7,6 +7,7 @@ import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.SpawnBot;
 import com.missionsurvive.scenarios.SpawnScenario;
+import com.missionsurvive.screens.GameScreen;
 
 import java.util.ArrayList;
 
@@ -148,5 +149,10 @@ public class PutBotCommand implements Command{
                     mapTerArrayList.get(mapTerNum).getRow(), bot, direction);
         }
         mapTerArrayList.clear();
+    }
+
+    @Override
+    public void setScreen(GameScreen gameScreen) {
+
     }
 }

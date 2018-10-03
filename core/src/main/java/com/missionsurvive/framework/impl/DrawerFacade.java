@@ -62,7 +62,7 @@ public class DrawerFacade {
                 hero.drawObject(batch, 0, 0, 0, 0);
             }
 
-            drawHeroHitbox(hero);
+            //drawHeroHitbox(hero);
 
             int numBullets = hero.getWeapon().size();
             for(short i = 0; i < numBullets; i++){
@@ -85,7 +85,7 @@ public class DrawerFacade {
             //drawing wreckage on the ground:
             wreckage.drawObject(batch, 0, 0);
             //draw hitbox:
-            drawHitBox(wreckage);
+            //drawHitBox(wreckage);
         }
     }
 
@@ -94,7 +94,7 @@ public class DrawerFacade {
         for(int i = 0; i < numBots; i++){
             bots.get(i).drawObject(batch, 0, 0, 0, 0);
             //draw hitbox:
-            drawHitBox(bots.get(i));
+            //drawHitBox(bots.get(i));
         }
     }
 
