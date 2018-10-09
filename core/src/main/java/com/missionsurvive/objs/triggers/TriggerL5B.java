@@ -12,6 +12,8 @@ import com.missionsurvive.objs.actors.L1B;
 import com.missionsurvive.objs.actors.L5B;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
+import com.missionsurvive.scenarios.SpawnScenario;
+import com.missionsurvive.utils.Sounds;
 
 public class TriggerL5B implements Bot {
 
@@ -24,14 +26,17 @@ public class TriggerL5B implements Bot {
     private int x;
     private int endScrollX;
     private int numTilesToScroll = 15;
+    private int difficulty;
 
     private float scrollingTickTime;
 
-    public TriggerL5B(Bot bot, Scenario scenario, int x, int y){
+    public TriggerL5B(Bot bot, Scenario scenario, int x, int y, int difficulty){
+        Sounds.playBossMusic();
         this.x = x;
         endScrollX = x + numTilesToScroll * 16;
         this.scenario = (PlatformerScenario) scenario;
         this.bot = bot;
+        this.difficulty = difficulty;
     }
 
     @Override
@@ -49,6 +54,8 @@ public class TriggerL5B implements Bot {
             }
 
             if(bot.isAction() == L5B.ACTION_DEAD){
+                scenario.getGameScreen().pause(true);
+                Sounds.stopBossMusic();
                 showEndLevelPanel();
                 scenario.removeBot(this, 0);
             }
@@ -56,10 +63,21 @@ public class TriggerL5B implements Bot {
     }
 
     public void showEndLevelPanel(){
+        switch (difficulty){
+            case SpawnScenario.DIFFICULTY_BEGINNER:
+                activateControlPanel("EndBeginner");
+                break;
+            case SpawnScenario.DIFFICULTY_EXPERIENCED:
+                activateControlPanel("EndLevelMenu");
+                break;
+        }
+    }
+
+    private void activateControlPanel(String panelName){
         int numPanels = scenario.getControlScenario().getControlPanels().size();
-        for(int i  = 0; i < numPanels; i++){
+        for(int i = 0; i < numPanels; i++){
             ControlPanel cp = scenario.getControlScenario().getControlPanels().get(i);
-            if(cp.getName().equalsIgnoreCase("EndLevelMenu")){
+            if(cp.getName().equalsIgnoreCase(panelName)){
                 cp.setActivated(true);
             }
         }

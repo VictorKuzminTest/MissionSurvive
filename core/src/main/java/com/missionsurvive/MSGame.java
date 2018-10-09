@@ -38,6 +38,7 @@ public class MSGame extends Game {
 		PlayScript playScript = new PlayScript();
 		screenFactory = new ScreenFactory(this, playScript);
 		Sounds.loadSounds();
+		Sounds.loadBossMusic();
 
 		//test screens:
 		//setScreen(new TestScreen(this));

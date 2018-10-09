@@ -67,4 +67,18 @@ public class Progress {
         stringBuilder.append(":");
         Assets.getGame().getActivityCallback().setIntoSharedPrefs("progress", stringBuilder.toString());
     }
+
+    public static boolean isPurchased(){
+        String progress = Assets.getGame().getActivityCallback()
+                .getSharedPrefs("purchase");
+
+        if(progress.equalsIgnoreCase("purchase")){
+            return true;
+        }
+        return false;
+    }
+
+    public static void purchase(){
+        Assets.getGame().getActivityCallback().setIntoSharedPrefs("purchase", "purchase");
+    }
 }

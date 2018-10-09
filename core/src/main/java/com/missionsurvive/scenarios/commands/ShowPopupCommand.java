@@ -3,6 +3,7 @@ package com.missionsurvive.scenarios.commands;
 import com.missionsurvive.ActivityCallback;
 import com.missionsurvive.screens.GameScreen;
 import com.missionsurvive.utils.Assets;
+import com.missionsurvive.utils.Progress;
 
 /**
  * Created by kuzmin on 17.05.18.
@@ -16,7 +17,7 @@ public class ShowPopupCommand implements Command{
     public static final int POPUP_LOAD = 1;
     public static final int POPUP_NEW_MAP = 2;
     public static final int POPUP_NEW_BOT = 3;
-    public static final int POPUP_BUY = 4;
+    public static final int POPUP_PURCHASE = 4;
 
     private int popupId = -1;
 
@@ -36,6 +37,8 @@ public class ShowPopupCommand implements Command{
 
     @Override
     public String execute(String key, String value) {
+        //THIS MUST BE DELETED:
+        Progress.purchase();
         activityCallback.showPopup(popupId);
         return null;
     }

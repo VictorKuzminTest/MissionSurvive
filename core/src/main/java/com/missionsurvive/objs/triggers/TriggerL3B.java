@@ -11,6 +11,7 @@ import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.objs.actors.L3B;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
+import com.missionsurvive.utils.Sounds;
 
 public class TriggerL3B implements Bot {
 
@@ -32,6 +33,7 @@ public class TriggerL3B implements Bot {
     private boolean isSpawned;
 
     public TriggerL3B(Scenario scenario, int x, int y, int hp){
+        Sounds.playBossMusic();
         this.x = x;
         this.y = y;
         offsetToSpawn = x + (9 * 16);
@@ -63,6 +65,8 @@ public class TriggerL3B implements Bot {
 
             if(bot != null){
                 if(bot.isAction() == L3B.DEAD){
+                    scenario.getGameScreen().pause(true);
+                    Sounds.stopBossMusic();
                     showEndLevelPanel();
                     scenario.removeBot(this, 0);
                 }

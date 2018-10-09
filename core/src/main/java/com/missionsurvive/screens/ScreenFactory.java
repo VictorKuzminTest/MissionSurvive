@@ -40,6 +40,9 @@ public class ScreenFactory {
         else if(screenName.equalsIgnoreCase("EditorScreen")){
             screen = new EditorScreen(game, playScript);
         }
+        else if(screenName.equalsIgnoreCase("PurchaseScreen")){
+            screen = new PurchaseScreen(game, playScript, value);
+        }
         return screen;
     }
 }

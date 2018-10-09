@@ -68,7 +68,6 @@ public class PlatformerScreen extends GameScreen implements Screen {
 
         gameCam = new ParallaxCamera(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT); //extends OrthographicCamera
         gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
-        setScreenPos(map.getScrollMap().getWorldOffsetX(), map.getScrollMap().getWorldOffsetY());
         renderer = new OrthogonalTiledMapRenderer(((MapEditor)map).getMap());
         ((MapEditor)map).setGameCam(gameCam);
 
@@ -77,14 +76,12 @@ public class PlatformerScreen extends GameScreen implements Screen {
                 playScript, touchControl);
         controlScenario = new GameCS(this);
         platformerScenario.setControlScenario(controlScenario);
+        setScreenPos(map.getScrollMap().getWorldOffsetX(), map.getScrollMap().getWorldOffsetY());
 
-        putPlayer(100, 150);
+        putPlayer(50, 220);
         this.playScript.setScreen(this, "gameControls");
         this.playScript.setWeapon(hero);
-        if(Sounds.music != null){
-            Sounds.music.setLooping(true);
-            Sounds.music.play();
-        }
+        Sounds.playMusic();
     }
 
     public void update(float deltaTime) {
@@ -180,6 +177,8 @@ public class PlatformerScreen extends GameScreen implements Screen {
 
     @Override
     public void setScreenPos(int x, int y) {
+        System.out.println("setScreenPosX = " + x +
+                  "setScreenPosY = " + y); //LLLLLLoooooooooogggggggggg
         map.getScrollMap().setWorldOffsetX(x);
         map.getScrollMap().setWorldOffsetY(y);
         map.getScrollMap().setColOffset();

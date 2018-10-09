@@ -97,8 +97,8 @@
         </icon>
         <button
             assetName="pause"
-            x = "410"
-            y = "1"
+            x = "400"
+            y = "10"
             srcX = "1"
             srcY = "33"
             width = "30"
@@ -107,8 +107,8 @@
         </button>
         <button
             assetName="pause"
-            x = "450"
-            y = "1"
+            x = "440"
+            y = "10"
             srcX = "1"
             srcY = "1"
             width = "30"
@@ -214,6 +214,20 @@
         </button>
     </controlPanel>
 
+    <controlPanel screen = "GameMenuScreen"
+        name = "PurchaseFullVersion">
+        <button
+            assetName = "art"
+            x = "177"
+            y = "80"
+            srcX = "222"
+            srcY = "349"
+            width = "289"
+            height = "26"
+            action = "PurchaseFullVersion">
+        </button>
+    </controlPanel>
+
     <controlPanel screen = "PlatformerScreen"
         name = "EndLevelMenu">
         <rect
@@ -286,21 +300,6 @@
     </controlPanel>
 
     <controlPanel
-        screen = "GameMenuScreen"
-        name = "buy">
-        <button
-            assetName = "art"
-            x = "0"
-            y = "0"
-            srcX = "148"
-            srcY = "459"
-            width = "53"
-            height = "26"
-            action = "buy">
-        </button>
-    </controlPanel>
-
-    <controlPanel
         screen = "EndScreen"
         name = "EndGame">
         <rect
@@ -353,6 +352,66 @@
             width = "66"
             height = "26"
             action = "EndGame">
+        </button>
+    </controlPanel>
+
+    <controlPanel
+        screen = "PlatformerScreen"
+        name = "EndBeginner">
+        <rect
+            rectName = "end"
+            x = "110"
+            y = "70"
+            width = "260"
+            height = "180"
+            r = "0.0f"
+            g = "0.0f"
+            b = "0.0f"
+            a = "0.5f">
+        </rect>
+        <icon
+            iconName = "endbeginner"
+            assetName = "endbeginner"
+            x = "112"
+            y = "70"
+            srcX = "0"
+            srcY = "0"
+            width = "256"
+            height = "256">
+        </icon>
+        <button
+            assetName = "art"
+            x = "304"
+            y = "224"
+            srcX = "155"
+            srcY = "349"
+            width = "66"
+            height = "26"
+            action = "EndGame">
+        </button>
+    </controlPanel>
+
+    <controlPanel screen = "PurchaseScreen"
+        name = "PurchaseExit">
+        <button
+            assetName = "art"
+            x = "0"
+            y = "290"
+            srcX = "222"
+            srcY = "349"
+            width = "126"
+            height = "26"
+            action = "purchase">
+        </button>
+        <button
+            assetName = "art"
+            x = "420"
+            y = "290"
+            srcX = "117"
+            srcY = "378"
+            width = "56"
+            height = "26"
+            action = "exit">
         </button>
     </controlPanel>
 </control>

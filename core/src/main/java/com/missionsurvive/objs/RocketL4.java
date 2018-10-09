@@ -8,6 +8,7 @@ import com.missionsurvive.framework.impl.ObjAnimation;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.geom.Hitbox;
 import com.missionsurvive.utils.Assets;
+import com.missionsurvive.utils.Sounds;
 
 /**
  * Created by kuzmin on 01.05.18.
@@ -131,8 +132,8 @@ public class RocketL4 extends Obstacle {
     public void move(){
         if(isPlaced){
             if(!isExploded){
-                screenX += 2;//1;
-                screenY += 2;//1;
+                screenX += 2;
+                screenY += 2;
 
                 shadow.screenX = screenX;
 
@@ -142,6 +143,7 @@ public class RocketL4 extends Obstacle {
 
                     isExploded = true;
                     isHitGround = true;
+                    Sounds.playSound(Sounds.explosion);
                     animationExplosion.setCurrentFrame(0);
                 }
             }
@@ -159,8 +161,6 @@ public class RocketL4 extends Obstacle {
             isPlaced = false;
             isExploded = false;
             isHitGround = false;
-
-            /*Sounds.explosion.play(1);*/
         }
     }
 
@@ -214,14 +214,10 @@ public class RocketL4 extends Obstacle {
 
     private class Shadow{
 
-        /*private Paint paint;*/
         private int assetStartY = 53, spriteWidth = 45, spriteHeight = 20;
         private int screenX, screenY;
 
         public Shadow(int screenX, int screenY){
-            /*paint = new Paint();
-            paint.setAlpha(127);*/
-
             this.screenX = screenX;
             this.screenY = screenY;
         }

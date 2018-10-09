@@ -259,7 +259,7 @@ public class Fireball implements Weapon{
     public boolean shoot(int x, int y,
                          int worldOffsetX, int worldOffsetY, int direction) {
         if(action == ACTION_NONE){
-            Sounds.fireball.play();
+            Sounds.playSound(Sounds.fireball);
             setMovingPos(direction);
             action = ACTION_MOVE;
             this.x = x;

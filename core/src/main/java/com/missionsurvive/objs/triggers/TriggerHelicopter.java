@@ -13,6 +13,7 @@ import com.missionsurvive.objs.Weapon;
 import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
+import com.missionsurvive.utils.Sounds;
 
 public class TriggerHelicopter implements Bot {
 
@@ -54,6 +55,8 @@ public class TriggerHelicopter implements Bot {
             }
         }
         else if(bot.isAction() == Helicopter.ACTION_BEYOND_SCREEN){
+            scenario.getGameScreen().pause(true);
+            Sounds.disposeMusic();
             showEndLevelPanel();
             scenario.removeBot(this, 0);
         }

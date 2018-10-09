@@ -12,6 +12,7 @@ import com.missionsurvive.objs.actors.L1B;
 import com.missionsurvive.objs.actors.L6B;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
+import com.missionsurvive.utils.Sounds;
 
 public class TriggerL6B implements Bot {
 
@@ -29,6 +30,7 @@ public class TriggerL6B implements Bot {
     private float scrollingTickTime;
 
     public TriggerL6B(Bot bot, Scenario scenario, int x, int y){
+        Sounds.playBossMusic();
         this.x = x;
         endScrollX = x + numTilesToScroll * 16;
         this.scenario = (PlatformerScenario) scenario;
@@ -49,6 +51,7 @@ public class TriggerL6B implements Bot {
             }
 
             if(bot.isAction() == L6B.ACTION_DEAD){
+                Sounds.stopBossMusic();
                 endLev6 = new TriggerEndLev6();
             }
         }

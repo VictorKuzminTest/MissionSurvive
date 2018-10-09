@@ -4,9 +4,11 @@ package com.missionsurvive.utils;
 import com.missionsurvive.scenarios.commands.BlockLayersCommand;
 import com.missionsurvive.scenarios.commands.Command;
 import com.missionsurvive.scenarios.commands.EndGameCommand;
+import com.missionsurvive.scenarios.commands.MuteCommand;
 import com.missionsurvive.scenarios.commands.OpenCloseCPCommand;
 import com.missionsurvive.scenarios.commands.PlayProjectCommand;
 import com.missionsurvive.scenarios.commands.PutPlayerCommand;
+import com.missionsurvive.scenarios.commands.QuitGameCommand;
 import com.missionsurvive.scenarios.commands.SaveLoadMapCommand;
 import com.missionsurvive.scenarios.commands.NewMapCommand;
 import com.missionsurvive.scenarios.commands.PutBotCommand;
@@ -17,6 +19,7 @@ import com.missionsurvive.scenarios.commands.PauseMenuCommand;
 import com.missionsurvive.scenarios.commands.ShowPopupCommand;
 import com.missionsurvive.scenarios.commands.ShowLayerCommand;
 import com.missionsurvive.scenarios.commands.ToLevelCommand;
+import com.missionsurvive.scenarios.commands.ToPurchaseScreenCommand;
 import com.missionsurvive.scenarios.commands.WithTileCommand;
 
 /**
@@ -37,14 +40,23 @@ public class Commands {
             else if(action.equalsIgnoreCase("EndGame")){
                 return command = new EndGameCommand();
             }
-            else if(action.equalsIgnoreCase("buy")){
-                return command = new ShowPopupCommand(ShowPopupCommand.POPUP_BUY);
+            else if(action.equalsIgnoreCase("quitGame")){
+                return command = new QuitGameCommand();
+            }
+            else if(action.equalsIgnoreCase("PurchaseFullVersion")) {
+                return command = new ToPurchaseScreenCommand();
+            }
+            else if(action.equalsIgnoreCase("purchase")){
+                return command = new ShowPopupCommand(ShowPopupCommand.POPUP_PURCHASE);
             }
             else if(action.equalsIgnoreCase("exit")){
                 return command = new PauseMenuCommand("exit");
             }
             else if(action.equalsIgnoreCase("pause")){
                 return command = new PauseMenuCommand("pause");
+            }
+            else if(action.equalsIgnoreCase("sound")){
+                return command = new MuteCommand();
             }
             else if(action.equalsIgnoreCase("resume")){
                 return command = new PauseMenuCommand("resume");

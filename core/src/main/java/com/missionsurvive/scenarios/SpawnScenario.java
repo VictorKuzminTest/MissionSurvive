@@ -20,8 +20,8 @@ import com.missionsurvive.utils.Progress;
 
 public class SpawnScenario implements Spawn {
 
-    private static final int DIFFICULTY_BEGINNER = 0;
-    private static final int DIFFICULTY_EXPERIENCED = 1;
+    public static final int DIFFICULTY_BEGINNER = 0;
+    public static final int DIFFICULTY_EXPERIENCED = 1;
 
     public static final int LEVEL_1_SCENE = 1000;
     public static final int LEVEL_2_SCENE = 2000;
@@ -67,7 +67,7 @@ public class SpawnScenario implements Spawn {
                     }
                     scenario.addBot(l1b, 0);
                     scenario.addBot(
-                            new TriggerL1B(l1b, scenario, col * 16, row * 16),
+                            new TriggerL1B(l1b, scenario,col * 16, row * 16),
                             0);
                     scenario.setScroll(false, false);
 
@@ -110,7 +110,7 @@ public class SpawnScenario implements Spawn {
                     L5B l5B = null;
                     if(difficulty == DIFFICULTY_EXPERIENCED){
                         l5B = new L5B("l5b", mapEditor,
-                                col * 16, row * 16, 60);
+                                col * 16, row * 16, 50);
                     }
                     else{
                         l5B = new L5B("l5b", mapEditor,
@@ -118,7 +118,8 @@ public class SpawnScenario implements Spawn {
                     }
                     scenario.addBot(l5B, 0);
                     scenario.addBot(
-                            new TriggerL5B(l5B, scenario, col * 16, row * 16),
+                            new TriggerL5B(l5B, scenario, col * 16, row * 16,
+                                    difficulty),
                             0);
                     scenario.setScroll(false, false);
 
@@ -127,13 +128,12 @@ public class SpawnScenario implements Spawn {
                 break;
             case LEVEL_6_SCENE:
                 if(isFirstTimeSpawn){
-                    scenario.addBot(new TriggerEndLev6(), 0);//!!!!!!!!
-                    /*L6B l6b = new L6B("l6b", mapEditor,
+                    L6B l6b = new L6B("l6b", mapEditor,
                             col * 16, row *16);
                     scenario.addBot(l6b, 0);
                     scenario.addBot(new TriggerL6B(l6b, scenario,
                             col * 16, row * 16), 0);
-                    scenario.setScroll(false, false);*/
+                    scenario.setScroll(false, false);
                     isFirstTimeSpawn = false;
                 }
                 break;

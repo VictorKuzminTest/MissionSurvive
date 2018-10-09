@@ -77,10 +77,29 @@ public class ActionButton implements Button, Observer{
     public boolean onClick(boolean onClick) {
         if(onClick){
             if(command != null){
-                command.execute(null, null);
+                handleCommand(command.execute(null, null));
             }
         }
         return onClick;
+    }
+
+    private void handleCommand(String text){
+        if(text != null){
+
+            String fragmentDelims = "\\:";
+
+            String[] fragmentTokens = text.split(fragmentDelims);
+            int len = (fragmentTokens.length);
+
+            for(int whichChar = 0; whichChar < len; whichChar++) {
+                if(fragmentTokens[whichChar].equalsIgnoreCase("srcX")){
+                    srcX = Integer.parseInt(fragmentTokens[whichChar + 1]);
+                }
+                if(fragmentTokens[whichChar].equalsIgnoreCase("srcY")){
+                    srcY = Integer.parseInt(fragmentTokens[whichChar + 1]);
+                }
+            }
+        }
     }
 
     @Override

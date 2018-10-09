@@ -2,6 +2,7 @@ package com.missionsurvive.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,6 +18,7 @@ import com.missionsurvive.scenarios.commands.LoadFromAssetsLibGdx;
 import com.missionsurvive.scenarios.commands.SaveLoadMapCommand;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Progress;
+import com.missionsurvive.utils.Sounds;
 
 /**
  * Created by kuzmin on 07.06.18.
@@ -65,8 +67,13 @@ public class LoadingLevelScreen implements Screen {
                 Progress.setProgress(Progress.BEGINNER, 2);
             }
             else if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level31")){
-                this.assetName = "ToLevel4Beginner";
-                Progress.setProgress(Progress.BEGINNER, 3);
+                if(Progress.isPurchased()){
+                    this.assetName = "ToLevel4Beginner";
+                    Progress.setProgress(Progress.BEGINNER, 3);
+                }
+                else{
+                    this.assetName = ":purchase:ToLevel4Beginner:";
+                }
             }
             else if(Assets.getCurrentLevel().equalsIgnoreCase("ToLevel4Beginner")){
                 this.assetName = "levs/level51";
@@ -81,8 +88,13 @@ public class LoadingLevelScreen implements Screen {
                 Progress.setProgress(Progress.EXPERIENCED, 2);
             }
             else if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level32")){
-                this.assetName = "ToLevel4Experienced";
-                Progress.setProgress(Progress.EXPERIENCED, 3);
+                if(Progress.isPurchased()){
+                    this.assetName = "ToLevel4Experienced";
+                    Progress.setProgress(Progress.EXPERIENCED, 3);
+                }
+                else{
+                    this.assetName = ":purchase:ToLevel4Experienced:";
+                }
             }
             else if(Assets.getCurrentLevel().equalsIgnoreCase("ToLevel4Experienced")){
                 this.assetName = "levs/level52";
@@ -116,6 +128,12 @@ public class LoadingLevelScreen implements Screen {
         }
         else if(assetName.equalsIgnoreCase("ToLevel4Experienced")){
             game.setScreen(game.getScreenFactory().newScreen("ScrollerScreen", null, Progress.EXPERIENCED));
+        }
+        else if(assetName.equalsIgnoreCase(":purchase:ToLevel4Beginner:")){
+            game.setScreen(game.getScreenFactory().newScreen("PurchaseScreen", null, ":purchase:ToLevel4Beginner:"));
+        }
+        else if(assetName.equalsIgnoreCase(":purchase:ToLevel4Experienced:")){
+            game.setScreen(game.getScreenFactory().newScreen("PurchaseScreen", null, ":purchase:ToLevel4Experienced:"));
         }
         else{
             if(map.loadMap(loadMapCommand.execute(null, assetName))){

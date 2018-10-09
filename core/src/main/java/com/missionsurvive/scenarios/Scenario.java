@@ -7,6 +7,7 @@ import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.Bot;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
+import com.missionsurvive.screens.GameScreen;
 
 import java.util.List;
 
@@ -33,4 +34,6 @@ public interface Scenario {
     public void setControlScenario(ControlScenario controlScenario);
 
     public ControlScenario getControlScenario();
+
+    public GameScreen getGameScreen();
 }

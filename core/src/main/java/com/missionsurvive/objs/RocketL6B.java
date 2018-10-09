@@ -8,6 +8,7 @@ import com.missionsurvive.framework.impl.Animation2;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.utils.Assets;
+import com.missionsurvive.utils.Sounds;
 
 public class RocketL6B extends EnemyBullet {
 
@@ -219,6 +220,7 @@ public class RocketL6B extends EnemyBullet {
     public void gotIt(int direction){
         this.direction = direction;
         exploded = true;
+        Sounds.playSound(Sounds.explosion);
     }
 
     public void animate(Animation animation, int startFrame, int endFrame){

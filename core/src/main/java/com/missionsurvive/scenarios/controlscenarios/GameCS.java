@@ -39,6 +39,10 @@ public class GameCS implements ControlScenario{
                 listOfPanels.add(Controls.controlPanels[i]);
                 Controls.controlPanels[i].getButton(1).getCommand().setScreen(gameScreen);
             }
+            else if(Controls.controlPanels[i].getName().equalsIgnoreCase("EndBeginner")){
+                listOfPanels.add(Controls.controlPanels[i]);
+                Controls.controlPanels[i].setActivated(false);
+            }
         }
         listOfPanels.get(HUD).setActivated(true);
     }

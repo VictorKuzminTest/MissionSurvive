@@ -210,7 +210,7 @@ public class Bullet implements Weapon{
     public boolean shoot(int x, int y,
                          int worldOffsetX, int worldOffsetY, int direction){
         if(action == ACTION_NONE){
-            Sounds.gun.play();
+            Sounds.playSound(Sounds.gun);
             this.x = x;
             this.y = y;
             this.direction = direction % 10;

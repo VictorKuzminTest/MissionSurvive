@@ -55,7 +55,7 @@ public class GameMenuCS implements ControlScenario{
                 if(controlPanel.getName().equalsIgnoreCase("StartGameMenu")){
                     controlPanel.setActivated(true);
                 }
-                else if(controlPanel.getName().equalsIgnoreCase("buy")){
+                else if(controlPanel.getName().equalsIgnoreCase("PurchaseFullVersion")){
                     controlPanel.setActivated(true);
                 }
                 else{

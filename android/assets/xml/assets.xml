@@ -210,4 +210,16 @@
         path = "int/pause.png"
         pixmapformat = "ARGB4444">
     </asset>
+    <asset
+        type = "int"
+        name = "endbeginner"
+        path = "int/endbeginner.png"
+        pixmapformat = "ARGB4444">
+    </asset>
+    <asset
+        type = "int"
+        name = "ads"
+        path = "int/ads.png"
+        pixmapformat = "ARGB4444">
+    </asset>
 </assets>

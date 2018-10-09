@@ -89,7 +89,7 @@ public class EditorScreen extends GameScreen implements Screen {
         scaleToDrawY = (float)Gdx.graphics.getBackBufferHeight() / MSGame.SCREEN_HEIGHT;
 
         drawerFacade = new DrawerFacade();
-        worldWidth = 300;
+        worldWidth = 35;
         worldHeight = 23;
 
         gameCam = new ParallaxCamera(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT); //extends OrthographicCamera

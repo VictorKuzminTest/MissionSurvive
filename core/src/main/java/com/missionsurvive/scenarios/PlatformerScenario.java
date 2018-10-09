@@ -14,6 +14,7 @@ import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 import com.missionsurvive.screens.GameScreen;
 import com.missionsurvive.utils.Progress;
+import com.missionsurvive.utils.Sounds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +42,14 @@ public class PlatformerScenario implements Scenario {
     //a chain of objects spawned on the level. I need it to reuse spawns already placed
     //on the level (method: setFirstTimeSpawned):
     private ArrayList<Spawn> spawnsFakeList = new ArrayList<Spawn>();
+    private ArrayList<ArrayList<Spawn>> horSpawns = new ArrayList<ArrayList<Spawn>>();
+    private ArrayList<ArrayList<Spawn>> vertSpawns = new ArrayList<ArrayList<Spawn>>();
     private PlayScript playScript;
     private ControlScenario controlScenario;
     private TouchControl touchControl;
     private GameScreen screen;
 
-    //hte x and y coords to scroll the screen back when start level from the beginning:
+    //the x and y coords to scroll the screen back when start level from the beginning:
     private int startScreenX, startScreenY;
     private int scrollId;
 
@@ -67,6 +70,7 @@ public class PlatformerScenario implements Scenario {
         this.mapEditor = mapEditor;
         this.playScript = playScript;
         fillSpawnsFakeList();
+        fillSpawnHolders();
 
         if(mapEditor.isHorizontal()){
             setScroll(true, false);
@@ -77,6 +81,47 @@ public class PlatformerScenario implements Scenario {
             scrollId = VERTICAL_ONLY;
         }
     }
+
+    @Override
+    public GameScreen getGameScreen() {
+        return screen;
+    }
+
+    public void fillSpawnHolders(){
+        fillHorSpawnHolders();
+        fillVertSpawnHolders();
+    }
+
+    public void fillHorSpawnHolders(){
+        int height = mapEditor.getSpawns().length;
+        int width = mapEditor.getSpawns()[0].length;
+
+        for(int col = 0; col < width; col++){
+            horSpawns.add(new ArrayList<Spawn>());
+            for(int row = 0; row < height; row++){
+                Spawn spawn = mapEditor.getSpawns()[row][col];
+                if(spawn != null){
+                    horSpawns.get(col).add(spawn);
+                }
+            }
+        }
+    }
+
+    public void fillVertSpawnHolders(){
+        int height = mapEditor.getSpawns().length;
+        int width = mapEditor.getSpawns()[0].length;
+
+        for(int row = 0; row < height; row++){
+            vertSpawns.add(new ArrayList<Spawn>());
+            for(int col = 0; col < width; col++){
+                Spawn spawn = mapEditor.getSpawns()[row][col];
+                if(spawn != null){
+                    vertSpawns.get(row).add(spawn);
+                }
+            }
+        }
+    }
+
 
     /**
      * fills the spawns fake list for setting firstTimeSpawned from data of MapEditor.
@@ -189,8 +234,11 @@ public class PlatformerScenario implements Scenario {
         }
         else{
             //start level from the beginning:
+            Sounds.replayMusic();
+            removeAllBots();
             playScript.subtractLife();
             playScript.newLives();
+            setFirstTimeSpawned();
             screen.setScreenPos(startScreenX, startScreenY);
             switch(scrollId){
                 case HORIZONTAL_ONLY:
@@ -349,13 +397,11 @@ public class PlatformerScenario implements Scenario {
         if(mapEditor.getSpawns()[0][startColOffset + 20] != null){  //here we generate zombie from above (startColOffset + 20 means zombie is generate approximately in the middle of the screen)
             mapEditor.getSpawns()[0][startColOffset + 20].spawnBot(this, mapEditor, deltaTime);
         }
-        for(int row = 1; row < worldHeight; row++){  //generate zombies in front...
-            if(mapEditor.getSpawns()[row][startColOffset] != null){
-                mapEditor.getSpawns()[row][startColOffset].spawnBot(this, mapEditor, deltaTime);
-            }
-            if(mapEditor.getSpawns()[row][endColOffset] != null){  //generate zombies from behind...
-                mapEditor.getSpawns()[row][endColOffset].spawnBot(this, mapEditor, deltaTime);
-            }
+        for(int i = 0; i < horSpawns.get(startColOffset).size(); i++){
+            horSpawns.get(startColOffset).get(i).spawnBot(this, mapEditor, deltaTime);
+        }
+        for(int i = 0; i < horSpawns.get(endColOffset).size(); i++){
+            horSpawns.get(endColOffset).get(i).spawnBot(this, mapEditor, deltaTime);
         }
     }
 
@@ -370,10 +416,8 @@ public class PlatformerScenario implements Scenario {
         int startRowOffset = scrollMap.getStartRowOffset();
         int startRow = GeoHelper.checkRowCol(startRowOffset - 1, worldHeight);
         for(int row = startRow; row <= startRowOffset; row++){
-            for(int col = 1; col < worldWidth; col++){  //generate zombies from above...
-                if(mapEditor.getSpawns()[row][col] != null){
-                    mapEditor.getSpawns()[row][col].spawnBot(this, mapEditor, deltaTime);
-                }
+            for(int i = 0; i < vertSpawns.get(row).size(); i++){
+                vertSpawns.get(row).get(i).spawnBot(this, mapEditor, deltaTime);
             }
         }
     }
@@ -441,7 +485,8 @@ public class PlatformerScenario implements Scenario {
     public void setSpawn(int col, int row, int botId, int direction){
         Spawn spawn;
         if(botId >= SpawnScenario.LEVEL_1_SCENE){
-            spawn = new SpawnScenario(botId, direction, Progress.BEGINNER, row, col);
+            spawn = new SpawnScenario(botId, direction,
+                    Progress.BEGINNER, row, col);
         }
         else{
             spawn = new SpawnBot(botId, direction, row, col);
@@ -521,6 +566,31 @@ public class PlatformerScenario implements Scenario {
 
     public TouchControl getTouchControl(){
         return touchControl;
+    }
+
+    private class SpawnHolder{
+
+        private int row;
+        private int col;
+        private Spawn spawn;
+
+        private SpawnHolder(int row, int col, Spawn spawn){
+            this.row = row;
+            this.col = col;
+            this.spawn  = spawn;
+        }
+
+        private int getRow(){
+            return row;
+        }
+
+        private int getCol(){
+            return col;
+        }
+
+        private Spawn getSpawn(){
+            return spawn;
+        }
     }
 
 }

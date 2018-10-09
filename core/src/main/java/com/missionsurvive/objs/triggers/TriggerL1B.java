@@ -1,6 +1,7 @@
 package com.missionsurvive.objs.triggers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.ControlPanel;
 import com.missionsurvive.framework.Decorator;
 import com.missionsurvive.map.MapEditor;
@@ -12,6 +13,8 @@ import com.missionsurvive.objs.actors.L1B;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.commands.Command;
+import com.missionsurvive.utils.Assets;
+import com.missionsurvive.utils.Sounds;
 
 /**
  * Created by kuzmin on 09.06.18.
@@ -32,6 +35,7 @@ public class TriggerL1B implements Bot {
     private float scrollingTickTime;
 
     public TriggerL1B(Bot bot, Scenario scenario, int x, int y){
+        Sounds.playBossMusic();
         this.x = x;
         endScrollX = x + numTilesToScroll * 16;
         this.scenario = (PlatformerScenario) scenario;
@@ -58,6 +62,8 @@ public class TriggerL1B implements Bot {
             }
 
             if(bot.isAction() == L1B.ACTION_DEAD){
+                scenario.getGameScreen().pause(true);
+                Sounds.stopBossMusic();
                 showEndLevelPanel();
                 scenario.removeBot(this, 0);
             }

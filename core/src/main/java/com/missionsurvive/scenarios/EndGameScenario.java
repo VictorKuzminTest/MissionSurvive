@@ -8,6 +8,7 @@ import com.missionsurvive.objs.Tank;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 import com.missionsurvive.scenarios.controlscenarios.EndCS;
+import com.missionsurvive.screens.GameScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,11 @@ public class EndGameScenario implements Scenario {
 
     @Override
     public ControlScenario getControlScenario() {
+        return null;
+    }
+
+    @Override
+    public GameScreen getGameScreen() {
         return null;
     }
 }

@@ -13,6 +13,7 @@ import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 import com.missionsurvive.scenarios.controlscenarios.GameMenuCS;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Progress;
+import com.missionsurvive.utils.Sounds;
 
 /**
  * Created by kuzmin on 31.05.18.
@@ -35,6 +36,8 @@ public class GameMenuScreen implements Screen {
         this.game = game;
         this.playScript = playScript;
         this.playScript.newLives();
+        Sounds.disposeMusic();
+        Sounds.stopBossMusic();
 
         gameCam = new OrthographicCamera();
         gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);

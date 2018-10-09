@@ -8,6 +8,7 @@ import com.missionsurvive.framework.impl.Animation2;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.utils.Assets;
+import com.missionsurvive.utils.Sounds;
 
 /**
  * Created by kuzmin on 01.05.18.
@@ -172,6 +173,7 @@ public class Rocket extends EnemyBullet {
     public void gotIt(int direction) {
         super.gotIt(direction);
         exploded = true;
+        Sounds.playSound(Sounds.explosion);
     }
 
     @Override

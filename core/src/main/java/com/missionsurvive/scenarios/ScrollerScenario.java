@@ -14,8 +14,10 @@ import com.missionsurvive.objs.Springboard;
 import com.missionsurvive.objs.Tear;
 import com.missionsurvive.objs.actors.Moto;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
+import com.missionsurvive.screens.GameScreen;
 import com.missionsurvive.screens.ScrollerScreen;
 import com.missionsurvive.utils.Progress;
+import com.missionsurvive.utils.Sounds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +69,11 @@ public class ScrollerScenario implements Scenario {
         this.scrollerScreen = scrollerScreen;
         this.playScript = playScript;
         newObstacles(screenX, screenY);
+    }
+
+    @Override
+    public GameScreen getGameScreen() {
+        return scrollerScreen;
     }
 
     @Override
@@ -322,7 +329,9 @@ public class ScrollerScenario implements Scenario {
                 break;
             case 3: currentSection = section4;
                 break;
-            default: showEndLevelPanel();
+            default:
+                scrollerScreen.pause(true);
+                showEndLevelPanel();
                 break;
         }
     }

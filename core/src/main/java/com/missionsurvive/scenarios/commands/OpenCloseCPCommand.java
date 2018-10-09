@@ -3,6 +3,7 @@ package com.missionsurvive.scenarios.commands;
 import com.missionsurvive.framework.ControlPanel;
 import com.missionsurvive.screens.GameScreen;
 import com.missionsurvive.utils.Controls;
+import com.missionsurvive.utils.Progress;
 
 /**
  * Created by kuzmin on 01.06.18.

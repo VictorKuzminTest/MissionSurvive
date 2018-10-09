@@ -29,6 +29,7 @@ import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.controlscenarios.GameCS;
 import com.missionsurvive.scenarios.ScrollerScenario;
 import com.missionsurvive.utils.Assets;
+import com.missionsurvive.utils.Sounds;
 
 import java.util.ArrayList;
 
@@ -103,6 +104,8 @@ public class ScrollerScreen extends GameScreen implements Screen {
 
         this.playScript.setScreen(this, "gameControls");
         putPlayer(100, 150);
+        Sounds.loadMusic("rush.mp3");
+        Sounds.playMusic();
     }
 
     public void update(float deltaTime) {
@@ -354,6 +357,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
             }
         }
     }
+
 
     @Override
     public void dispose() {
