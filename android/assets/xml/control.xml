@@ -39,14 +39,14 @@
             width = "16"
             height = "16">
         </icon>
-        <listbuttons
+        <!--<listbuttons
             listingName = "tileset"
             x = "84"
             y = "10"
             width = "380"
             height = "64"
             layout = "grid">
-        </listbuttons>
+        </listbuttons>-->
         <listbuttons
             listingName = "editorControl"
             x = "10"

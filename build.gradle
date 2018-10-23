@@ -6,11 +6,10 @@ buildscript {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        
-
+        classpath 'com.android.tools.build:gradle:3.1.3'
     }
 }
 
@@ -33,6 +32,10 @@ allprojects {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        google()
+        //added repository below \/ in order for
+        //implementation 'com.android.billingclient:billing:1.1' could be available:
+        jcenter()
     }
 }
 
@@ -44,7 +47,6 @@ project(":desktop") {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        
     }
 }
 
@@ -54,14 +56,14 @@ project(":android") {
     configurations { natives }
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        implementation project(":core")
+        implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
-        
+        implementation 'com.android.billingclient:billing:1.2'
     }
 }
 
@@ -73,7 +75,7 @@ project(":core") {
     sourceSets.test.resources.srcDirs = ["src/test/res/"]
 
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         testCompile "junit:junit:4.12"
         testCompile "org.mockito:mockito-core:2.2.7"
     }

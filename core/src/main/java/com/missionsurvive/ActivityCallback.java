@@ -15,4 +15,6 @@ public interface ActivityCallback {
     public String getSharedPrefs(String key);
 
     public void setIntoSharedPrefs(String key, String value);
+
+    public void purchaseFullVersion();
 }

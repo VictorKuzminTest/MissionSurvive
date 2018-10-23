@@ -2,6 +2,7 @@ package com.missionsurvive.scenarios.commands;
 
 import com.missionsurvive.map.Map;
 import com.missionsurvive.map.MapEditor;
+import com.missionsurvive.scenarios.controlscenarios.EditorScenario;
 import com.missionsurvive.screens.GameScreen;
 
 /**
@@ -26,6 +27,7 @@ public class SaveLoadMapCommand implements Command{
             case ACTION_LOAD:
                 if(value != null){
                     map.loadMap(value);
+                    EditorScenario.setMapLoading(true);
                 }
                 break;
         }

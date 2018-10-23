@@ -42,8 +42,8 @@ public class PlatformerScenario implements Scenario {
     //a chain of objects spawned on the level. I need it to reuse spawns already placed
     //on the level (method: setFirstTimeSpawned):
     private ArrayList<Spawn> spawnsFakeList = new ArrayList<Spawn>();
-    private ArrayList<ArrayList<Spawn>> horSpawns = new ArrayList<ArrayList<Spawn>>();
-    private ArrayList<ArrayList<Spawn>> vertSpawns = new ArrayList<ArrayList<Spawn>>();
+    private ArrayList<ArrayList<Spawn>> horSpawns;
+    private ArrayList<ArrayList<Spawn>> vertSpawns;
     private PlayScript playScript;
     private ControlScenario controlScenario;
     private TouchControl touchControl;
@@ -88,6 +88,8 @@ public class PlatformerScenario implements Scenario {
     }
 
     public void fillSpawnHolders(){
+        horSpawns = new ArrayList<ArrayList<Spawn>>();
+        vertSpawns = new ArrayList<ArrayList<Spawn>>();
         fillHorSpawnHolders();
         fillVertSpawnHolders();
     }

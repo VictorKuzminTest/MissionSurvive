@@ -501,7 +501,7 @@ public class ScrollerScenario implements Scenario {
     }
 
     public void setSection1(){
-        /*switch(difficulty){
+        switch(difficulty){
             case BEGINNER:
                 section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 900, 150));
                 section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 1.5f, 900, 210));
@@ -558,13 +558,13 @@ public class ScrollerScenario implements Scenario {
                 section1.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.2f, 750, 250));
                 section1.add(new PlaceObstacle(PlaceObstacle.TEAR, 2.0f, 900, 0));
                 break;
-        }*/
+        }
     }
 
     public void setSection2(){
-        /*switch (difficulty){
+        switch (difficulty){
             case BEGINNER:
-                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 6.0f, 900, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 9.0f, 900, 150));
                 section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.4f, 900, 210));
                 section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 800, 250));
                 section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 800, 105));
@@ -609,7 +609,7 @@ public class ScrollerScenario implements Scenario {
                 section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 1.5f, 900, 0));
                 break;
             case EXPERIENCED:
-                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 6.0f, 900, 150));
+                section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 9.0f, 900, 150));
                 section2.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.4f, 900, 210));
                 section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.8f, 800, 250));
                 section2.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.8f, 800, 105));
@@ -667,13 +667,13 @@ public class ScrollerScenario implements Scenario {
                 section2.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_12, 0.1f, 600, 250));
                 section2.add(new PlaceObstacle(PlaceObstacle.TEAR, 0.8f, 700, 0));
                 break;
-        }*/
+        }
     }
 
     public void setSection3(){
-        /*switch (difficulty){
+        switch (difficulty){
             case BEGINNER:
-                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 5.0f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 9.0f, true));
                 section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 1.5f, false));
                 section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
                 section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, false));
@@ -707,7 +707,7 @@ public class ScrollerScenario implements Scenario {
                 section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.2f, false));
                 break;
             case EXPERIENCED:
-                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 5.0f, true));
+                section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET1, 9.0f, true));
                 section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET2, 1.5f, false));
                 section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET3, 1.5f, true));
                 section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 1.5f, false));
@@ -758,13 +758,13 @@ public class ScrollerScenario implements Scenario {
                 section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET4, 0.8f, false));
                 section3.add(new PlaceObstacle(PlaceObstacle.ROCKET, PlaceObstacle.ROCKET5, 0.8f, false));
                 break;
-        }*/
+        }
     }
 
     public void setSection4(){
         switch (difficulty){
             case BEGINNER:
-                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 800, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 9.0f, 800, 150));
                 section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
                 section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.5f, 800, 100));
                 section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 800, 250));
@@ -839,7 +839,7 @@ public class ScrollerScenario implements Scenario {
                 section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_12, 5.0f, 480, 1500));
                 break;
             case EXPERIENCED:
-                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 3.0f, 800, 150));
+                section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_11, 9.0f, 800, 150));
                 section4.add(new PlaceObstacle(PlaceObstacle.CAR_MIDDLE_12, 0.1f, 800, 210));
                 section4.add(new PlaceObstacle(PlaceObstacle.CAR_TOP_11, 0.5f, 800, 100));
                 section4.add(new PlaceObstacle(PlaceObstacle.CAR_BOTTOM_11, 0.1f, 800, 250));

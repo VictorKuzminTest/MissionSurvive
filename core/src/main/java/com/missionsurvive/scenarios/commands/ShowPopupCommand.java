@@ -38,8 +38,13 @@ public class ShowPopupCommand implements Command{
     @Override
     public String execute(String key, String value) {
         //THIS MUST BE DELETED:
-        Progress.purchase();
-        activityCallback.showPopup(popupId);
+        //Progress.purchase();
+        if(popupId == POPUP_PURCHASE){
+            activityCallback.purchaseFullVersion();
+        }
+        else{
+            activityCallback.showPopup(popupId);
+        }
         return null;
     }
 

@@ -33,6 +33,7 @@ import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.Spawn;
 import com.missionsurvive.scenarios.SpawnBot;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
+import com.missionsurvive.scenarios.controlscenarios.EditorScenario;
 import com.missionsurvive.scenarios.controlscenarios.MapEditorCS;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Controls;
@@ -46,7 +47,6 @@ public class EditorScreen extends GameScreen implements Screen {
     public static final int ALL_LAYERS = 0;
     public static final int FIRST_LAYER = 1;
 
-    /*private Music theme;*/
     private DrawerFacade drawerFacade;
     private Scenario platformerScenario;
     private Map map;
@@ -89,7 +89,7 @@ public class EditorScreen extends GameScreen implements Screen {
         scaleToDrawY = (float)Gdx.graphics.getBackBufferHeight() / MSGame.SCREEN_HEIGHT;
 
         drawerFacade = new DrawerFacade();
-        worldWidth = 35;
+        worldWidth = 420;
         worldHeight = 23;
 
         gameCam = new ParallaxCamera(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT); //extends OrthographicCamera
@@ -125,13 +125,10 @@ public class EditorScreen extends GameScreen implements Screen {
         this.playScript.setScreen(this, "mapEditorControls");
         renderer = new OrthogonalTiledMapRenderer(((MapEditor)map).getMap());
         touchControl = new TouchControl(scaleX, scaleY);
-        platformerScenario = new PlatformerScenario(this, (MapEditor)map,
+        platformerScenario = new EditorScenario(this, (MapEditor)map,
                 this.playScript, touchControl);
         controlScenario = new MapEditorCS(this, map, platformerScenario);
         platformerScenario.setControlScenario(controlScenario);
-
-        /*this.whichAsset = Assets.getWhichPixmap("lev3");*/
-        /*theme = Sounds.theme2;*/
     }
 
     public void newMap(int width, int height){
