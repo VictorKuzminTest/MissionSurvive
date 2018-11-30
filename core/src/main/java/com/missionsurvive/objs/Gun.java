@@ -7,10 +7,6 @@ import com.missionsurvive.scenarios.PlatformerScenario;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public class Gun implements Weapon{
 
     public static final int WEAPON_HANDGUN = 0;
@@ -109,7 +105,6 @@ public class Gun implements Weapon{
         }
         return false;
     }
-
 
     public void launch(int x, int y,
                        int worldOffsetX, int worldOffsetY, int direction){

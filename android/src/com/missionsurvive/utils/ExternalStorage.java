@@ -11,10 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 20.05.18.
- */
-
 public class ExternalStorage {
 
     public static String loadStringFromExternalFile(String directory, String fileName){
@@ -108,7 +104,6 @@ public class ExternalStorage {
         bufferedWriter.write(text);
         bufferedWriter.close();
     }
-
 
     /**
      * If MEDIA_MOUNTED: checks if app's folder exists (if not - creates it);

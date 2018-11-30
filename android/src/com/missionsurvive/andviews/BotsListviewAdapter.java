@@ -11,16 +11,11 @@ import com.missionsurvive.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 18.05.18.
- */
-
 public class BotsListviewAdapter extends ArrayAdapter<String> {
 
     private final Context context;
 
     public BotsListviewAdapter(Context context, int id, ArrayList<String> files) {
-        //super(context, -1, pixmaps);
         super(context, id, files);
         this.context = context;
     }

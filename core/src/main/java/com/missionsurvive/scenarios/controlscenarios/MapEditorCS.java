@@ -18,10 +18,6 @@ import com.missionsurvive.utils.Controls;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kuzmin on 04.05.18.
- */
-
 public class MapEditorCS implements ControlScenario {
 
     private List<ControlPanel> listOfPanels;
@@ -61,8 +57,6 @@ public class MapEditorCS implements ControlScenario {
         Assets.getGame().getActivityCallback().setCommand(saveMapCommand, "save_map");
     }
 
-
-
     @Override
     public boolean onTouchPanels(float delta, float scaleX, float scaleY) {
         boolean onTouch = false;
@@ -97,7 +91,6 @@ public class MapEditorCS implements ControlScenario {
             }
         }
     }
-
 
     @Override
     public void setControlPanels() {

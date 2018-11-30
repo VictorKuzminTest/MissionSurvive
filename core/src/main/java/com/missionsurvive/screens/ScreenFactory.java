@@ -4,11 +4,6 @@ import com.badlogic.gdx.Screen;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.map.Map;
 import com.missionsurvive.scenarios.PlayScript;
-import com.missionsurvive.scenarios.controlscenarios.ChooseStageListingBuilder;
-
-/**
- * Created by kuzmin on 07.06.18.
- */
 
 public class ScreenFactory {
 

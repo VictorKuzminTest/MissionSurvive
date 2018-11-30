@@ -1,13 +1,8 @@
 package com.missionsurvive.scenarios.commands;
 
 import com.missionsurvive.map.Map;
-import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.scenarios.controlscenarios.EditorScenario;
 import com.missionsurvive.screens.GameScreen;
-
-/**
- * Created by kuzmin on 21.05.18.
- */
 
 public class SaveLoadMapCommand implements Command{
 

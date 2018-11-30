@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.ControlPanel;
 import com.missionsurvive.framework.Decorator;
 import com.missionsurvive.framework.TouchControl;
-import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.Bot;

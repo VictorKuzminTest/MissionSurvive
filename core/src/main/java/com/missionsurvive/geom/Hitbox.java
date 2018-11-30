@@ -1,9 +1,5 @@
 package com.missionsurvive.geom;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class Hitbox {
 
     private int hitboxWidth;
@@ -15,7 +11,8 @@ public class Hitbox {
     private int halfHeight;
     private int halfWidth;
     private int centerX, centerY, top, bottom, left, right;
-    private int offsetX, offsetY; //XY offset for hitbox (offset from sprite coordinates on screen).
+    //X & Y offset for hitbox (offset from sprite coordinates on screen)
+    private int offsetX, offsetY;
 
     public Hitbox(int x, int y, int hitboxWidth, int hitboxHeight, int offsetX, int offsetY){
         setHitbox(x, y, hitboxWidth, hitboxHeight, offsetX, offsetY);

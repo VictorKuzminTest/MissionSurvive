@@ -7,10 +7,6 @@ import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.geom.Hitbox;
 import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public class RightSide extends Obstacle {
 
     private Hitbox hitbox;
@@ -22,7 +18,6 @@ public class RightSide extends Obstacle {
     private int screenWidth, screenHeight;
     private int spriteWidth, spriteHeight;
     private int spritesetSpriteWidth, spritesetSpriteHeight;
-    private int whichAsset;
     private int rightSideY;
 
     public RightSide(Hitbox hitbox, String assetName, int screenX, int screenY,
@@ -96,7 +91,6 @@ public class RightSide extends Obstacle {
             isPlaced = false;
         }
     }
-
 
     public void placeObstacle(int screenX, int screenY){
         isPlaced = true;

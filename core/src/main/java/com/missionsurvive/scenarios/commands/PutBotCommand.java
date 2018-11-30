@@ -11,10 +11,6 @@ import com.missionsurvive.screens.GameScreen;
 
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 18.05.18.
- */
-
 public class PutBotCommand implements Command{
 
     public static final String PUT = "put";

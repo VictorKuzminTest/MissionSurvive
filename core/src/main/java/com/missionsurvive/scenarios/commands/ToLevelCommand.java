@@ -7,10 +7,6 @@ import com.missionsurvive.screens.ScreenFactory;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Controls;
 
-/**
- * Created by kuzmin on 07.06.18.
- */
-
 public class ToLevelCommand implements Command{
 
     private String value;

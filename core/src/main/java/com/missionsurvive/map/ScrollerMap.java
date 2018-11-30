@@ -2,10 +2,6 @@ package com.missionsurvive.map;
 
 import java.util.Random;
 
-/**
- * Created by kuzmin on 08.05.18.
- */
-
 public class ScrollerMap implements Map{
 
     public static final int UPPER_PART = 0;

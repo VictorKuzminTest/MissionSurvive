@@ -8,10 +8,6 @@ import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public class EnemyBullet implements GameObject{
 
     public static final int DIRECTION_NONE = 0, DIRECTION_DOWN_RIGHT = 1, DIRECTION_RIGHT = 2,
@@ -21,7 +17,9 @@ public class EnemyBullet implements GameObject{
     public Texture texture;
 
     private int screenX = 0, screenY = 0, worldX = 0, worldY = 0;
-    private int absoluteValueX , absoluteValueY; //these are absolute values determining the place of drawing frame inside asset, because size of bullets for different guns are different.
+    //these are absolute values determining the place of drawing frame inside asset,
+    //because size of bullets for different guns are different.
+    private int absoluteValueX , absoluteValueY;
     private int width;
     private int height;
     private int speed;
@@ -50,7 +48,6 @@ public class EnemyBullet implements GameObject{
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
     }
-
 
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
@@ -161,7 +158,6 @@ public class EnemyBullet implements GameObject{
         }
     }
 
-
     /**
      * When bullet gets an aim. It receives a direction to move (usually 0 - NONE).
      * @param direction
@@ -172,7 +168,6 @@ public class EnemyBullet implements GameObject{
         drawingWidth = burstDrawingWidth;
         drawingHeight = burstDrawingHeight;
     }
-
 
     /**
      * If bullet doesn't overlap the screen (it goes off the screen), so this bullet is free to shoot again.
@@ -194,7 +189,6 @@ public class EnemyBullet implements GameObject{
             }
         }
     }
-
 
     /**
      * The method receives world x and y coords (the position bullet is launched from)
@@ -228,7 +222,6 @@ public class EnemyBullet implements GameObject{
         drawingHeight = 4;
         absoluteValueX = 0;
     }
-
 
     /**
      * This method translates world coordinates into screen coordinates. Because our hero has screen

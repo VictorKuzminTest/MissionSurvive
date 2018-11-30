@@ -10,18 +10,14 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.Button;
-import com.missionsurvive.framework.Listener;
 import com.missionsurvive.framework.impl.ActionButton;
-import com.missionsurvive.framework.impl.ListButtons;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.scenarios.PlayScript;
 import com.missionsurvive.scenarios.commands.Command;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
-import com.missionsurvive.scenarios.controlscenarios.GameMenuCS;
 import com.missionsurvive.scenarios.controlscenarios.PurchaseCS;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Progress;
-import com.missionsurvive.utils.Sounds;
 
 import java.util.ArrayList;
 
@@ -37,7 +33,8 @@ public class PurchaseScreen implements Screen {
     private Texture texture;
     private PlayScript playScript;
     private ListAds adsPics;
-    private String action; //which screen to go (Platformer or main menu).
+    //which screen to go (Platformer or main menu).
+    private String action;
 
     private int adsWidth = 102;
     private int adsHeight = 90;
@@ -197,11 +194,13 @@ public class PurchaseScreen implements Screen {
     private class ListAds{
         private ArrayList<Button> buttons;
 
-        private int startX;  //listing startX
-        private int startY;   //listing startY
+        //listing startX & Y
+        private int startX;
+        private int startY;
         private int listingWidth;
         private int listingHeight;
-        private int spaceBetweenButtons; //space between buttons in pixels
+        //space between buttons in pixels
+        private int spaceBetweenButtons;
         private int endOfListX;
 
         public ListAds(int spaceBetweenButtons,

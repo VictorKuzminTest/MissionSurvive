@@ -4,9 +4,6 @@ import com.missionsurvive.framework.impl.ListButtons;
 
 import java.util.List;
 
-/**
- * Created by kuzmin on 02.06.18.
- */
 public class KineticScroll {
     public static final float DELTA_TRACE_TICK = 0.05f;
     public static final float BRAKING_SPEED = 0.5f;
@@ -103,5 +100,4 @@ public class KineticScroll {
             }
         }
     }
-
 }

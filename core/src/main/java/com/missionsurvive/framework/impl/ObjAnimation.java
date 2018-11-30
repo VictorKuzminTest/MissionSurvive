@@ -1,14 +1,9 @@
 package com.missionsurvive.framework.impl;
 
-import com.badlogic.gdx.graphics.Pixmap;
 import com.missionsurvive.framework.Animation;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by kuzmin on 03.05.18.
- */
 
 public class ObjAnimation implements Animation {
 
@@ -17,9 +12,12 @@ public class ObjAnimation implements Animation {
     private List<Animation> animation;
 
     private int setOfFrames;
-    private int currentFrame; //we also need to keep track of the current frame.
-    private int[] actionFrames;  //an array that contains an info about hero's actions and quantity of action frames.
-    private int direction; //current direction to animate set frames.
+    //we need to keep track of the current frame
+    private int currentFrame;
+    //an array that contains an info about hero's actions and quantity of action frames
+    private int[] actionFrames;
+    //current direction to animate set frames
+    private int direction;
 
     public ObjAnimation(int[] actionFrames, int spriteWidth, int spriteHeight){
         currentFrame = 0;
@@ -60,7 +58,6 @@ public class ObjAnimation implements Animation {
         return currentFrame;
     }
 
-
     /**
      * This is universal method for animation,
      * when you choose the range of frames inside the setOfFrames to animate current action.
@@ -70,11 +67,11 @@ public class ObjAnimation implements Animation {
     @Override
     public void animate(int startFrame, int numFrames){
         currentFrame++;
-        if(currentFrame > startFrame + (numFrames - 1)) { //if next frame of animation is greater then number of animation frames for current action...
+        //if next frame of animation is greater then number of animation frames for current action...
+        if(currentFrame > startFrame + (numFrames - 1)) {
             this.currentFrame = startFrame;
         }
     }
-
 
     /**
      * Universal method for back and forth animation.
@@ -116,7 +113,6 @@ public class ObjAnimation implements Animation {
     public int[] getActionFrames(){
         return actionFrames;
     }
-
 
     public void setDirection(int direction){
         this.direction = direction;

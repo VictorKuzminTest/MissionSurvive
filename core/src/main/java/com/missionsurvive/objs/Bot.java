@@ -5,10 +5,6 @@ import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.scenarios.Scenario;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public interface Bot extends GameObject{
 
     public void moving(float deltaTime, MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight);

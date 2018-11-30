@@ -3,15 +3,10 @@ package com.missionsurvive.scenarios.controlscenarios;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.ControlPanel;
 import com.missionsurvive.framework.impl.ListButtons;
-import com.missionsurvive.screens.GameMenuScreen;
 import com.missionsurvive.utils.Controls;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by kuzmin on 31.05.18.
- */
 
 public class GameMenuCS implements ControlScenario{
 

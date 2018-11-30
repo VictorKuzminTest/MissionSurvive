@@ -6,7 +6,6 @@ import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.screens.GameScreen;
 
 /**
- * Created by kuzmin on 23.04.18.
  * This class was created for first tests to load map from text. It uses LibGdx methods.
  * It is better to use android native methods.
  */

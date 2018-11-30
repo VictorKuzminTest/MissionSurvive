@@ -1,7 +1,6 @@
 package com.missionsurvive.objs;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.impl.ObjAnimation;
@@ -9,10 +8,6 @@ import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.geom.Hitbox;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Sounds;
-
-/**
- * Created by kuzmin on 01.05.18.
- */
 
 public class RocketL4 extends Obstacle {
 
@@ -128,7 +123,6 @@ public class RocketL4 extends Obstacle {
         }
     }
 
-
     public void move(){
         if(isPlaced){
             if(!isExploded){
@@ -210,7 +204,6 @@ public class RocketL4 extends Obstacle {
         shadow.screenX = screenX;
         shadow.screenY = screenY;
     }
-
 
     private class Shadow{
 

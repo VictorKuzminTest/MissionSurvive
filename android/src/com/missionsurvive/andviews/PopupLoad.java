@@ -18,10 +18,6 @@ import com.missionsurvive.utils.ExternalStorage;
 import java.io.File;
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 17.05.18.
- */
-
 public class PopupLoad extends Popup implements View.OnClickListener{
 
     private Activity activity;
@@ -44,7 +40,6 @@ public class PopupLoad extends Popup implements View.OnClickListener{
 
         super.setContentView(contentView);
     }
-
 
     /**
      * Here we initialize control views.
@@ -71,7 +66,6 @@ public class PopupLoad extends Popup implements View.OnClickListener{
             setListViewClickEvents(fileNames);
         }
     }
-
 
     /**
      * Method handles on ListView items clicking events.

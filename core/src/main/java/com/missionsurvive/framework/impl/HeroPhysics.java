@@ -7,16 +7,9 @@ import com.missionsurvive.map.MapTer;
 import com.missionsurvive.map.ScrollMap;
 import com.missionsurvive.objs.actors.Hero;
 
-import sun.rmi.runtime.Log;
-
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class HeroPhysics implements Physics {
 
-    public HeroPhysics(){
-    }
+    public HeroPhysics(){}
 
     @Override
     public Vector calculateVector(MapTer[][] map, ScrollMap scrollMap,
@@ -34,7 +27,6 @@ public class HeroPhysics implements Physics {
         }
         return vector;
     }
-
 
     public Vector calculateWhenRunning(MapTer mapTer, ScrollMap scrollMap,
                                        int vectStartX, int vectStartY,
@@ -60,7 +52,6 @@ public class HeroPhysics implements Physics {
         return vector;
     }
 
-
     public Vector calculateWhenJumpingOrFalling(MapTer mapTer, ScrollMap scrollMap,
                                                 int vectStartX, int vectStartY, Vector vector, int tileSize){
         if(mapTer != null){
@@ -81,8 +72,6 @@ public class HeroPhysics implements Physics {
         }
         return vector;
     }
-
-
 
     /**
      * Cuts vector depending on x and y coordinates of a rectangle (tile).
@@ -126,7 +115,6 @@ public class HeroPhysics implements Physics {
                 isVertical = true;
             }
         }
-
         if(isVertical){
             vector.setX(correctionX * (Math.abs(startX - borderX)) - correctionX);
             vector.setY(Math.round(recalculateVectorSide(initY, initX, vector.getX())));
@@ -206,7 +194,6 @@ public class HeroPhysics implements Physics {
                         / tileWidth, map[0].length);
     }
 
-
     /**
      * Gets the X border of a tile (left or right) depending on x direction (positive or negative).
      * @param mapTer
@@ -218,7 +205,6 @@ public class HeroPhysics implements Physics {
         int borderX = x < 0 ? mapTer.getRight(scrollMap) : mapTer.getLeft(scrollMap);
         return borderX;
     }
-
 
     /**
      * Gets the Y border of a tile (bottom or top) depending on y direction (positive or negative).

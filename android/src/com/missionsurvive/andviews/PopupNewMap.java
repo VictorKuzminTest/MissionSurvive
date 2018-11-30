@@ -12,10 +12,6 @@ import com.badlogic.gdx.Game;
 import com.missionsurvive.R;
 import com.missionsurvive.scenarios.commands.Command;
 
-/**
- * Created by kuzmin on 17.05.18.
- */
-
 public class PopupNewMap extends Popup implements View.OnClickListener {
 
     private Activity activity;
@@ -38,7 +34,6 @@ public class PopupNewMap extends Popup implements View.OnClickListener {
         super.setContentView(contentView);
     }
 
-
     /**
      * Here we initialize control views.
      */
@@ -55,7 +50,6 @@ public class PopupNewMap extends Popup implements View.OnClickListener {
         cancelButton = findViewById(R.id.button_cancel);
         cancelButton.setOnClickListener(this);
     }
-
 
     /**
      * Method handles on buttons clicks.

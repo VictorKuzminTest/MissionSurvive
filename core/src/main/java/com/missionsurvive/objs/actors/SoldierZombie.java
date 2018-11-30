@@ -20,10 +20,6 @@ import com.missionsurvive.utils.Assets;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kuzmin on 14.07.18.
- */
-
 public class SoldierZombie implements Bot {
 
     public static final float ALPHA_STEP = 0.04f;
@@ -44,20 +40,22 @@ public class SoldierZombie implements Bot {
     private PlatformerScenario platformerScenario;
     private Texture texture;
 
-    private int halfHeroHeight; //"half...", because basically we need to know the half of "real" object width-height to calculate bounding (colliding) points.
+    private int halfHeroHeight;
     private int halfHeroWidth;
-    private int centerX, centerY, top, bottom, left, right;  //ограничивающие точки "тела" героя (top, bootom, left, right). centerX-centerY - центр героя.
-    private int vectorX, vectorY;  //Вектор передвижения героя в данный момент времени.
-    private int bulletX, bulletY, bulletDirection; //starting point coordinates for bullet to move. They depend on action shooting frames.
+    private int centerX, centerY, top, bottom, left, right;
+    //moving vector in current moment
+    private int vectorX, vectorY;
+    private int bulletX, bulletY, bulletDirection;
 
-    private int[] actions; //массив, в котором содержится инфа о действиях игрока и количестве фреймах в них (номер элемента массива - row, содержание элемента - количество фреймов).
-    private int numDirections; //количество направлений для действий (сторон света).
-    private int numActions; //количество действий.
-    private int currentAction; //currentAction
-    private int direction; //direction of action.  0 - right, 1 - left.
-    private int fallingSpeed = 7; //falling speed in pixels.
-    private int numIdleShootingFrames = 3; //количество фреймов, когда игрок стоит на одном месте, для анимации выстрелов в одну сторону (вверх, прямо-вверх, прямо и т.д.).
-    private int startIdleShootingFrame; //какой из фреймов анимации idleShootingFrames является начальным для отрисовки.
+    private int[] actions;
+    private int numDirections;
+    private int numActions;
+    private int currentAction;
+    //direction of action.  0 - right, 1 - left.
+    private int direction;
+    private int fallingSpeed = 7;
+    private int numIdleShootingFrames = 3;
+    private int startIdleShootingFrame;
     private int hp;
 
     private float animationTickTime = 0, animationTick = 0.08f;
@@ -67,10 +65,11 @@ public class SoldierZombie implements Bot {
     private float betweenActionsTickTime = 1.0f , betweenActionsTick = 1.5f;
     private float alpha = ALPHA_INIT;
 
-    private boolean isNorth, isEast, isSouth, isWest; //переменный, указывающие, какие тайлы мира заблокированы.
-    private MapTer northTer, eastTer, southTer, westTer; //переменные, хранящие MapTer смежных с героем тайлов.
+    private boolean isNorth, isEast, isSouth, isWest;
+    private MapTer northTer, eastTer, southTer, westTer;
 
-    private int isAction; //this variable determines the action our hero is using.
+    //this variable determines the action our hero is using.
+    private int isAction;
     private int targetX = -1, targetY = -1;
 
     private final int IDLE_SHOOTING_ACTION = 0;
@@ -106,8 +105,6 @@ public class SoldierZombie implements Bot {
         numBullets = 5;
         setBulletHolder(numBullets);
     }
-
-
 
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
@@ -192,7 +189,6 @@ public class SoldierZombie implements Bot {
         }
     }
 
-
     public void move(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight, float deltaTime){
         movingTickTime += deltaTime;
 
@@ -214,7 +210,6 @@ public class SoldierZombie implements Bot {
         }
     }
 
-
     @Override
     public void collide(Hero hero){
         if(isAction < 3){
@@ -233,7 +228,6 @@ public class SoldierZombie implements Bot {
             isAction = 0;
         }
     }
-
 
     public void calculateVectorY(int direction, int speedInPixels, MapEditor mapEditor){
         if(!isSouth){
@@ -254,7 +248,6 @@ public class SoldierZombie implements Bot {
             }
         }
     }
-
 
     public void die(){
         if(isAction < 3){
@@ -277,7 +270,6 @@ public class SoldierZombie implements Bot {
         }
     }
 
-
     public void fall(){
         if(!isSouth){
             isAction = 1;
@@ -295,7 +287,6 @@ public class SoldierZombie implements Bot {
         }
     }
 
-
     @Override
     public void hit(Weapon weapon){
         hp -= weapon.getHP();
@@ -311,7 +302,6 @@ public class SoldierZombie implements Bot {
         }
     }
 
-
     public void idling(){
         if(isAction != 2) { //if it's not shooting.
             while(betweenActionsTickTime > betweenActionsTick){
@@ -321,7 +311,6 @@ public class SoldierZombie implements Bot {
         }
     }
 
-
     public void idlingAnimation(){
         while(animationTickTime > animationTick) {
             animationTickTime -= animationTick;
@@ -330,7 +319,6 @@ public class SoldierZombie implements Bot {
             animation.animate(startIdleShootingFrame, 0);
         }
     }
-
 
     @Override
     public void jump(int destX, int destY){
@@ -357,13 +345,11 @@ public class SoldierZombie implements Bot {
         }
     }
 
-
     public void setBulletHolder(int numBullets){ //generates the bullet holder.
         for(int whichBullet = 0; whichBullet < numBullets; whichBullet++){
             bullets.add(new EnemyBullet("bullet", MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT));
         }
     }
-
 
     public void setDirection(int x){
         if(this.x < x){
@@ -373,7 +359,6 @@ public class SoldierZombie implements Bot {
             direction = 1;  //left
         }
     }
-
 
     public void setOpacity(float deltaTime){
         animationTickTime += deltaTime;
@@ -461,7 +446,6 @@ public class SoldierZombie implements Bot {
         }
     }
 
-
     public void shoot(){
         if(isAction < 3){ //if zombie is not dying.
             if(!platformerScenario.getHero().equals(null)){
@@ -481,7 +465,6 @@ public class SoldierZombie implements Bot {
             }
         }
     }
-
 
     public void shootingAnimation(){
         while(shootingTicktime > shootingTick) {
@@ -504,7 +487,6 @@ public class SoldierZombie implements Bot {
             }
         }
     }
-
 
     public void tilemapCollision(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
 
@@ -560,7 +542,6 @@ public class SoldierZombie implements Bot {
             eastTer = null;
         }
     }
-
 
     @Override
     public int getX(){

@@ -2,14 +2,8 @@ package com.missionsurvive.scenarios.controlscenarios;
 
 import com.missionsurvive.framework.impl.ListButtons;
 import com.missionsurvive.scenarios.commands.Command;
-import com.missionsurvive.scenarios.commands.PlayProjectCommand;
-import com.missionsurvive.screens.EditorScreen;
 import com.missionsurvive.utils.Commands;
 import com.missionsurvive.utils.Progress;
-
-/**
- * Created by kuzmin on 05.06.18.
- */
 
 public class ChooseStageListingBuilder implements ListingBuilder{
 
@@ -62,7 +56,6 @@ public class ChooseStageListingBuilder implements ListingBuilder{
         }
         return null;
     }
-
 
     public void addNewButton(ListButtons listButtons,
                              int assetX, int assetY, int col,

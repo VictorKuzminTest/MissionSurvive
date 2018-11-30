@@ -2,13 +2,8 @@ package com.missionsurvive.scenarios.controlscenarios;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.ControlPanel;
-import com.missionsurvive.framework.TouchControl;
 
 import java.util.List;
-
-/**
- * Created by kuzmin on 04.05.18.
- */
 
 public interface ControlScenario {
 

@@ -12,10 +12,6 @@ import com.missionsurvive.framework.Observer;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 25.04.18.
- */
-
 public class ActionButton implements Button, Observer{
 
     private Texture texture;
@@ -29,7 +25,8 @@ public class ActionButton implements Button, Observer{
     private int buttonHeight;
     private int state;
 
-    private float screenXHelper; //helps to accumulate float values (it is used in list of buttons)
+    //helps to accumulate float values (it is used in list of buttons)
+    private float screenXHelper;
     private float screenYHelper;
     private float scaleToDrawX, scaleToDrawY;
 

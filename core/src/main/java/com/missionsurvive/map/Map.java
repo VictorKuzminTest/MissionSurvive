@@ -1,9 +1,5 @@
 package com.missionsurvive.map;
 
-/**
- * Created by kuzmin on 08.05.18.
- */
-
 public interface Map {
 
     public MapTer[][] getLevel1Ter();

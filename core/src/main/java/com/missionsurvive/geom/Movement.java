@@ -3,12 +3,7 @@ package com.missionsurvive.geom;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class Movement {
-
     /**
      * In this method we check for blocked tile existence to the east of an object.
      * If there is no tile, then we just return the speed (or some distance) object moves with.
@@ -31,7 +26,6 @@ public class Movement {
         }
         return speedInPixels;
     }
-
 
     /**
      * In this method we check for blocked tile existence to the west of an object.

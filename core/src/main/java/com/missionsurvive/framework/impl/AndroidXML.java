@@ -5,9 +5,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.XmlReader;
 import com.missionsurvive.framework.XML;
 
-/**
- * Created by kuzmin on 22.04.18.
- */
 public class AndroidXML implements XML {
 
     XmlReader xmlReader;
@@ -15,7 +12,6 @@ public class AndroidXML implements XML {
     public AndroidXML(){
         xmlReader = new XmlReader();
     }
-
 
     @Override
     public String getAttrValue(XmlReader.Element element, String attrKey) {

@@ -19,10 +19,6 @@ import com.missionsurvive.utils.Commands;
 
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 14.05.18.
- */
-
 public class PlatformerScreenListingBuilder implements ListingBuilder{
 
     private ArrayList<MapTer> mapTerArrayList;

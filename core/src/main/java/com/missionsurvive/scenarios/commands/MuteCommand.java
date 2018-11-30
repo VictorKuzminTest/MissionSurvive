@@ -5,7 +5,6 @@ import com.missionsurvive.utils.Sounds;
 
 public class MuteCommand implements Command{
 
-
     @Override
     public String execute(String key, String value) {
         String asset = null;

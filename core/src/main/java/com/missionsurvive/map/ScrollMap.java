@@ -2,20 +2,16 @@ package com.missionsurvive.map;
 
 import com.missionsurvive.MSGame;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class ScrollMap {
 
     private int tileWidth;
     private int tileHeight;
-    private int endRowOffset;  //номер строки, которой заканчивается отрисовка тайлов.
-    private int maxRowsToDraw;  //сколько строк тайлов мы должны отрисовать.
-    private int startRowOffset;  //сколько строк тайлов мы должны отрисовать.
-    private int endColOffset;  //Номер колонки, которой заканчивается отрисовка тайлов.
-    private int maxColsToDraw;   //сколько колонок тайлов мы должны отрисовать.
-    private int startColOffset;   //колонка, с которой начинается отрисовка тайлов.
+    private int endRowOffset;
+    private int maxRowsToDraw;
+    private int startRowOffset;
+    private int endColOffset;
+    private int maxColsToDraw;
+    private int startColOffset;
     private int numCols;
     private int worldOffsetX;
     private int numRows;
@@ -23,27 +19,29 @@ public class ScrollMap {
     private int screenWidth;
     private int screenHeight;
 
-    private int extremeRightScreen;   //Крайнее правое положение экрана: допустим, 19 - это размер мира, 5 - это размер экрана.
-    private int extremeDownScreen;  //Крайнее нижнее положение экрана: допустим, 19 - это размер мира, 7 - это размер экрана.
-    private int extremeLeftScreen;  //крайнее левое положение экрана.
-    private int extremeUpScreen;  //Крайнее верхнее положение экрана.
+    private int extremeRightScreen;
+    private int extremeDownScreen;
+    private int extremeLeftScreen;
+    private int extremeUpScreen;
 
     public ScrollMap(int tileWidth, int tileHeight, int numRows, int numCols, boolean isRounded){
 
-        this.numRows = numRows;   //worldHeight.
-        this.numCols = numCols;   //worldWidth.
+        //world width and height
+        this.numRows = numRows;
+        this.numCols = numCols;
 
         screenWidth = MSGame.SCREEN_WIDTH;
         screenHeight = MSGame.SCREEN_HEIGHT;
 
+        //Cartesian
         this.tileHeight = tileHeight;
-        this.tileWidth = tileWidth;    //Декартова.
+        this.tileWidth = tileWidth;
 
         if(!isRounded){  //if tile map is not rounded.
-            extremeLeftScreen = numCols * tileWidth - numCols * this.tileWidth;  //крайнее левое положение экрана.
-            extremeRightScreen = numCols * tileWidth - screenWidth;  //Крайнее правое положение экрана.
+            extremeLeftScreen = numCols * tileWidth - numCols * this.tileWidth;
+            extremeRightScreen = numCols * tileWidth - screenWidth;
             extremeUpScreen  = 0;
-            extremeDownScreen = numRows * tileHeight - screenHeight; //Крайнее нижнее положение экрана.
+            extremeDownScreen = numRows * tileHeight - screenHeight;
         }
         else { //if the tile map is rounded.
             extremeLeftScreen = -screenWidth;
@@ -84,16 +82,16 @@ public class ScrollMap {
         worldOffsetX += distanceX;
         worldOffsetY += distanceY;
 
-        if(worldOffsetX > extremeRightScreen){ //Это проверка на крайнее правое положение мира.
+        if(worldOffsetX > extremeRightScreen){
             worldOffsetX = extremeRightScreen;
         }
-        else if(worldOffsetX < extremeLeftScreen){ //Это проверка на крайнее левое положение экрана.
+        else if(worldOffsetX < extremeLeftScreen){
             worldOffsetX = extremeLeftScreen;
         }
-        else if(worldOffsetY > extremeDownScreen){  //Это проверка на крайнее нижнее положение мира.
+        else if(worldOffsetY > extremeDownScreen){
             worldOffsetY = extremeDownScreen;
         }
-        else if(worldOffsetY < extremeUpScreen){ //Это проверка на крайнее верхнее положение экрана.
+        else if(worldOffsetY < extremeUpScreen){
             worldOffsetY = extremeUpScreen;
         }
         setRowOffset();
@@ -118,7 +116,10 @@ public class ScrollMap {
         endRowOffset = startRowOffset + maxRowsToDraw;
     }
 
-    public void setColOffset(){ //Оффсет  колонки с тайлами, с которой начнем прорисовку тайлов и которой закончим.
+    /**
+     * Offset of start column and end column to draw.
+     */
+    public void setColOffset(){
         endColOffset = maxColsToDraw + getWorldOffsetX() / tileHeight;
 
         if(endColOffset > numCols){
@@ -127,12 +128,15 @@ public class ScrollMap {
 
         startColOffset = endColOffset - maxColsToDraw;
 
-        if(startColOffset < 0){ //Проверка на то, чтобы индекс не выходил за границы массива.
+        if(startColOffset < 0){
             startColOffset = 0;
         }
     }
 
-    public void setRowOffset(){ //Оффсет  строки с тайлами, с которой начнем прорисовку тайлов и которой закончим.
+    /**
+     * Offset of start row and end row to draw.
+     */
+    public void setRowOffset(){
         endRowOffset = maxRowsToDraw + getWorldOffsetY() / tileHeight;
 
         if(endRowOffset > numRows){
@@ -141,33 +145,40 @@ public class ScrollMap {
 
         startRowOffset = endRowOffset - maxRowsToDraw;
 
-        if(startRowOffset < 0){ //Проверка на то, чтобы индекс не выходил за границы массива.
+        if(startRowOffset < 0){
             startRowOffset = 0;
         }
     }
 
-    public void setExtremesForEditing(int extremeLeftScreen, int extremeRightScreen, int extremeUpScreen, int extremeDownScreen){
-        /**
-         * This method is a compromise between making a new ScrollMap class for offseting the map tileset,
-         * where i would have reset the methods calculating "extreme screens", "row and col offset". This would have complicated the whole
-         * code (especially of this class). Instead, i just reset "extreme screens" using this method. I call this methds from outside,
-         * when i need my tilemap move closer, further or across the screen.
-         */
+    /**
+     * This method is a compromise between making a new ScrollMap class for offseting the map tileset,
+     *  where i would have reset the methods calculating "extreme screens", "row and col offset". This would have complicated the whole
+     *  code (especially of this class). Instead, i just reset "extreme screens" using this method. I call this methds from outside,
+     *  when i need my tilemap move closer, further or across the screen.
+     * @param extremeLeftScreen
+     * @param extremeRightScreen
+     * @param extremeUpScreen
+     * @param extremeDownScreen
+     */
+    public void setExtremesForEditing(int extremeLeftScreen, int extremeRightScreen,
+                                      int extremeUpScreen, int extremeDownScreen){
         this.extremeLeftScreen = extremeLeftScreen;
         this.extremeRightScreen = extremeRightScreen;
         this.extremeUpScreen  = extremeUpScreen;
         this.extremeDownScreen = extremeDownScreen;
     }
 
+    /**
+     * This method sets "extremes" back to its initial values
+     * (suppose if we changed them before through method setExtremesForEditing(...)).
+     * @param isRounded
+     */
     public void setExtremesToNormal(boolean isRounded){
-        /**
-         * This method sets "extremes" back to its initial values (suppose if we changed them before through method setExtremesForEditing(...)).
-         */
-        if(!isRounded){  //Если ограниченный, т.е. не круговая tilemap.
-            extremeLeftScreen = numCols * tileWidth - numCols * tileWidth;  //крайнее левое положение экрана.
-            extremeRightScreen = numCols * tileWidth - screenWidth;  //Крайнее правое положение экрана.
+        if(!isRounded){
+            extremeLeftScreen = numCols * tileWidth - numCols * tileWidth;
+            extremeRightScreen = numCols * tileWidth - screenWidth;
             extremeUpScreen  = 0;
-            extremeDownScreen = numRows * tileHeight - screenHeight; //Крайнее нижнее положение экрана.
+            extremeDownScreen = numRows * tileHeight - screenHeight;
         }
         else{ //Если круговая.
             extremeLeftScreen = (numCols * tileWidth) * (-1);

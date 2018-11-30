@@ -7,17 +7,12 @@ import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.geom.Hitbox;
 import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public class Blockage extends Obstacle{
 
     private Texture texture;
 
     private int spriteWidth, spriteHeight;
     private int spritesetSpriteWidth, spritesetSpriteHeight;
-    private int whichAsset;
     private int carY;
 
     public Blockage(Hitbox hitbox, String assetName, int screenX, int screenY,
@@ -25,7 +20,6 @@ public class Blockage extends Obstacle{
         super(hitbox, assetName, screenX, screenY, spriteWidth, spriteHeight);
         super.setObstacleId(BLOCKAGE);
 
-        this.whichAsset = Assets.getWhichTexture(assetName);
         this.spriteWidth = spriteWidth;
         this.spriteHeight = spriteHeight;
         spritesetSpriteWidth = spriteWidth + 2;

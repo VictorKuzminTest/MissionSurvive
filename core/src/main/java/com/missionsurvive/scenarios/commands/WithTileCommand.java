@@ -2,14 +2,9 @@ package com.missionsurvive.scenarios.commands;
 
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
-import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.screens.GameScreen;
 
 import java.util.ArrayList;
-
-/**
- * Created by kuzmin on 16.05.18.
- */
 
 public class WithTileCommand implements Command{
 

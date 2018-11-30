@@ -15,10 +15,6 @@ import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public class Wreckage implements Bot {
 
     public static final int ACTION_START = 0;

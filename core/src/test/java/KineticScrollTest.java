@@ -4,9 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- * Created by kuzmin on 02.06.18.
- */
 public class KineticScrollTest {
 
     private KineticScroll kineticScroll;

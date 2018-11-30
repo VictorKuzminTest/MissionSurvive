@@ -3,19 +3,11 @@ package com.missionsurvive.scenarios;
 import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.objs.PowerUp;
 import com.missionsurvive.objs.Wreckage;
-import com.missionsurvive.objs.actors.L1B;
-import com.missionsurvive.objs.actors.L5B;
 import com.missionsurvive.objs.actors.SoldierZombie;
 import com.missionsurvive.objs.actors.Zombie;
-import com.missionsurvive.objs.actors.L3B;
-import com.missionsurvive.objs.actors.L6B;
 import com.missionsurvive.objs.actors.ShotgunZombie;
 
 import java.util.Random;
-
-/**
- * Created by kuzmin on 04.05.18.
- */
 
 public class SpawnBot implements Spawn{
 

@@ -4,10 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.List;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public interface Weapon extends  GameObject {
 
     @Override

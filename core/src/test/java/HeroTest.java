@@ -8,10 +8,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by kuzmin on 28.05.18.
- */
-
 public class HeroTest {
 
     private Hero hero = new Hero("hero", 12, 0, Hero.DIRECTION_RIGHT);
@@ -62,7 +58,6 @@ public class HeroTest {
         mapEditor.setScrollMap(scrollMap);
     }
 
-
     @Test
     public void cut_running_vector(){
         setMap(16);
@@ -79,7 +74,6 @@ public class HeroTest {
         hero.running(map, mapEditor, tileSize);
         assertEquals(2, hero.getMovingVector().getX());
     }
-
 
     @Test
     public void hero_jump(){
@@ -134,7 +128,6 @@ public class HeroTest {
         hero.shoot(0, 0, 50, 50, true);
         assertFalse(hero.isAction() == Hero.ACTION_SHOOTING);
     }
-
 
     @Test
     public void heroCannotRunWhileShooting(){
@@ -199,6 +192,4 @@ public class HeroTest {
     public Hero newHero(int x, int y, int direction){
         return hero = new Hero("hero", x, y, direction);
     }
-
-
 }

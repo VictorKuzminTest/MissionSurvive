@@ -14,10 +14,6 @@ import com.missionsurvive.objs.triggers.TriggerL5B;
 import com.missionsurvive.objs.triggers.TriggerL6B;
 import com.missionsurvive.utils.Progress;
 
-/**
- * Created by kuzmin on 17.05.18.
- */
-
 public class SpawnScenario implements Spawn {
 
     public static final int DIFFICULTY_BEGINNER = 0;

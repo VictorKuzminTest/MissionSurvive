@@ -6,10 +6,6 @@ import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.actors.Zombie;
 
-/**
- * Created by kuzmin on 04.05.18.
- */
-
 public class EnemyScenario {
 
     private int screenWidth = MSGame.SCREEN_WIDTH;

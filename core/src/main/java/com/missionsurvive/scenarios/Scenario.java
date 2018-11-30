@@ -1,19 +1,12 @@
 package com.missionsurvive.scenarios;
 
-import com.badlogic.gdx.Game;
 import com.missionsurvive.framework.TouchControl;
 import com.missionsurvive.map.Map;
-import com.missionsurvive.map.MapEditor;
-import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.Bot;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 import com.missionsurvive.screens.GameScreen;
 
 import java.util.List;
-
-/**
- * Created by kuzmin on 03.05.18.
- */
 
 public interface Scenario {
 

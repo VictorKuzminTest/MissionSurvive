@@ -5,7 +5,6 @@ import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.screens.GameScreen;
 
 /**
- * Created by kuzmin on 17.05.18.
  * Changes a scroll of a map to horizontal, vertical etc.
  */
 public class ScrollDirCommand implements Command{

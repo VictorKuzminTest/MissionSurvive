@@ -17,10 +17,6 @@ import com.missionsurvive.utils.Sounds;
 
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 23.04.18.
- */
-
 public class MapEditor implements Map{
 
     private TiledMap map;

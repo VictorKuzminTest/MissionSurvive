@@ -24,10 +24,6 @@ import com.missionsurvive.scenarios.controlscenarios.GameCS;
 import com.missionsurvive.scenarios.controlscenarios.MapEditorCS;
 import com.missionsurvive.utils.Sounds;
 
-/**
- * Created by kuzmin on 31.05.18.
- */
-
 public class PlatformerScreen extends GameScreen implements Screen {
 
     private MSGame game;
@@ -177,8 +173,6 @@ public class PlatformerScreen extends GameScreen implements Screen {
 
     @Override
     public void setScreenPos(int x, int y) {
-        System.out.println("setScreenPosX = " + x +
-                  "setScreenPosY = " + y); //LLLLLLoooooooooogggggggggg
         map.getScrollMap().setWorldOffsetX(x);
         map.getScrollMap().setWorldOffsetY(y);
         map.getScrollMap().setColOffset();

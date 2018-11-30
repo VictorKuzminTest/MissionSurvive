@@ -14,16 +14,11 @@ import com.missionsurvive.map.MapEditor;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.Bot;
 import com.missionsurvive.objs.EnemyBullet;
-import com.missionsurvive.objs.Rocket;
 import com.missionsurvive.objs.RocketL6B;
 import com.missionsurvive.objs.Weapon;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.utils.Assets;
-
-/**
- * Created by kuzmin on 03.05.18.
- */
 
 public class L6B implements Bot {
 
@@ -32,8 +27,6 @@ public class L6B implements Bot {
 
     public static final int SPEED_MOVING = 2;
     public static final int SPEED_ATTACKING = 6;
-
-    public static final int DISTANCE_ABOVE = 0;
 
     public static final int DIRECTION_RIGHT = 1;
     public static final int DIRECTION_LEFT = -1;
@@ -106,8 +99,6 @@ public class L6B implements Bot {
             rocketLauncher.setRocket(true);
         }
     }
-
-
 
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
@@ -401,7 +392,6 @@ public class L6B implements Bot {
         }
     }
 
-
     public void move() {
         worldX += movingVector.getX() * directionX;
 
@@ -497,7 +487,6 @@ public class L6B implements Bot {
         }
         return false;
     }
-
 
     public void persue() {
         if(!isChangingDirection()){

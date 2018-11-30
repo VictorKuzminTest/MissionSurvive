@@ -5,10 +5,6 @@ import android.content.Context;
 
 import com.missionsurvive.scenarios.commands.Command;
 
-/**
- * Created by kuzmin on 17.05.18.
- */
-
 public abstract class Popup extends Dialog {
 
     /**

@@ -20,10 +20,6 @@ import com.missionsurvive.utils.Assets;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class L3B implements Bot {
 
     private final int SHOOTING_SPRITES = 0, DYING_SPRITES = 1;
@@ -53,22 +49,25 @@ public class L3B implements Bot {
     private static float movingTick =  0.03f;
     private float betweenShotsTickTime = 0 , betweenShotsTick = 2.0f;
 
-    private int[] spritesRows; //each element of this array contains the number of sprites in a row.
-    private int numDirections; //количество направлений для действий (сторон света).
-    private int numActions; //количество действий.
-    private int currentAction; //currentAction
-    private int direction; //direction of action.  0 - right, 1 - left.
-    private int fallingSpeed = 7; //falling speed in pixels.
+    //each element of this array contains the number of sprites in a row.
+    private int[] spritesRows;
+    private int numDirections;
+    private int numActions;
+    private int currentAction;
+    //direction of action.  0 - right, 1 - left.
+    private int direction;
+    private int fallingSpeed = 7;
     private int hp;
 
     private float StartDyingTick = 0.1f, StartDyingTickTime = 0,
             betweenDyingTick = 1.5f, betweenDyingTickTime = 0, EndDyingTick = 0.1f,
             EndDyingTickTime = 0;
 
-    private boolean isNorth, isEast, isSouth, isWest; //переменный, указывающие, какие тайлы мира заблокированы.
-    private MapTer northTer, eastTer, southTer, westTer; //переменные, хранящие MapTer смежных с героем тайлов.
+    private boolean isNorth, isEast, isSouth, isWest;
+    private MapTer northTer, eastTer, southTer, westTer;
 
-    private int isAction; //this variable determines the action our hero is using.
+    //this variable determines the action our hero is using.
+    private int isAction;
 
     public L3B(String assetName, MapEditor mapEditor, int x, int y, int hp) {
         this.x = x;
@@ -106,7 +105,6 @@ public class L3B implements Bot {
                     mapEditor.getScrollLevel1Map().getWorldOffsetX(),
                     mapEditor.getScrollLevel1Map().getWorldOffsetY());
         }
-
         batch.begin();
         batch.draw(texture, MSGame.SCREEN_OFFSET_X + x - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
                 MSGame.SCREEN_OFFSET_Y +
@@ -202,8 +200,6 @@ public class L3B implements Bot {
     }
     ///////////////////////////////THESE ARE MAIN METHODS FOR MOVING AND ANIMATING/////////////////////////////////////////////
 
-
-
     @Override
     public void collide(Hero hero){
         if(isAction < START_DYING_ACTION){
@@ -253,13 +249,11 @@ public class L3B implements Bot {
         }
     }
 
-
     public void die(){
         if(isAction < START_DYING_ACTION){
             isAction = START_DYING_ACTION;
         }
     }
-
 
     public void dying(){
         if(isAction == START_DYING_ACTION){
@@ -299,7 +293,6 @@ public class L3B implements Bot {
         }
     }
 
-
     public void fall(){
         if(!isSouth){
             isAction = FALLING_ACTION;
@@ -335,7 +328,6 @@ public class L3B implements Bot {
         }
     }
 
-
     public void idling(){
         while(betweenShotsTickTime > betweenShotsTick){
             betweenShotsTickTime -= betweenShotsTick;
@@ -343,7 +335,6 @@ public class L3B implements Bot {
             shoot();
         }
     }
-
 
     public void idlingAnimation(){
         while(animationTickTime > animationTick) {
@@ -353,7 +344,6 @@ public class L3B implements Bot {
             animation.animate(0, 1);
         }
     }
-
 
     @Override
     public void jump(int destX, int destY){
@@ -365,7 +355,6 @@ public class L3B implements Bot {
 
     }
 
-
     public void setActionAnimationFrames(int action){
         if(currentAction != action){
             currentAction = action;
@@ -373,13 +362,11 @@ public class L3B implements Bot {
         }
     }
 
-
     public void setBulletHolder(int numBullets){ //generates the bullet holder.
         for(int whichBullet = 0; whichBullet < numBullets; whichBullet++){
             bullets.add(new Rocket("rocket", MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT));
         }
     }
-
 
     public void setDirection(int x){
         if(this.x < x){
@@ -427,8 +414,6 @@ public class L3B implements Bot {
             }
         }
     }
-
-
 
     public  void tilemapCollision(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
         int tileWidth = 16;
@@ -483,7 +468,6 @@ public class L3B implements Bot {
             }
         }
     }
-
 
     @Override
     public int getX(){

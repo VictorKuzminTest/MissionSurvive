@@ -8,10 +8,6 @@ import com.missionsurvive.geom.GeoHelper;
 
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 26.04.18.
- */
-
 public class ButtonTouchListener implements Listener{
 
     public static final int STATE_NONE = 0;
@@ -111,5 +107,4 @@ public class ButtonTouchListener implements Listener{
     public ArrayList<Button> getButtons(){
         return buttons;
     }
-
 }

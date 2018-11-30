@@ -20,10 +20,6 @@ import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Progress;
 import com.missionsurvive.utils.Sounds;
 
-/**
- * Created by kuzmin on 07.06.18.
- */
-
 public class LoadingLevelScreen implements Screen {
 
     private MSGame game;

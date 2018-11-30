@@ -11,32 +11,31 @@ import com.missionsurvive.utils.Assets;
 
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 27.04.18.
- */
-
 public class ListButtons implements Observer{
 
     public static final int LAYOUT_GRID = 0;
     public static final int LAYOUT_VERTICAL = 1;
     public static final int LAYOUT_HORIZONTAL = 2;
 
-    //Название списка. Поскольку мы будем добавлять элементы списка из сценария программно,
-    //нам нужно знать что и в какой список добавляем.
+    //name of the list, because we are filling the list from scenario programmatically,
+    //we need to know what and into which list we are adding.
     private String name;
     private Texture texture;
     private String layout;
     private ArrayList<Button> buttons;
-    //We are using composite pattern (GOF) to keeping track of list of buttons on the control panel:
+    //We are using composite pattern (GOF) to keeping track of list of buttons on the control panel
     private ArrayList<ListButtons> lists;
     private Listener listener; //listens to other lists
 
-    private int startX;  //listing startX
-    private int startY;   //listing startY
+    //listing start x, y
+    private int startX;
+    private int startY;
     private int listingWidth;
     private int listingHeight;
-    private int spaceBetweenButtons; //space between buttons in pixels
-    private int srcBgX, srcBgY; //откуда начинается отрисовка asset для background.
+    //space between buttons in pixels
+    private int spaceBetweenButtons;
+    //x and y beginning of background drawing
+    private int srcBgX, srcBgY;
     private int layoutId;
 
     /**
@@ -95,11 +94,10 @@ public class ListButtons implements Observer{
             startX = this.startX;
             startY = this.startY + this.buttons.size() * (buttonHeight + spaceBetweenButtons);
         }
-        else{  //для grid Layout (row & col передаются извне).
+        else{  //for grid Layout (row & col are passed from outside)
             startX = this.startX + col * (buttonWidth + spaceBetweenButtons);
             startY = this.startY + row * (buttonHeight + spaceBetweenButtons);
         }
-
         Button button = new ActionButton(assetName,
                 startX, startY, assetStartX, assetStartY, buttonWidth, buttonHeight, command);
         buttons.add(button);
@@ -124,7 +122,6 @@ public class ListButtons implements Observer{
                     listingWidth, listingHeight);
             batch.end();
         }
-
         int numbuttons = buttons.size();
         for(int whichButton = 0; whichButton < numbuttons; whichButton++){
             Button button = buttons.get(whichButton);
@@ -145,7 +142,7 @@ public class ListButtons implements Observer{
                 int offsetWidth = 0;
                 int offsetHeight = 0;
 
-                if(buttonStartX <= this.startX){ //часть иконки за пределами листинга левой части листинга.
+                if(buttonStartX <= this.startX){ //part of icon is out of the left part of listing
                     offsetX = this.startX - buttonStartX;
                     offsetWidth = -offsetX;
                 }
@@ -283,7 +280,4 @@ public class ListButtons implements Observer{
     public Listener getListener(){
         return listener;
     }
-
-
-
 }

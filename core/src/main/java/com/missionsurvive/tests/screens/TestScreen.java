@@ -19,10 +19,6 @@ import com.missionsurvive.map.ParallaxLayer;
 import com.missionsurvive.tests.MapEditorTest;
 import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 20.04.18.
- */
-
 public class TestScreen implements Screen {
 
     private MSGame game;
@@ -78,8 +74,7 @@ public class TestScreen implements Screen {
     }
 
     @Override
-    public void show() {
-    }
+    public void show() {}
 
     public void scroll(float delta){
         gameCam.position.x += 100 * delta;

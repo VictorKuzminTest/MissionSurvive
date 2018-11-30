@@ -8,10 +8,6 @@ import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.screens.GameScreen;
 import com.missionsurvive.utils.Controls;
 
-/**
- * Created by kuzmin on 29.05.18.
- */
-
 public class PlayScript {
 
     private GameScreen gameScreen;
@@ -132,5 +128,4 @@ public class PlayScript {
         }
         return controlPanel;
     }
-
 }

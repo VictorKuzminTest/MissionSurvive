@@ -16,12 +16,7 @@ import com.missionsurvive.scenarios.SpawnBot;
 import com.missionsurvive.scenarios.SpawnScenario;
 import com.missionsurvive.utils.Assets;
 
-import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by kuzmin on 03.05.18.
- */
 
 public class DrawerFacade {
 
@@ -42,10 +37,8 @@ public class DrawerFacade {
     private int tileHeight = 16;
 
     public DrawerFacade(){
-        scaleToDrawX = (float)Gdx.graphics.getBackBufferWidth()
-                / MSGame.SCREEN_WIDTH;
-        scaleToDrawY = (float)Gdx.graphics.getBackBufferHeight()
-                / MSGame.SCREEN_HEIGHT;
+        scaleToDrawX = (float)Gdx.graphics.getBackBufferWidth() / MSGame.SCREEN_WIDTH;
+        scaleToDrawY = (float)Gdx.graphics.getBackBufferHeight() / MSGame.SCREEN_HEIGHT;
         hitBox = new ShapeRenderer();
         hitBox.setColor(0, 0, 0, 0.5f);
 
@@ -61,16 +54,13 @@ public class DrawerFacade {
             else{
                 hero.drawObject(batch, 0, 0, 0, 0);
             }
-
             //drawHeroHitbox(hero);
-
             int numBullets = hero.getWeapon().size();
             for(short i = 0; i < numBullets; i++){
                 hero.getWeapon().get(i).drawObject(batch, 0, 0, 0, 0);
             }
         }
     }
-
 
     public void drawWreckages(List<Bot> wreckages, SpriteBatch batch){
         int numWreckages = wreckages.size();

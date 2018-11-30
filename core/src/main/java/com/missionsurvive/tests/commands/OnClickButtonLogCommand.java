@@ -4,9 +4,6 @@ import com.missionsurvive.scenarios.commands.Command;
 import com.missionsurvive.framework.Button;
 import com.missionsurvive.screens.GameScreen;
 
-/**
- * Created by kuzmin on 27.04.18.
- */
 public class OnClickButtonLogCommand implements Command{
 
     private Button button;

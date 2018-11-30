@@ -15,14 +15,10 @@ import com.missionsurvive.framework.impl.Rect;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kuzmin on 05.05.18.
- */
-
 public class Controls {
 
     static XML xml;
-    static List<String> listOfTags = new ArrayList<String>();    //в этом листиннге содержится инфа о каждом тэге (имя тэга, и его аттрибуты).
+    static List<String> listOfTags = new ArrayList<String>();
     public static ControlPanel[] controlPanels;
 
     public static void setControls(MSGame game){
@@ -135,7 +131,6 @@ public class Controls {
         }
     }
 
-
     public static float getFloatValue(float defaultValue, String attrStr){
         if(attrStr != null){
             return Float.parseFloat(attrStr);
@@ -196,7 +191,4 @@ public class Controls {
             }
         }
     }
-
-
-
 }

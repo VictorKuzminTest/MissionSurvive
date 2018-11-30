@@ -9,10 +9,6 @@ import com.missionsurvive.geom.GeoHelper;
 
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 30.04.18.
- */
-
 public class ListButtonsTouchListener implements Listener {
 
     public static final int SCROLLING_THRESHOLD = 5;
@@ -62,7 +58,6 @@ public class ListButtonsTouchListener implements Listener {
                 lastY = currentY;
 
                 kineticScroll.traceTouch(deltaTime, currentX, currentY);
-
             }
             else{
                 getTouchUpEvent((int)lastX, (int)lastY);
@@ -157,5 +152,4 @@ public class ListButtonsTouchListener implements Listener {
     public int getState(){
         return state;
     }
-
 }

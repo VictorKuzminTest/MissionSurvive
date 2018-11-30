@@ -15,10 +15,6 @@ import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Progress;
 import com.missionsurvive.utils.Sounds;
 
-/**
- * Created by kuzmin on 31.05.18.
- */
-
 public class GameMenuScreen implements Screen {
 
     private MSGame game;
@@ -54,8 +50,6 @@ public class GameMenuScreen implements Screen {
     public void update(float delta){
         controlScenario.onTouchPanels(delta, scaleX, scaleY);
     }
-
-
 
     @Override
     public void show() {

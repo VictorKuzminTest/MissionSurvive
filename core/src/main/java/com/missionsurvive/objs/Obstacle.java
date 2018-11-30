@@ -3,13 +3,8 @@ package com.missionsurvive.objs;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.Decorator;
-import com.missionsurvive.utils.Sounds;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.geom.Hitbox;
-
-/**
- * Created by kuzmin on 01.05.18.
- */
 
 public class Obstacle implements GameObject{
 

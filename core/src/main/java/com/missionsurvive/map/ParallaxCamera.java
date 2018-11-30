@@ -4,9 +4,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
-/**
- * Created by kuzmin on 25.04.18.
- */
 public class ParallaxCamera extends OrthographicCamera {
     private Matrix4 parallaxView = new Matrix4();
     private Matrix4 parallaxCombined = new Matrix4();

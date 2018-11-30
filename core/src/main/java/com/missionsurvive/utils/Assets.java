@@ -1,27 +1,16 @@
 package com.missionsurvive.utils;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.XmlReader;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.XML;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import sun.rmi.runtime.Log;
-
-/**
- * Created by kuzmin on 22.04.18.
- */
-
 public class Assets {
 
     private static Texture[] textures;
-    private static String[] texNames; //array that contains names of textures.
+    //array that contains names of textures.
+    private static String[] texNames;
     private static XML xml;
     private static MSGame thisGame;
     private static String currentLevel;
@@ -78,5 +67,4 @@ public class Assets {
     public static String getCurrentLevel(){
         return currentLevel;
     }
-
 }

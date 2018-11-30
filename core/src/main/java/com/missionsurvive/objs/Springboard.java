@@ -7,10 +7,6 @@ import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.geom.Hitbox;
 import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public class Springboard extends Obstacle {
 
     private Texture texture;
@@ -45,7 +41,6 @@ public class Springboard extends Obstacle {
         batch.end();
     }
 
-
     @Override
     public void drawObject(SpriteBatch batch, int screenX, int screenY){
         batch.begin();
@@ -62,5 +57,4 @@ public class Springboard extends Obstacle {
     public boolean onTouch() {
         return false;
     }
-
 }

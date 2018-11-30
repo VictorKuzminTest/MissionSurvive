@@ -4,23 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.impl.ListButtons;
-import com.missionsurvive.map.MapEditor;
-import com.missionsurvive.map.ParallaxBackground;
-import com.missionsurvive.map.ParallaxCamera;
-import com.missionsurvive.map.ParallaxLayer;
 import com.missionsurvive.tests.ButtonsTest;
-import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 25.04.18.
- */
 public class ButtonsTestScreen implements Screen {
     private MSGame game;
     private ButtonsTest buttonsTest;

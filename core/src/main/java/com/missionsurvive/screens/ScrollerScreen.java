@@ -20,7 +20,6 @@ import com.missionsurvive.map.ParallaxCamera;
 import com.missionsurvive.map.ParallaxLayer;
 import com.missionsurvive.map.ScrollMap;
 import com.missionsurvive.map.ScrollerMap;
-import com.missionsurvive.objs.Bot;
 import com.missionsurvive.objs.Obstacle;
 import com.missionsurvive.objs.actors.Moto;
 import com.missionsurvive.scenarios.PlayScript;
@@ -32,10 +31,6 @@ import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Sounds;
 
 import java.util.ArrayList;
-
-/**
- * Created by kuzmin on 04.05.18.
- */
 
 public class ScrollerScreen extends GameScreen implements Screen {
 
@@ -59,7 +54,8 @@ public class ScrollerScreen extends GameScreen implements Screen {
 
     private float screenTranparency = 0;
     private float darkenTickTime = 0, darkenTick = 0.1f;
-    private float blinkTickTime, blinkTick = 0.1f; //floats for obstacle blink.
+    //floats for obstacle blink.
+    private float blinkTickTime, blinkTick = 0.1f;
     private float scaleX, scaleY;
     private float scaleToDrawX, scaleToDrawY;
 
@@ -357,7 +353,6 @@ public class ScrollerScreen extends GameScreen implements Screen {
             }
         }
     }
-
 
     @Override
     public void dispose() {

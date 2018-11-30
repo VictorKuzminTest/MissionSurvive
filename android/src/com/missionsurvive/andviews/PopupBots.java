@@ -21,10 +21,6 @@ import com.missionsurvive.utils.Commands;
 
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 17.05.18.
- */
-
 public class PopupBots extends Popup implements View.OnClickListener {
 
     private Activity activity;
@@ -122,7 +118,6 @@ public class PopupBots extends Popup implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.button_ok:
-                //setBot();
                 putBotCommand.execute(PutBotCommand.PUT,
                         chosenBot.getText().toString());
                 putBotCommand.execute(PutBotCommand.DIRECTION,

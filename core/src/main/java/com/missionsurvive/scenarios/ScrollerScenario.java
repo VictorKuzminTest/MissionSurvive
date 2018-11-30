@@ -23,10 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by kuzmin on 04.05.18.
- */
-
 public class ScrollerScenario implements Scenario {
     private static final int BEGINNER = 0;
     private static final int EXPERIENCED = 1;

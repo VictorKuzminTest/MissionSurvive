@@ -1,12 +1,9 @@
 package com.missionsurvive.geom;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class Isometric {
 
-    private int isoX;  //Переменные, которые служат для перевода из декартовой в изометрическую систему координат.
+    //variables for transforming Cartesian into isometric coordinate system
+    private int isoX;
     private int isoY;
     private int cartX;
     private int cartY;
@@ -14,7 +11,6 @@ public class Isometric {
     public Isometric(){
 
     }
-
 
     public int getIsoX(int cartX, int cartY){
         return isoX = cartX - cartY;

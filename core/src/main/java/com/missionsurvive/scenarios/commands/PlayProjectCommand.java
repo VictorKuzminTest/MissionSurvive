@@ -6,10 +6,6 @@ import com.missionsurvive.screens.EditorScreen;
 import com.missionsurvive.screens.GameScreen;
 import com.missionsurvive.screens.ScrollerScreen;
 
-/**
- * Created by kuzmin on 08.05.18.
- */
-
 public class PlayProjectCommand implements  Command{
 
     public static final int PLAY_SCROLLER = 0;

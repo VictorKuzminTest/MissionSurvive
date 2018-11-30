@@ -12,10 +12,6 @@ import com.missionsurvive.tests.commands.OnClickButtonLogCommand;
 
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 26.04.18.
- */
-
 public class ButtonsTest {
 
     private ArrayList<Button> buttons = new ArrayList<Button>();
@@ -97,5 +93,4 @@ public class ButtonsTest {
     public ListButtons getListsButtons(){
         return rootList;
     }
-
 }

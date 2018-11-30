@@ -13,10 +13,6 @@ import com.missionsurvive.utils.Sounds;
 
 import java.util.List;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public class Fireball implements Weapon{
 
     public static final int ACTION_NONE = 0;
@@ -96,7 +92,6 @@ public class Fireball implements Weapon{
     public boolean onTouch() {
         return false;
     }
-
 
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
@@ -213,7 +208,6 @@ public class Fireball implements Weapon{
             }
         }
     }
-
 
     /**
      * If the fireball goes away from the screen, so this fireball is free to shoot again.

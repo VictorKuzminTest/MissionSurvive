@@ -36,5 +36,4 @@ public class EditorScenario extends PlatformerScenario{
     public static void setMapLoading(boolean isLoading){
         isMapLoading = isLoading;
     }
-
 }

@@ -8,7 +8,6 @@ import com.missionsurvive.map.MapTer;
 import com.missionsurvive.objs.Bot;
 import com.missionsurvive.objs.Weapon;
 import com.missionsurvive.objs.actors.Hero;
-import com.missionsurvive.objs.actors.L1B;
 import com.missionsurvive.objs.actors.L5B;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;

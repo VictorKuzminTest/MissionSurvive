@@ -4,10 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.Decorator;
 import com.missionsurvive.objs.GameObject;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class BlinkingDecorator extends Decorator {
 
     private float blinkingTick = 0.2f;

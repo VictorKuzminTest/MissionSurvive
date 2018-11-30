@@ -4,10 +4,6 @@ import com.missionsurvive.scenarios.commands.Command;
 import com.missionsurvive.scenarios.commands.LoadFromExternalLibGdx;
 import com.missionsurvive.map.MapEditor;
 
-/**
- * Created by kuzmin on 24.04.18.
- */
-
 public class MapEditorTest {
 
     private MapEditor mapEditor;

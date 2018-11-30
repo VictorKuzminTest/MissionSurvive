@@ -19,10 +19,6 @@ import com.missionsurvive.utils.Sounds;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class PlatformerScenario implements Scenario {
 
     public static final int MAX_NUM_ZOMBIES = 3;
@@ -123,7 +119,6 @@ public class PlatformerScenario implements Scenario {
             }
         }
     }
-
 
     /**
      * fills the spawns fake list for setting firstTimeSpawned from data of MapEditor.
@@ -594,5 +589,4 @@ public class PlatformerScenario implements Scenario {
             return spawn;
         }
     }
-
 }

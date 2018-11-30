@@ -18,7 +18,6 @@ public class EndCS implements ControlScenario{
         setControlPanels();
     }
 
-
     @Override
     public List<ControlPanel> getControlPanels() {
         return listOfPanels;

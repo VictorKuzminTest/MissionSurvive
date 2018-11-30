@@ -4,10 +4,6 @@ import com.badlogic.gdx.Screen;
 import com.missionsurvive.screens.EditorScreen;
 import com.missionsurvive.screens.GameScreen;
 
-/**
- * Created by kuzmin on 21.05.18.
- */
-
 public class NewMapCommand implements Command{
     private int width;
     private int height;

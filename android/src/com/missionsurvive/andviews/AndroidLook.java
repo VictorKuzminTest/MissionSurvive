@@ -5,10 +5,6 @@ import android.app.Activity;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kuzmin on 17.05.18.
- */
-
 public class AndroidLook implements Look {
 
     public static final int POPUP_SAVE = 0;

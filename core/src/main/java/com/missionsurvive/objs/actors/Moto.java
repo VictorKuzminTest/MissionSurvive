@@ -14,10 +14,6 @@ import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.scenarios.ScrollerScenario;
 import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class Moto implements GameObject{
 
     public static final int RIGHT = 0, DOWN = 1, LEFT = 2, TOP = 3;
@@ -54,7 +50,8 @@ public class Moto implements GameObject{
     private Texture texture;
     private PlayScript playScript;
 
-    private int[] spritesRows; //each element of this array contains the number of sprites in a row.
+    //each element of this array contains the number of sprites in a row.
+    private int[] spritesRows;
     private int numDirections;
     private int numActions;
     private ScrollerScenario scenario;
@@ -95,7 +92,6 @@ public class Moto implements GameObject{
 
         screenWidth = MSGame.SCREEN_WIDTH;
     }
-
 
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
@@ -157,7 +153,6 @@ public class Moto implements GameObject{
         animateManeuvers(deltaTime);
     }
 
-
     /**
      * Moto is moving toward the assigned touch. Also its position is set while moving.
      * If target point Y of moving is closer than moving speed, than we reset maneuver
@@ -194,7 +189,6 @@ public class Moto implements GameObject{
         }
     }
 
-
     public void backStraight(int deltaDistY){
         if(deltaDistY < movingSpeed){
             direction = RIGHT;
@@ -202,7 +196,6 @@ public class Moto implements GameObject{
             animation.setSetOfFrames(STRAIGHT_SPRITES);
         }
     }
-
 
     public void animateManeuvers(float deltaTime){
         switch(maneuver){
@@ -224,7 +217,6 @@ public class Moto implements GameObject{
         }
     }
 
-
     public void animateRunning(int startFrame, int numFrames, int step){
         while(runningAnimationTickTime > runningAnimationTick){
             runningAnimationTickTime -= runningAnimationTick;
@@ -232,7 +224,6 @@ public class Moto implements GameObject{
             animation.animateBackAndForth(startFrame, numFrames, step);
         }
     }
-
 
     /**
      * Assign falling action.
@@ -275,7 +266,6 @@ public class Moto implements GameObject{
         }
     }
 
-
     public void jumping(float deltaTime, int jumpingSpeed){
         jumpingTickTime += deltaTime;
         while(jumpingTickTime > jumpingTick) {
@@ -315,7 +305,6 @@ public class Moto implements GameObject{
         scenario.collideObject();
     }
 
-
     /**
      * Sets screen destination to go. It also resets maneuver if needed. We trace touchings over
      * time ticks , so it could work similar on all devices.
@@ -337,7 +326,6 @@ public class Moto implements GameObject{
             }
         }
     }
-
 
     /**
      * Here we check for the touch event coordinate (Y), set maneuver to MOVING_TILT_START and
@@ -442,7 +430,6 @@ public class Moto implements GameObject{
         hitOffsX = obstacle.getHitbox().getRight() - screenX;
         decreaseLives();
     }
-
 
     /**
      * Checks whether touchY is upper than limit to go up and reset touchY if needed.

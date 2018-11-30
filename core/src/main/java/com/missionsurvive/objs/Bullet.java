@@ -11,10 +11,6 @@ import com.missionsurvive.utils.Sounds;
 
 import java.util.List;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public class Bullet implements Weapon{
 
     public static final int ACTION_NONE = 0;
@@ -28,7 +24,9 @@ public class Bullet implements Weapon{
     private Texture texture;
 
     private int x = 0, y = 0, screenX, screenY;
-    private int absoluteValueX , absoluteValueY; //these are absolute values determining the place of drawing frame inside asset, because size of bullets for different guns are different.
+    //these are absolute values determining the place of drawing frame inside asset,
+    //because size of bullets for different guns are different.
+    private int absoluteValueX , absoluteValueY;
     private int width;
     private int height;
     private int speed;
@@ -61,7 +59,6 @@ public class Bullet implements Weapon{
         screenHeight = 320;
     }
 
-
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
         if(action != ACTION_NONE){
@@ -75,7 +72,6 @@ public class Bullet implements Weapon{
             batch.end();
         }
     }
-
 
     @Override
     public void drawObject(SpriteBatch batch, int screenX, int screenY){
@@ -144,7 +140,6 @@ public class Bullet implements Weapon{
                     break;
                 default: break;
             }
-
             setScreenXY(worldOffsetX, worldOffsetY);
             goAway();
             if(direction != 0){ //if our bullet is going somewhere, we  check it for intersections with the objects.
@@ -188,7 +183,6 @@ public class Bullet implements Weapon{
         return false;
     }
 
-
     public void goAway(){
         if(direction > 0){
             if(!GeoHelper.overlapRectangles(screenX, screenY, width, height, 0, 0, screenWidth, screenHeight)){ //if the bullet goes away from the screen, so this bullet is free to shoot again.
@@ -200,11 +194,9 @@ public class Bullet implements Weapon{
         }
     }
 
-
     public void setDirection(int direction){
         this.direction = direction;
     }
-
 
     @Override
     public boolean shoot(int x, int y,
@@ -223,7 +215,6 @@ public class Bullet implements Weapon{
         }
         return false;
     }
-
 
     public void setAction(int direction){
         switch ((direction / 10)){
@@ -245,7 +236,6 @@ public class Bullet implements Weapon{
         }
     }
 
-
     /**
      * This method translates world coordinates into screen coordinates. Because our hero has screen
      * coordinates and also when we check if bullet goes off the screen (again screen coords).
@@ -256,7 +246,6 @@ public class Bullet implements Weapon{
         screenX = x - worldOffsetX;
         screenY = y - worldOffsetY;
     }
-
 
     public int getDirection(){
         return direction;

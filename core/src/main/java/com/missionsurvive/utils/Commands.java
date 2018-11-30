@@ -22,10 +22,6 @@ import com.missionsurvive.scenarios.commands.ToLevelCommand;
 import com.missionsurvive.scenarios.commands.ToPurchaseScreenCommand;
 import com.missionsurvive.scenarios.commands.WithTileCommand;
 
-/**
- * Created by kuzmin on 07.05.18.
- */
-
 public class Commands {
 
     public static Command getCommand(String action){

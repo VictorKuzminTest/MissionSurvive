@@ -9,20 +9,16 @@ import com.missionsurvive.framework.impl.ListButtonsTouchListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kuzmin on 04.05.18.
- */
-
 public class ControlPanel {
 
-    private String screen; //какому экрану принадлежит панель управления.
-    private String name; //название панели управления.
+    private String screen;
+    private String name;
     private Listener buttonTouchListener = new ButtonTouchListener();
     List<Button> buttons = new ArrayList<Button>();
     List<Icon> icons = new ArrayList<Icon>();
     private ListButtons rootList;
 
-    private boolean isActivated; //активирована ли панель управления.
+    private boolean isActivated;
 
     public ControlPanel(String screen, String name){
         this.screen = screen;
@@ -83,7 +79,6 @@ public class ControlPanel {
     public Button getButton(int i){
         return buttons.get(i);
     }
-
 
     /**
      * We listen to touch events, then we check the state of events occurred.

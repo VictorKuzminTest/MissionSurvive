@@ -4,10 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class Sounds {
 
     public static final int MUSIC = 0;
@@ -126,5 +122,4 @@ public class Sounds {
             music.dispose();
         }
     }
-
 }

@@ -11,20 +11,14 @@ import com.missionsurvive.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 20.05.18.
- */
-
 public class FilesListviewAdapter extends ArrayAdapter<String> {
 
     private final Context context;
 
     public FilesListviewAdapter(Context context, int id, ArrayList<String> files) {
-        //super(context, -1, pixmaps);
         super(context, id, files);
         this.context = context;
     }
-
 
     /**
      * List item displays only the TextView with a name of a file.
@@ -53,8 +47,6 @@ public class FilesListviewAdapter extends ArrayAdapter<String> {
 
         return convertView;
     }
-
-
 
     static class ViewHolder {
         private TextView filename;

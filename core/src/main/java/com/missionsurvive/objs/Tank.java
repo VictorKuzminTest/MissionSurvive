@@ -225,8 +225,6 @@ public class Tank implements Bot{
         return action;
     }
 
-
-
     @Override
     public boolean onTouch() {
         return false;

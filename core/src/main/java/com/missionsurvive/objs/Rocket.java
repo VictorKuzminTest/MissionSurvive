@@ -10,10 +10,6 @@ import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Sounds;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public class Rocket extends EnemyBullet {
 
     private Animation animationRocket;
@@ -74,7 +70,6 @@ public class Rocket extends EnemyBullet {
                     explWidth, explHeight));
         }
     }
-
 
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
@@ -141,7 +136,6 @@ public class Rocket extends EnemyBullet {
             }
         }
     }
-
 
     public void animate(Animation animation, int startFrame, int endFrame){
         if(!isCurrentFrame(animation, endFrame)){

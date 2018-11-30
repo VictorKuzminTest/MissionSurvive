@@ -3,10 +3,6 @@ package com.missionsurvive.map;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-/**
- * Created by kuzmin on 25.04.18.
- */
-
 public class ParallaxLayer {
 
     public TextureRegion region ;
@@ -16,6 +12,7 @@ public class ParallaxLayer {
     public ParallaxLayer(TextureRegion region,Vector2 parallaxRatio,Vector2 padding){
         this(region, parallaxRatio, new Vector2(0,0),padding);
     }
+
     /**
      * @param region   the TextureRegion to draw , this can be any width/height
      * @param parallaxRatio   the relative speed of x,y
@@ -28,5 +25,4 @@ public class ParallaxLayer {
         this.startPosition = startPosition;
         this.padding = padding;
     }
-
 }

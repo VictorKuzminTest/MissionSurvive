@@ -9,10 +9,6 @@ import com.missionsurvive.utils.Commands;
 
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 16.05.18.
- */
-
 public class TilesetListingBuilder implements ListingBuilder{
 
     private String assetName;
@@ -33,16 +29,13 @@ public class TilesetListingBuilder implements ListingBuilder{
         }
     }
 
-    /**
-     * Непосредственное добавление тайлсета.
-     * @param listButtons
-     */
     public void addTileset(ListButtons listButtons){
 
         int width = Assets.getTextures()[Assets.getWhichTexture(assetName)].getWidth();
         int height = Assets.getTextures()[Assets.getWhichTexture(assetName)].getHeight();
 
-        listButtons.clearList(); //сначала очищаем список кнопок, чтобы потом добавлять целый новый tileset.
+        //we clear the list first in order to add a new tileset
+        listButtons.clearList();
 
         for(int row = 0; row < height / 18; row++){ //18 is tileset tile height.
             for(int col = 0; col < width / 18; col++){ //...tileset tile width.

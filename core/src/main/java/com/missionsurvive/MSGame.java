@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.missionsurvive.framework.XML;
 import com.missionsurvive.framework.impl.AndroidXML;
 import com.missionsurvive.scenarios.PlayScript;
-import com.missionsurvive.screens.EditorScreen;
 import com.missionsurvive.screens.ScreenFactory;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Controls;

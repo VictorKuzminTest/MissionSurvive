@@ -24,10 +24,6 @@ import com.missionsurvive.utils.Assets;
 
 import java.util.List;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class Hero implements GameObject {
 
     public static final int FROM_POWERUP = 0;
@@ -61,7 +57,8 @@ public class Hero implements GameObject {
     private Decorator decorator;
     private Texture texture;
 
-    private int x; //screen coordinates.
+    //screen coordinates
+    private int x;
     private int y;
     private int spritesetSpriteWidth;
     private int spritesetSpriteHeight;
@@ -74,7 +71,8 @@ public class Hero implements GameObject {
     //Number of arrays element - it is row in a spritesheet (action), value of an element - number of frames:
     private int[] actions;
     private int numBullets;
-    private int isAction; //this variable determines the action our hero is using.
+    //this variable determines the action our hero is using
+    private int isAction;
     private int tileSize = 16;
     private int speedRunning = 2;
     private int speedJumpingY = 7;
@@ -200,7 +198,6 @@ public class Hero implements GameObject {
         animate(mapTer, mapEditor, worldWidth, worldHeight, deltaTime);
     }
 
-
     public void setWeapon(Weapon weapon){
         this.weapon = weapon;
     }
@@ -266,7 +263,6 @@ public class Hero implements GameObject {
             hitbox.setPos(x, y);
         }
     }
-
 
     public void animateFalling(){
         while(animationTickTime > animationTick){
@@ -505,7 +501,6 @@ public class Hero implements GameObject {
         moveOrScroll(mapEditor);
     }
 
-
     public void setActionAndAnimationFrames(int action, int spritesRow, int currentFrame){
         if(isAction >= ACTION_DYING){
             //if hero is still dying, go out of the method:
@@ -533,7 +528,6 @@ public class Hero implements GameObject {
         }
         setActionAndAnimationFrames(ACTION_RUNNING, SPRITES_RUN, 0);
     }
-
 
     /**
      * Scrolling of a tile map depending on hero movements (horizontal to the right).
@@ -587,7 +581,6 @@ public class Hero implements GameObject {
         }
     }
 
-
     public void shoot(int left, int top, int right, int bottom, boolean shoot) {
         if(shoot){
             if(notJumpingFallingShooting()){
@@ -600,8 +593,6 @@ public class Hero implements GameObject {
             isShooting = false;
         }
     }
-
-
 
     public void stopActions() {
         speedFallingX = 0;
@@ -852,7 +843,6 @@ public class Hero implements GameObject {
         }
     }
 
-
     public void die() {
         setActionAndAnimationFrames(ACTION_DYING, SPRITES_DYING, 0);
     }
@@ -910,5 +900,4 @@ public class Hero implements GameObject {
     public List<Weapon> getWeapon(){
         return weapon.getWeapon();
     }
-
 }

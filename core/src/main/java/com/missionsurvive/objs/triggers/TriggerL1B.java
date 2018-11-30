@@ -1,7 +1,6 @@
 package com.missionsurvive.objs.triggers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.missionsurvive.MSGame;
 import com.missionsurvive.framework.ControlPanel;
 import com.missionsurvive.framework.Decorator;
 import com.missionsurvive.map.MapEditor;
@@ -12,12 +11,9 @@ import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.objs.actors.L1B;
 import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
-import com.missionsurvive.scenarios.commands.Command;
-import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Sounds;
 
 /**
- * Created by kuzmin on 09.06.18.
  * Auto scrolling of the screen to some target.
  */
 public class TriggerL1B implements Bot {

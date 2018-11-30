@@ -9,10 +9,6 @@ import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.objs.GameObject;
 import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class FlyingHero implements GameObject{
 
     private Texture texture;
@@ -21,7 +17,8 @@ public class FlyingHero implements GameObject{
     private float animationTickTime, animationTick = 0.1f;
     private int spriteWidth, spriteHeight;
     private int spritesetSpriteWidth, spritesetSpriteHeight;
-    private int[] spritesRows; //each element of this array contains the number of sprites in a row.
+    //each element of this array contains the number of sprites in a row.
+    private int[] spritesRows;
     private ObjAnimation animation;
 
 
@@ -43,7 +40,6 @@ public class FlyingHero implements GameObject{
 
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
-
         batch.begin();
         batch.draw(texture, MSGame.SCREEN_OFFSET_X + screenX,
                 MSGame.SCREEN_OFFSET_Y +

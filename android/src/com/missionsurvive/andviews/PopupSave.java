@@ -17,10 +17,6 @@ import com.missionsurvive.utils.ExternalStorage;
 
 import java.util.ArrayList;
 
-/**
- * Created by kuzmin on 17.05.18.
- */
-
 public class PopupSave extends Popup implements View.OnClickListener {
 
     private EditText filename;
@@ -28,7 +24,6 @@ public class PopupSave extends Popup implements View.OnClickListener {
     private ListView listView;
     private Activity activity;
     private Command command;
-
 
     /**
      * We have to pass activity parameter (NOT context), otherwise Dialog will not work.
@@ -44,7 +39,6 @@ public class PopupSave extends Popup implements View.OnClickListener {
 
         super.setContentView(contentView);
     }
-
 
     /**
      * Here we initialize control views.
@@ -89,7 +83,6 @@ public class PopupSave extends Popup implements View.OnClickListener {
             }
         });
     }
-
 
     /**
      * Method handles on buttons clicks.

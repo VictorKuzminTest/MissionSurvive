@@ -1,5 +1,4 @@
 
-import com.badlogic.gdx.Gdx;
 import com.missionsurvive.framework.Button;
 import com.missionsurvive.framework.Listener;
 import com.missionsurvive.framework.Observer;
@@ -8,15 +7,7 @@ import com.missionsurvive.framework.impl.ButtonTouchListener;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
-
-import java.util.ArrayList;
-
 import static org.junit.Assert.*;
-
-/**
- * Created by kuzmin on 26.04.18.
- */
 
 public class ButtonTouchListenerTest {
 
@@ -48,7 +39,6 @@ public class ButtonTouchListenerTest {
     public void instanceofListener(){
         assertTrue(buttonTouchListener instanceof Listener);
     }
-
 
     @Test
     public void onTouchDownButtonEvent(){
@@ -114,5 +104,4 @@ public class ButtonTouchListenerTest {
             assertEquals(ButtonTouchListener.STATE_UP_INSIDE, buttonTouchListener.getState());
         }
     }
-
 }

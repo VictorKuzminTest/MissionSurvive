@@ -5,10 +5,6 @@ import com.missionsurvive.MSGame;
 import com.missionsurvive.screens.EditorScreen;
 import com.missionsurvive.screens.GameScreen;
 
-/**
- * Created by kuzmin on 14.05.18.
- */
-
 public class ShowLayerCommand implements Command{
 
     private Screen screen;

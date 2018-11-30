@@ -40,7 +40,6 @@ public class RocketL6B extends EnemyBullet {
         if(assetName != null){
             explosionTexture = Assets.getTextures()[Assets.getWhichTexture("explosion")];
         }
-
         width = 25;
         height = 12;
         spriteWidth = 45;

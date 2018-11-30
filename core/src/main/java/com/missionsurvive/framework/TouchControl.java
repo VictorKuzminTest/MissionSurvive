@@ -1,7 +1,6 @@
 package com.missionsurvive.framework;
 
 import com.badlogic.gdx.Gdx;
-import com.missionsurvive.MSGame;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.map.MapTer;
 import com.missionsurvive.map.ScrollMap;
@@ -9,10 +8,6 @@ import com.missionsurvive.objs.actors.Hero;
 import com.missionsurvive.objs.actors.Moto;
 import com.missionsurvive.scenarios.controlscenarios.ControlScenario;
 import com.missionsurvive.scenarios.PlatformerScenario;
-
-/**
- * Created by kuzmin on 25.04.18.
- */
 
 public class TouchControl {
 
@@ -22,56 +17,46 @@ public class TouchControl {
     public static final int EVENT_UP = 2;
 
     private int touchEvent;
-    private float lastDownX;  //Последнее зафиксированная координата X пальца на экране в состоянии  down.
-    private float lastDownY;   //Последнее зафиксированная координата Y пальца на экране в состоянии  down.
-    private int distanceX;   //Вычисляемая дистанция по X на экране в зависимости от событий.
-    private int distanceY;   //Вычисляемая дистанция по Y на экране в зависимости от событий.
+    //the last fixed finger down coordinates
+    private float lastDownX;
+    private float lastDownY;
+    //calculated distance depending on events
+    private int distanceX;
+    private int distanceY;
 
     private int initEventToJumpX, initEventToJumpY;
-
-    private static int downEventX;
-    private static int downEventY;
-    private static int dragEventX;
-    private static int dragEventY;
-    private static int startScrollX; //these 4 variable are use to control "Button List scrolling" and "pressing" button in that list.
-    private static int startScrollY;
-    private static boolean scrolling = false;  //this boolean is used to control whether wwe can "press" button int th ListButtons or not.
 
     private final int MIN_THRASHOLD_Y = 32;
     private final int MIN_THRASHOLD_X = 24;
 
-    private int touchButtonEvent = 0;
-    private int touchListEvent = 0;
-    private Button currentButton;
     private boolean isMapTouchedDown = false;
     private float jumpingTick = 0.9f, jumpingTickTime = 0;
 
     private float motoX, motoY;
     private float scaleX, scaleY;
 
-    public TouchControl(float scaleX, float scaleY){
+    public TouchControl(float scaleX, float scaleY) {
         this.scaleX = scaleX;
         this.scaleY = scaleY;
     }
 
-    public void motorControl(float deltaTime, Moto moto){
+    public void motorControl(float deltaTime, Moto moto) {
         if(Gdx.input.justTouched()){
             motoX = Gdx.input.getX(0) * scaleX;
             motoY =  Gdx.input.getY(0) * scaleY;
             moto.setDestination(deltaTime, (int)motoX, (int)motoY);
         }
-        else{
-            if(Gdx.input.isTouched(0)){
+        else {
+            if(Gdx.input.isTouched(0)) {
                 motoX = Gdx.input.getX(0) * scaleX;
                 motoY =  Gdx.input.getY(0) * scaleY;
                 moto.setDestination(deltaTime, (int)motoX, (int)motoY);
             }
-            else{
+            else {
                 moto.stop();
             }
         }
     }
-
 
     /**
      * In this method we also trace touch input events like EVENT_UP, because default (ligdx) framework
@@ -120,7 +105,6 @@ public class TouchControl {
         }
     }
 
-
     public void moveHero(Hero hero, int x , int y) {
         if(hero.isAction() == Hero.ACTION_IDLE || hero.isAction() == Hero.ACTION_RUNNING){
             //First We check here for the previous direction. And if hero has to change its direction,
@@ -153,11 +137,9 @@ public class TouchControl {
             if(isChangingDirection(hero, x)){
                 hero.setAction(Hero.ACTION_IDLE);
             }
-
             setFallingX(hero);
         }
     }
-
 
     public void setFallingX(Hero hero){
         if(hero.getDirection() == Hero.DIRECTION_RIGHT){
@@ -177,7 +159,6 @@ public class TouchControl {
      */
     public boolean isChangingDirection(Hero hero, int x){
         if(x < hero.getCenterX()){
-
             //We check here for the previous direction. And if it was RIGHT, and x is to the LEFT,
             //we set direction to the LEFT first, then return true.
             if(hero.getDirection() == Hero.DIRECTION_RIGHT){
@@ -211,13 +192,11 @@ public class TouchControl {
         platformerScenario.shootEnemy(hero, x, y);
     }
 
-
     public void countJumpingTime(Hero hero, int touchEvent,
                                  int eventX, int eventY, float deltaTime){
         if(isMapTouchedDown) {
             jumpingTickTime += deltaTime;
         }
-
         switch(touchEvent){
             case EVENT_DOWN:
                 isMapTouchedDown = true;
@@ -246,7 +225,6 @@ public class TouchControl {
                 break;
         }
     }
-
 
     public MapTer touchMap(MapTer[][] mapTer, ScrollMap scrollMap, int numRows, int numCols){
         MapTer targetMapTer = null;
@@ -282,7 +260,6 @@ public class TouchControl {
         return targetMapTer;
     }
 
-
     public void scrollMapLayer(ControlScenario controlScenario, ScrollMap scrollMap){
         if(Gdx.input.justTouched()){
             isMapTouchedDown = true;
@@ -311,5 +288,4 @@ public class TouchControl {
             }
         }
     }
-
 }

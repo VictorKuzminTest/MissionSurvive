@@ -18,10 +18,6 @@ import com.missionsurvive.utils.Assets;
 
 import sun.rmi.runtime.Log;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public class Helicopter implements Bot{
     public static final float SCALE_TICK = 0.2f;
     public static final float CRASHING_TICK = 0.03f;
@@ -103,7 +99,6 @@ public class Helicopter implements Bot{
         animation.addChild(flyingAnimation);
         animation.addChild(burningAnimation);
     }
-
 
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {

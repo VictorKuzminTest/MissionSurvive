@@ -21,16 +21,13 @@ import com.missionsurvive.utils.Assets;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class ShotgunZombie implements Bot {
 
     public static final float ALPHA_STEP = 0.04f;
     public static final float ALPHA_INIT = 1.0f;
 
-    private int x; //screen coordinates.
+    //screen coordinates.
+    private int x;
     private int y;
     private int spritesetSpriteWidth;
     private int spritesetSpriteHeight;
@@ -45,13 +42,15 @@ public class ShotgunZombie implements Bot {
     private PlatformerScenario platformerScenario;
     private Texture texture;
 
-    private int halfHeroHeight; //"half...", because basically we need to know the half of "real" object width-height to calculate bounding (colliding) points.
+    private int halfHeroHeight;
     private int halfHeroWidth;
-    private int centerX, centerY, top, bottom, left, right;  //ограничивающие точки "тела" героя (top, bootom, left, right). centerX-centerY - центр героя.
-    private int vectorX, vectorY;  //Вектор передвижения героя в данный момент времени.
-    private int bulletX, bulletY, bulletDirection; //starting point coordinates for bullet to move. They depend on action shooting frames.
+    private int centerX, centerY, top, bottom, left, right;
+    //moving vector in current moment
+    private int vectorX, vectorY;
+    //starting point coordinates for bullet to move. They depend on action shooting frames.
+    private int bulletX, bulletY, bulletDirection;
 
-    private int[] actions; //массив, в котором содержится инфа о действиях игрока и количестве фреймах в них (номер элемента массива - row, содержание элемента - количество фреймов).
+    private int[] actions;
     private int numDirections; //количество направлений для действий (сторон света).
     private int numActions; //количество действий.
     private int currentAction; //currentAction
@@ -108,8 +107,6 @@ public class ShotgunZombie implements Bot {
         numBullets = 5;
         setBulletHolder(numBullets);
     }
-
-
 
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
@@ -216,14 +213,12 @@ public class ShotgunZombie implements Bot {
         }
     }
 
-
     @Override
     public void collide(Hero hero){
         if(isAction < 3){
             hero.die();
         }
     }
-
 
     public void animateFalling(){
 
@@ -235,7 +230,6 @@ public class ShotgunZombie implements Bot {
             isAction = 0;
         }
     }
-
 
     public void calculateVectorY(int direction, int speedInPixels, MapEditor mapEditor){
         if(!isSouth){
@@ -256,7 +250,6 @@ public class ShotgunZombie implements Bot {
             }
         }
     }
-
 
     public void die(){
         if(isAction < 3){
@@ -279,7 +272,6 @@ public class ShotgunZombie implements Bot {
         }
     }
 
-
     public void fall(){
         if(!isSouth){
             isAction = 1;
@@ -296,7 +288,6 @@ public class ShotgunZombie implements Bot {
             isAction = 1; //falling
         }
     }
-
 
     @Override
     public void hit(Weapon weapon){
@@ -333,7 +324,6 @@ public class ShotgunZombie implements Bot {
         }
     }
 
-
     @Override
     public void jump(int destX, int destY){
 
@@ -359,13 +349,11 @@ public class ShotgunZombie implements Bot {
         }
     }
 
-
     public void setBulletHolder(int numBullets){ //generates the bullet holder.
         for(int whichBullet = 0; whichBullet < numBullets; whichBullet++){
             bullets.add(new EnemyBullet("bullet", MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT));
         }
     }
-
 
     public void setDirection(int x){
         if(this.x < x){
@@ -375,7 +363,6 @@ public class ShotgunZombie implements Bot {
             direction = 1;  //left
         }
     }
-
 
     public void setOpacity(float deltaTime){
         animationTickTime += deltaTime;
@@ -463,7 +450,6 @@ public class ShotgunZombie implements Bot {
         }
     }
 
-
     public void shoot(){
         if(isAction < 3){ //if zombie is not dying.
             if(!platformerScenario.getHero().equals(null)){
@@ -483,7 +469,6 @@ public class ShotgunZombie implements Bot {
             }
         }
     }
-
 
     public void shootingAnimation(){
         while(shootingTicktime > shootingTick) {
@@ -506,7 +491,6 @@ public class ShotgunZombie implements Bot {
             }
         }
     }
-
 
     public void tilemapCollision(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
 
@@ -562,7 +546,6 @@ public class ShotgunZombie implements Bot {
             eastTer = null;
         }
     }
-
 
     @Override
     public int getX(){

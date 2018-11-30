@@ -1,9 +1,5 @@
 package com.missionsurvive.map;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class MapTer {
 
     private int row, col;
@@ -11,7 +7,8 @@ public class MapTer {
     private int srcX, srcY;
 
     private boolean blocked;
-    private boolean isEditing; //переменная, указывающая на то, редактируется ли данный  тайл в данный момент. Нужна для отрисовки editingTileRect.
+    //variable pointing whether current tile is editing now. Need to draw editingTileRect.
+    private boolean isEditing;
     private boolean isLadder;
 
     public MapTer(int col, int row, int srcX, int srcY, int tileWidth, int tileHeight){
@@ -47,7 +44,6 @@ public class MapTer {
     public boolean isLadder(){
         return isLadder;
     }
-
 
     public int getRow(){
         return row;

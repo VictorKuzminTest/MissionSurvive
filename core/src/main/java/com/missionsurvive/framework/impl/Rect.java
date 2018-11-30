@@ -7,10 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.missionsurvive.MSGame;
 import com.missionsurvive.geom.GeoHelper;
 
-/**
- * Created by kuzmin on 16.07.18.
- */
-
 public class Rect extends Icon{
 
     private ShapeRenderer rect;

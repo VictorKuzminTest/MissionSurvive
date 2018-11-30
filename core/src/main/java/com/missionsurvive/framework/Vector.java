@@ -1,9 +1,5 @@
 package com.missionsurvive.framework;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public abstract class Vector {
 
     public int x, y;

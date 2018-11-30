@@ -1,17 +1,19 @@
 package com.missionsurvive.geom;
 
-/**
- * Created by kuzmin on 26.04.18.
- */
-
 public class GeoHelper {
-
     public static final int TO_THE_RIGHT = 0, TO_THE_LEFT = 1, LOWER = 1, HIGHER = 0, INSIDE = 2;
 
+    /**
+     * Determines the space, based on the amount of space that a substance or object occupies.
+     * @param eventX
+     * @param eventY
+     * @param objX
+     * @param objY
+     * @param objWidth
+     * @param objHeight
+     * @return
+     */
     public static boolean inBoundsVolume(int eventX, int eventY, int objX, int objY, int objWidth, int objHeight) {
-        /**
-         * determines the space, based on the amount of space that a substance or object occupies.
-         */
         if(eventX > objX && eventX < objX + objWidth - 1 &&
                 eventY > objY && eventY < objY + objHeight - 1)
             return true;
@@ -19,10 +21,17 @@ public class GeoHelper {
             return false;
     }
 
+    /**
+     * Determines the space directly through coordinates.
+     * @param eventX
+     * @param eventY
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     * @return
+     */
     public static boolean inBoundsSpace(int eventX, int eventY, int left, int top, int right, int bottom){
-        /**
-         * determines the space directly through coordinates.
-         */
         if(eventX > left && eventX < right && eventY > top && eventY < bottom){
             return true;
         }
@@ -31,39 +40,46 @@ public class GeoHelper {
         }
     }
 
+    /**
+     * Determines whether eventX coordinate to the right of the object, to the left or inside the object space.
+     * @param eventX
+     * @param left
+     * @param right
+     * @return
+     */
     public static int inBoundsSpaceX(int eventX, int left, int right){
-        /**
-         * determines whether eventX coordinate to the right of the object, to the left or inside the object space:
-         * 0 - to the right, 1 - to the left, 2 - inside.
-         */
         int xPos = 0;
 
         if(eventX > left && eventX < right){
-            return xPos = 2;  //inside
+            return xPos = INSIDE;
         }
         else if(eventX < left){
-            return xPos = 1;  //left
+            return xPos = TO_THE_LEFT;
         }
         else if(eventX > right){
-            return xPos = 0; //right
+            return xPos = TO_THE_RIGHT;
         }
         return xPos;
     }
 
+    /**
+     * Determines whether eventY coordinate higher, lower or inside the object space.
+     * @param eventY
+     * @param top
+     * @param bottom
+     * @return
+     */
     public static int inBoundsSpaceY(int eventY, int top, int bottom){
-        /**
-         * determines whether eventY coordinate higher, lower or inside the object space: 0 - higher, 1 - lower, 2 - inside.
-         */
         int yPos = 0;
 
         if(eventY > top && eventY < bottom){
-            return yPos = 2; //inside
+            return yPos = INSIDE;
         }
         else if(eventY > bottom){
-            return yPos = 1; //lower
+            return yPos = LOWER;
         }
         else if(eventY < top){
-            return yPos = 0; //higher
+            return yPos = HIGHER;
         }
         return yPos;
     }
@@ -78,7 +94,7 @@ public class GeoHelper {
           ____
         |____|
 
-     Если эти условия соблюдаются, то прямоугольники пересекаются.
+     if conditions are met, then rectangle overlap
      */
     public static boolean overlapRectangles(int obj1X, int obj1Y, int obj1Width, int obj1Height,
                                             int obj2X, int obj2Y, int obj2Width, int obj2Height){
@@ -93,7 +109,6 @@ public class GeoHelper {
             return false;
         }
     }
-
 
     /**
      * Calculates one of the grid's (spatial) coordinate (row or col) depending on screen event and "world offset".
@@ -110,7 +125,6 @@ public class GeoHelper {
 
         return gridCoord;
     }
-
 
     /**
      * Gets row or col of the space grid (world grid). It checks for row (col)
@@ -151,7 +165,7 @@ public class GeoHelper {
      * @return
      */
     public static boolean linesIntersect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4){
-        // Return false if either of the lines have zero length
+        // return false if either of the lines have zero length
         if (x1 == x2 && y1 == y2 ||
                 x3 == x4 && y3 == y4){
             return false;

@@ -5,12 +5,7 @@ import com.missionsurvive.tests.commands.OnClickButtonLogCommand;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import static org.junit.Assert.*;
-
-/**
- * Created by kuzmin on 30.04.18.
- */
 
 public class ListButtonsTouchListenerTest {
 

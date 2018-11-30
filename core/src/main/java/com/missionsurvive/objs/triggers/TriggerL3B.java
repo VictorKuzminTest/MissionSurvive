@@ -25,7 +25,8 @@ public class TriggerL3B implements Bot {
     private int y;
     private int endScrollX;
     private int numTilesToScroll = 15;
-    private int offsetToSpawn; //offset to spawn the boss.
+    //offset to spawn the boss.
+    private int offsetToSpawn;
     private int hp;
 
     private float scrollingTickTime;

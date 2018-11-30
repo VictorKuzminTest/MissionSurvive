@@ -3,11 +3,6 @@ package com.missionsurvive.scenarios.commands;
 import com.missionsurvive.ActivityCallback;
 import com.missionsurvive.screens.GameScreen;
 import com.missionsurvive.utils.Assets;
-import com.missionsurvive.utils.Progress;
-
-/**
- * Created by kuzmin on 17.05.18.
- */
 
 public class ShowPopupCommand implements Command{
 

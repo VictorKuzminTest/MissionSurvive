@@ -2,10 +2,6 @@ package com.missionsurvive.framework;
 
 import java.util.List;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public interface Animation {
 
     public void animate(int x1, int x2);

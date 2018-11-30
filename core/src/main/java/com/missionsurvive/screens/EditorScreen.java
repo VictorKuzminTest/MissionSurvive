@@ -38,10 +38,6 @@ import com.missionsurvive.scenarios.controlscenarios.MapEditorCS;
 import com.missionsurvive.utils.Assets;
 import com.missionsurvive.utils.Controls;
 
-/**
- * Created by kuzmin on 14.05.18.
- */
-
 public class EditorScreen extends GameScreen implements Screen {
 
     public static final int ALL_LAYERS = 0;

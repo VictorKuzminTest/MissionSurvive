@@ -5,10 +5,6 @@ import com.missionsurvive.framework.Animation;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class Animation2 implements Animation {
 
     private List<Animation> animation;

@@ -2,10 +2,6 @@ package com.missionsurvive.framework.impl;
 
 import com.missionsurvive.framework.Vector;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class Vector2 extends Vector {
 
     public static float TO_RADIANS = (1 / 180.0f) * (float) Math.PI;

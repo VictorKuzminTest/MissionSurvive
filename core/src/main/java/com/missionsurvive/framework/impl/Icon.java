@@ -6,10 +6,6 @@ import com.missionsurvive.MSGame;
 import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 04.05.18.
- */
-
 public class Icon {
 
     private Texture texture;

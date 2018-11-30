@@ -7,10 +7,6 @@ import com.missionsurvive.geom.GeoHelper;
 import com.missionsurvive.geom.Hitbox;
 import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public class Tear extends Obstacle {
 
     private Texture texture;
@@ -62,5 +58,4 @@ public class Tear extends Obstacle {
     public boolean onTouch() {
         return false;
     }
-
 }

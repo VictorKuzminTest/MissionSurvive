@@ -19,16 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class L5B implements Bot {
 
     public static final int ACTION_DEAD = 5;
     public static final int ACTION_DYING = 4;
 
-    private int x; //screen coordinates.
+    //screen coordinates.
+    private int x;
     private int y;
     private int spritesetSpriteWidth;
     private int spritesetSpriteHeight;
@@ -45,11 +42,12 @@ public class L5B implements Bot {
     private PlatformerScenario platformerScenario;
     private Texture texture;
 
-    private int halfHeroHeight; //"half...", because basically we need to know the half of "real" object width-height to calculate bounding (colliding) points.
+    private int halfHeroHeight;
     private int halfHeroWidth;
-    private int centerX, centerY, top, bottom, left, right;  //ограничивающие точки "тела" героя (top, bootom, left, right). centerX-centerY - центр героя.
-    private int vectorX, vectorY;  //Вектор передвижения героя в данный момент времени.
-    private int bulletX, bulletY, bulletDirection; //starting point coordinates for bullet to move. They depend on action shooting frames.
+    private int centerX, centerY, top, bottom, left, right;
+    //moving vector in current moment
+    private int vectorX, vectorY;
+    private int bulletX, bulletY, bulletDirection;
 
     private float animationTickTime = 0;
     private float movingTickTime = 0;
@@ -62,23 +60,22 @@ public class L5B implements Bot {
     private final int SHOOTING_ACTION = 2;
     private final int DYING = 3;
 
-    private int[] actions; //массив, в котором содержится инфа о действиях игрока и количестве фреймах в них (номер элемента массива - row, содержание элемента - количество фреймов).
-    private int numDirections; //количество направлений для действий (сторон света).
-    private int numActions; //количество действий.
-    private int currentAction; //currentAction
-    private int direction; //direction of action.  0 - right, 1 - left.
-    private int runningSpeed = 2; //скорость бега в пикселях.
-    private int fallingSpeed = 7; //falling speed in pixels.
+    private int[] actions;
+    private int numDirections;
+    private int numActions;
+    private int currentAction;
+    private int direction;
+    private int runningSpeed = 2;
+    private int fallingSpeed = 7;
     private int hp;
-
-    private int startFallingFrame = 0, numFallingFrames = 1;
 
     private float zombieDyingTick = 0.1f, zombieDyingTickTime = 0;
 
-    private boolean isNorth, isEast, isSouth, isWest; //переменный, указывающие, какие тайлы мира заблокированы.
-    private MapTer northTer, eastTer, southTer, westTer; //переменные, хранящие MapTer смежных с героем тайлов.
+    private boolean isNorth, isEast, isSouth, isWest;
+    private MapTer northTer, eastTer, southTer, westTer;
 
-    private int isAction; //this variable determines the action our hero is using.
+    //this variable determines the action our hero is using.
+    private int isAction;
     private boolean isRunning = false;
     private int targetX = -1, targetY = -1;
 
@@ -114,7 +111,6 @@ public class L5B implements Bot {
         setBulletHolder(numBullets);
     }
 
-
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY){
         for(int whichBullet = 0; whichBullet < numBullets; whichBullet++){
@@ -122,7 +118,6 @@ public class L5B implements Bot {
                     mapEditor.getScrollLevel1Map().getWorldOffsetX(),
                     mapEditor.getScrollLevel1Map().getWorldOffsetY());
         }
-
         batch.begin();
         batch.draw(texture, MSGame.SCREEN_OFFSET_X + x - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
                 MSGame.SCREEN_OFFSET_Y +
@@ -216,8 +211,6 @@ public class L5B implements Bot {
     }
     ///////////////////////////////THESE ARE MAIN METHODS FOR MOVING AND ANIMATING/////////////////////////////////////////////
 
-
-
     @Override
     public void collide(Hero hero){
         if(isAction < ACTION_DYING){
@@ -266,7 +259,6 @@ public class L5B implements Bot {
         }
     }
 
-
     public void calculateVectorY(int direction, int speedInPixels, MapEditor mapEditor){
         if(direction == 0){  //north
             if(!isNorth){
@@ -308,13 +300,11 @@ public class L5B implements Bot {
         }
     }
 
-
     public void die(){
         if(isAction < 4){
             isAction = 4;
         }
     }
-
 
     public void dying(){
         while(zombieDyingTickTime > zombieDyingTick){
@@ -331,13 +321,11 @@ public class L5B implements Bot {
         }
     }
 
-
     public void fall(){
         if(!isSouth){
             isAction = 1;
         }
     }
-
 
     public void falling(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
         setActionAnimationFrames(IDLE_ACTION);
@@ -390,7 +378,6 @@ public class L5B implements Bot {
         }
     }
 
-
     @Override
     public void jump(int destX, int destY){
 
@@ -439,7 +426,6 @@ public class L5B implements Bot {
         }
         stopRunning();
     }
-
 
     public void runningAnimation(){setDirection(targetX);
         while(animationTickTime > animationTick) {
@@ -528,7 +514,6 @@ public class L5B implements Bot {
             }
         }
     }
-
 
     public void stopRunning(){
         isRunning = false;

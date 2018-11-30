@@ -19,10 +19,6 @@ import com.missionsurvive.utils.Assets;
 
 import java.util.Random;
 
-/**
- * Created by kuzmin on 03.05.18.
- */
-
 public class Zombie implements Bot {
 
     public static final int EAST = 0;
@@ -45,10 +41,10 @@ public class Zombie implements Bot {
     private int spriteHeight;
     private int hitboxWidth;
     private int hitboxHeight;
-    private int halfHeroHeight; //"half...", because basically we need to know the half of "real" object width-height to calculate bounding (colliding) points.
+    private int halfHeroHeight;
     private int halfHeroWidth;
-    private int centerX, centerY, top, bottom, left, right;  //ограничивающие точки "тела" героя (top, bootom, left, right). centerX-centerY - центр героя.
-    private int vectorX, vectorY;  //Вектор передвижения героя в данный момент времени.
+    private int centerX, centerY, top, bottom, left, right;
+    private int vectorX, vectorY;
 
     private float animationTickTime = 0;
     private float movingTickTime = 0;
@@ -64,13 +60,14 @@ public class Zombie implements Bot {
     private final int BUILDING_FALLING_ACTION = 5;
     private final int BITING_ACTION = 6;
 
-    private int[] actions; //массив, в котором содержится инфа о действиях игрока и количестве фреймах в них (номер элемента массива - row, содержание элемента - количество фреймов).
-    private int numDirections; //количество направлений для действий (сторон света).
+    private int[] actions;
+    private int numDirections;
     private int numActions;
     private int currentAction;
-    private int direction; //direction of action.  0 - right, 1 - left.
+    //direction of action.  0 - right, 1 - left.
+    private int direction;
     private int runningSpeed;
-    private int fallingSpeed = 3; //falling speed in pixels.
+    private int fallingSpeed = 3;
     private int hits;
 
     private int startFallingFrame = 0, numFallingFrames = 1;
@@ -78,13 +75,14 @@ public class Zombie implements Bot {
     private float zombieDyingTick = 0.5f, zombieDyingTickTime = 0;
     private float alpha = ALPHA_INIT;
 
-    private boolean isNorth, isEast, isSouth, isWest; //переменный, указывающие, какие тайлы мира заблокированы.
+    private boolean isNorth, isEast, isSouth, isWest;
     private boolean isRunning = false;
     private boolean isDead = false;
 
-    private MapTer northTer, eastTer, southTer, westTer; //переменные, хранящие MapTer смежных с героем тайлов.
+    private MapTer northTer, eastTer, southTer, westTer;
 
-    private int isAction; //this variable determines the action zombie is using.
+    //this variable determines the action zombie is using.
+    private int isAction;
     private int targetX = -1, targetY = -1;
 
     public Zombie(String assetName, MapEditor mapEditor,
@@ -127,7 +125,6 @@ public class Zombie implements Bot {
         }
         animation = new ObjAnimation(actions, spriteWidth, spriteHeight);
     }
-
 
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
@@ -213,7 +210,6 @@ public class Zombie implements Bot {
         }
     }
 
-
     public void move(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight, float deltaTime){
         movingTickTime += deltaTime;
 
@@ -243,7 +239,6 @@ public class Zombie implements Bot {
         bite(hero);
     }
 
-
     /**
      * If enemy is not jumping or falling or dying, it gets the hero position and sets the direction according to it.
      * Then bites hero.
@@ -263,7 +258,6 @@ public class Zombie implements Bot {
         }
     }
 
-
     public void biting(){
         while(animationTickTime > animationTick) {
             animationTickTime -= animationTick;
@@ -279,7 +273,6 @@ public class Zombie implements Bot {
             setDirection(targetX);
         }
     }
-
 
     public void calculateVectorX(int speedInPixels, MapEditor mapEditor){
         if(direction == EAST){
@@ -364,14 +357,12 @@ public class Zombie implements Bot {
         }
     }
 
-
     public void die(){
         if(isAction < 6){  //not dying
             isAction = 6;  //dying
             isDead = true;
         }
     }
-
 
     public void dying(){
         while(zombieDyingTickTime > zombieDyingTick){
@@ -468,7 +459,6 @@ public class Zombie implements Bot {
         }
     }
 
-
     @Override
     public void jump(int destX, int destY){
         setDirection(destX);
@@ -476,7 +466,6 @@ public class Zombie implements Bot {
         setSetOfFrames(currentAction * numDirections + direction);
         isAction = 2;
     }
-
 
     public void jumping(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
         while(animationTickTime > animationTick) {
@@ -500,7 +489,6 @@ public class Zombie implements Bot {
         }
     }
 
-
     @Override
     public void run(){
         if(hits < 0){
@@ -520,7 +508,6 @@ public class Zombie implements Bot {
             }
         }
     }
-
 
     public void running(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
         if(x + 23 < targetX){ //23 - because this is approximate center of zombie's centerX.
@@ -549,15 +536,12 @@ public class Zombie implements Bot {
         }
     }
 
-
     public void setActionAnimationFrames(int action){
         if(currentAction != action){
             currentAction = action;
             animation.setSetOfFrames(currentAction * numDirections + direction);
         }
     }
-
-
 
     public void setDirection(int x){
         if(this.x + 23 < x){  //23 - because this is approximate center of zombie's centerX.
@@ -583,7 +567,6 @@ public class Zombie implements Bot {
         }
     }
 
-
     public void setPos(){
         left = (x + 17) - mapEditor.getScrollLevel1Map().getWorldOffsetX();
         top = (y + 17) - mapEditor.getScrollLevel1Map().getWorldOffsetY();
@@ -593,7 +576,6 @@ public class Zombie implements Bot {
         centerX = left + halfHeroWidth;
         centerY = top + halfHeroHeight;
     }
-
 
     public void setJumpingXY(int actionFrame, MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
         /**
@@ -705,7 +687,6 @@ public class Zombie implements Bot {
             eastTer = null;
         }
     }
-
 
     @Override
     public int getX(){

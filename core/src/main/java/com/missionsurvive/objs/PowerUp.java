@@ -15,10 +15,6 @@ import com.missionsurvive.scenarios.PlatformerScenario;
 import com.missionsurvive.scenarios.Scenario;
 import com.missionsurvive.utils.Assets;
 
-/**
- * Created by kuzmin on 01.05.18.
- */
-
 public class PowerUp implements Bot{
 
     public static final int DIRECTION_EAST = 0;
@@ -196,8 +192,6 @@ public class PowerUp implements Bot{
         }
     }
 
-
-
     @Override
     public void collide(Hero hero) {
         if(isAction != ACTION_PICKED_UP && isAction != ACTION_FLY){
@@ -277,7 +271,6 @@ public class PowerUp implements Bot{
             }
         }
     }
-
 
     /**
      * set color filter for power up could change its color.
