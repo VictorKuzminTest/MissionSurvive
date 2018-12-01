@@ -26,35 +26,7 @@ public class MapEditorCS implements ControlScenario {
     private ListingBuilder tilesetListingBuilder;
 
     public MapEditorCS(Screen screen, Map map, Scenario scenario){
-        listOfPanels = new ArrayList<ControlPanel>();
-        mapTerArrayList = new ArrayList<MapTer>();
-        setControlPanels();
-
-        platformerListingBuilder = new PlatformerScreenListingBuilder(screen,
-                (MapEditor)map, scenario, mapTerArrayList);
-        ListButtons controlList = listOfPanels.get(0).getListButtons("editorControl");
-        platformerListingBuilder.addButtons(controlList);
-
-        tilesetListingBuilder = new TilesetListingBuilder("lev1", mapTerArrayList, (MapEditor)map);
-        ListButtons tilesetList = listOfPanels.get(0).getListButtons("tileset");
-        tilesetListingBuilder.addButtons(tilesetList);
-
-        //setting commands to android popups:
-        PutBotCommand putBotCommand = (PutBotCommand) Commands.getCommand("putBot");
-        putBotCommand.setScenario(scenario, mapTerArrayList);
-        Assets.getGame().getActivityCallback().setCommand(putBotCommand, "popup_new_bot");
-
-        SaveLoadMapCommand loadMapCommand = (SaveLoadMapCommand)Commands.getCommand("save_load_map");
-        loadMapCommand.setMap(map, SaveLoadMapCommand.ACTION_LOAD);
-        Assets.getGame().getActivityCallback().setCommand(loadMapCommand, "load_map");
-
-        NewMapCommand newMapCommand = (NewMapCommand)Commands.getCommand("newMap");
-        newMapCommand.setScreen(screen);
-        Assets.getGame().getActivityCallback().setCommand(newMapCommand, "new_map");
-
-        SaveLoadMapCommand saveMapCommand = (SaveLoadMapCommand)Commands.getCommand("save_load_map");
-        saveMapCommand.setMap(map, SaveLoadMapCommand.ACTION_SAVE);
-        Assets.getGame().getActivityCallback().setCommand(saveMapCommand, "save_map");
+        ...
     }
 
     @Override

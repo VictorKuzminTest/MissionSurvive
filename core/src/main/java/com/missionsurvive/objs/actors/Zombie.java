@@ -64,7 +64,6 @@ public class Zombie implements Bot {
     private int numDirections;
     private int numActions;
     private int currentAction;
-    //direction of action.  0 - right, 1 - left.
     private int direction;
     private int runningSpeed;
     private int fallingSpeed = 3;
@@ -92,17 +91,6 @@ public class Zombie implements Bot {
         if(assetName != null){
             texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
         }
-        spriteWidth = 54;
-        spriteHeight = 70;
-        spritesetSpriteWidth = spriteWidth + 2;
-        spritesetSpriteHeight = spriteHeight + 2;
-        hitboxWidth = 18;
-        hitboxHeight = 48;
-        halfHeroHeight = hitboxHeight / 2;
-        halfHeroWidth = hitboxWidth / 2;
-        hits = 0;
-        runningSpeed = speedRunning;
-        this.mapEditor = mapEditor;
 
         setPos();
         this.direction = direction;
@@ -114,15 +102,7 @@ public class Zombie implements Bot {
         numDirections = 2;
         numActions = 7;
         actions = new int[numDirections * numActions];
-        for(int whichAction = 0; whichAction < actions.length; whichAction++){
-            if(whichAction >= IDLE_ACTION * numDirections && whichAction <= IDLE_ACTION * numDirections + 1) actions[whichAction] = 1;
-            else if(whichAction >= RUN_ACTION * numDirections && whichAction <= RUN_ACTION * numDirections + 1) actions[whichAction] = 10;
-            else if(whichAction >= JUMP_ACTION * numDirections && whichAction <= JUMP_ACTION * numDirections + 1) actions[whichAction] = 10;
-            else if(whichAction >= FALLING_ACTION * numDirections && whichAction <= FALLING_ACTION * numDirections + 1) actions[whichAction] = 2;
-            else if(whichAction >= DYING * numDirections && whichAction <= DYING * numDirections + 1) actions[whichAction] = 2;
-            else if(whichAction >= BUILDING_FALLING_ACTION * numDirections && whichAction <= BUILDING_FALLING_ACTION * numDirections + 1) actions[whichAction] = 2;
-            else if(whichAction >= BITING_ACTION * numDirections && whichAction <= BITING_ACTION * numDirections + 1) actions[whichAction] = 2;
-        }
+
         animation = new ObjAnimation(actions, spriteWidth, spriteHeight);
     }
 
@@ -171,7 +151,6 @@ public class Zombie implements Bot {
 
     }
 
-    ///////////////////////////////THESE ARE MAIN METHODS FOR MOVING AND ANIMATING HERO/////////////////////////////////////////////
     @Override
     public void moving(float deltaTime, MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
         if(isAction == 7){  //dead
@@ -201,8 +180,6 @@ public class Zombie implements Bot {
                 bitingTickTime += deltaTime;
                 biting();
                 break;
-            /*case 5: fallingFromBuildingAnimation();
-                    break;*/
             case 6: zombieDyingTickTime += deltaTime;
                 dying();
                 break;
@@ -232,7 +209,6 @@ public class Zombie implements Bot {
             }
         }
     }
-    ///////////////////////////////THESE ARE MAIN METHODS FOR MOVING AND ANIMATING HERO/////////////////////////////////////////////
 
     @Override
     public void collide(Hero hero){
@@ -275,86 +251,11 @@ public class Zombie implements Bot {
     }
 
     public void calculateVectorX(int speedInPixels, MapEditor mapEditor){
-        if(direction == EAST){
-            //it changes direction, when center x of a zombie is greater than the right side of a screen.
-            if(centerX > MSGame.SCREEN_WIDTH){
-                enemyScenario.setDirection(centerX, centerY, 16, EAST);
-                targetX = enemyScenario.getTargetX();
-                setDirection(targetX);
-                vectorX = speedInPixels;
-                return;
-            }
-            if(eastTer != null){
-                if(eastTer.isBlocked()){
-                    if(!eastTer.isLadder()){
-                        enemyScenario.setDirection(centerX, centerY, 16, EAST);
-                        targetX = enemyScenario.getTargetX();
-                        setDirection(targetX);
-                        int eastTerLeft = eastTer.getLeft(mapEditor.getScrollLevel1Map());
-                        if((right + speedInPixels) > eastTerLeft){  //если при runningSpeed герой окажется внутри тайла... В данном случае - это (right + runningSpeed) > eastTerLeft.
-                            vectorX = eastTerLeft - right;  //vectorX изменит свое значение ровно до позиции столкновения с тайлом.
-                            return;
-                        }
-                    }
-                }
-                else{  //в ином случае: пусть герой еще пробежит со своей "крейсерской" скоростью.
-                    vectorX = speedInPixels;
-                    return;
-                }
-            }
-            vectorX = speedInPixels;
-            return;
-        }
-        else if(direction == WEST){
-            //it changes direction, when center x of a zombie is less than the left side of a screen:
-            if(centerX < 0){
-                enemyScenario.setDirection(centerX, centerY, 16, WEST);
-                targetX = enemyScenario.getTargetX();
-                setDirection(targetX);
-                vectorX = speedInPixels;
-                return;
-            }
-            if(westTer != null){ //на всякий случай сначала проверяем на null.
-                if(westTer.isBlocked()){
-                    if(!westTer.isLadder()){
-                        enemyScenario.setDirection(centerX, centerY, 16, WEST);
-                        targetX = enemyScenario.getTargetX();
-                        setDirection(targetX);
-                        int westTerRight = westTer.getRight(mapEditor.getScrollLevel1Map());
-                        if((left - speedInPixels) <= westTerRight){  //если при runningSpeed герой окажется внутри тайла... В данном случае - это (left - runningSpeed) > westTerRight.
-                            vectorX = left - westTerRight;  //vectorX изменит свое значение ровно до позиции столкновения с тайлом.
-                            return;
-                        }
-                    }
-                }
-                else{
-                    vectorX = speedInPixels;
-                    return;
-                }
-            }
-            vectorX = speedInPixels;
-            return;
-        }
+        ...
     }
 
     public void calculateVectorY(int direction, int speedInPixels, MapEditor mapEditor){
-        if(!isSouth){
-            vectorY = speedInPixels;
-            return;
-        }
-        else{
-            if(southTer != null){
-                int southTerTop = southTer.getTop(mapEditor.getScrollLevel1Map());
-                if((bottom + speedInPixels) >= southTerTop){  //если при runningSpeed герой окажется внутри тайла... В данном случае - это (bottom + speedInPixels) > southTerTop).
-                    vectorY = southTerTop - bottom;  //vectorX изменит свое значение ровно до позиции столкновения с тайлом.
-                    return;
-                }
-                else{
-                    vectorY = speedInPixels;
-                    return;
-                }
-            }
-        }
+        ...
     }
 
     public void die(){
@@ -380,45 +281,11 @@ public class Zombie implements Bot {
     }
 
     public void fall(){
-        if(isAction != 2){  //not jumping
-            if(!isSouth){
-                isAction = 1;  //falling
-            }
-        }
+        ...
     }
 
     public void falling(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
-        if(isAction != 2){ //not jumping
-            setActionAnimationFrames(FALLING_ACTION);
-
-            if(!isSouth){
-                calculateVectorY(direction, fallingSpeed, mapEditor);
-                y += vectorY;
-
-                if(direction == EAST){
-                    calculateVectorX(1, mapEditor);
-                    x += vectorX;
-                }
-                else if(direction == WEST){
-                    calculateVectorX(1, mapEditor);
-                    x -= vectorX;
-                }
-
-                isAction = 1;  //falling
-                if((y - mapEditor.getScrollLevel1Map().getWorldOffsetY()) > mapEditor.getScrollLevel1Map().getScreenHeight()){ //if zombie fell down lower the screen height.
-                    platformerScenario.removeBot(this, SpawnBot.ZOMBIE);
-                    return;
-                }
-            }
-            else{
-                calculateVectorY(direction, fallingSpeed, mapEditor);
-                if(vectorY == 0){  //so we stood on the ground.
-                    animation.setCurrentFrame(1); //current frame = our hero landed on the ground.
-                    isAction = 0;  //idling
-                }
-                isAction = 0;
-            }
-        }
+        ...
     }
 
     public void fallingAnimation(){
@@ -491,39 +358,11 @@ public class Zombie implements Bot {
 
     @Override
     public void run(){
-        if(hits < 0){
-            die();
-            return;
-        }
-        if(isAction < 5){ //if zombie is not dying.
-            if(targetX >= 0 && targetY > 0){
-                isRunning = true;
-            }
-            if(isAction != 2 && isAction != 1 && isAction != 4){
-                currentAction = RUN_ACTION;
-
-                setDirection(targetX);
-                setSetOfFrames(currentAction * numDirections + direction);
-                isAction = 3;
-            }
-        }
+        ...
     }
 
     public void running(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
-        if(x + 23 < targetX){ //23 - because this is approximate center of zombie's centerX.
-            calculateVectorX(runningSpeed, mapEditor);
-            x += vectorX;
-            if(x + 23 >= targetX){  //23 - because this is approximate center of zombie's centerX.
-                stopRunning(EAST);
-            }
-        }
-        if(x + 23 > targetX){ //23 - because this is approximate center of zombie's centerX.
-            calculateVectorX(runningSpeed, mapEditor);
-            x -= vectorX;
-            if(x + 23 <= targetX){  //23 - because this is approximate center of zombie's centerX.
-                stopRunning(WEST);
-            }
-        }
+        ...
     }
 
     public void runningAnimation(){
@@ -544,12 +383,7 @@ public class Zombie implements Bot {
     }
 
     public void setDirection(int x){
-        if(this.x + 23 < x){  //23 - because this is approximate center of zombie's centerX.
-            direction = 0;  //right
-        }
-        if(this.x + 23 > x){ //23 - because this is approximate center of zombie's centerX.
-            direction = 1;  //left
-        }
+        ...
     }
 
 
@@ -568,57 +402,7 @@ public class Zombie implements Bot {
     }
 
     public void setPos(){
-        left = (x + 17) - mapEditor.getScrollLevel1Map().getWorldOffsetX();
-        top = (y + 17) - mapEditor.getScrollLevel1Map().getWorldOffsetY();
-        bottom = top + hitboxHeight;
-        right = left + hitboxWidth;
-
-        centerX = left + halfHeroWidth;
-        centerY = top + halfHeroHeight;
-    }
-
-    public void setJumpingXY(int actionFrame, MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
-        /**
-         * в зависимости от значения actionFrame мы подбираем, насколько должен переместиться герой по координатам x-y.
-         */
-
-        if(actionFrame >= 2 && actionFrame <= 4){  //набор высоты.
-            //ифы для координаты х:
-            if(direction == 0){ //right
-                calculateVectorX(8, mapEditor);
-                x += vectorX;
-            }
-            if(direction == 1){  //left
-                calculateVectorX(8, mapEditor);
-                x -= vectorX;
-            }
-
-            calculateVectorY(0, 22, mapEditor);
-            y -= vectorY;
-        }
-        else if(actionFrame == 5){  //пик высоты. Двигаемся только вперед по x.
-            if(direction == 0){ //right
-                calculateVectorX(8, mapEditor);
-                x += vectorX;
-            }
-            else if(direction == 1){  //left
-                calculateVectorX(8, mapEditor);
-                x -= vectorX;
-            }
-        }
-        else if(actionFrame >= 6 && actionFrame <= 8){  //летим вниз.
-            if(direction == 0){ //right
-                calculateVectorX(8, mapEditor);
-                x += vectorX;
-            }
-            if(direction == 1){  //left
-                calculateVectorX(8, mapEditor);
-                x -= vectorX;
-            }
-
-            calculateVectorY(1, 22, mapEditor);
-            y += vectorY;
-        }
+        ...
     }
 
     public void setSetOfFrames(int setOfFrames){
@@ -631,61 +415,6 @@ public class Zombie implements Bot {
         enemyScenario.setDirection(centerX, centerY, 16, direction);
         targetX = enemyScenario.getTargetX();
         setDirection(targetX);
-    }
-
-    public void tilemapCollision(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
-
-        int tileWidth = 16;
-        int tileHeight = 16;
-
-        int centerCol = ((centerX) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth;
-        int leftCol = ((left) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth;
-        int rightCol = ((right) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth;
-
-        int centerRow = ((centerY) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight;
-        if(centerRow < 0) centerRow = 0;
-        if(centerRow >= worldHeight) centerRow = worldHeight - 1;
-
-        int topRow = ((top) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight;
-        if(topRow < 0) topRow = 0;
-        if(topRow >= worldHeight) topRow = worldHeight - 1;
-
-        int bottomRow = ((bottom) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight;
-        if(bottomRow < 0) bottomRow = 0;
-        if(bottomRow >= worldHeight) bottomRow = worldHeight - 1;
-
-        if(mapTer[topRow][centerCol].isBlocked()){  //to the north
-            isNorth = true;
-            northTer = mapTer[topRow][centerCol];
-        }
-        else{
-            isNorth = false;
-            northTer = null;
-        }
-        if(mapTer[bottomRow][centerCol].isBlocked()){  //south
-            isSouth = true;
-            southTer = mapTer[bottomRow][centerCol];
-        }
-        else{
-            isSouth = false;
-            southTer = null;
-        }
-        if(mapTer[centerRow][leftCol].isBlocked()){  //west
-            isWest = true;
-            westTer = mapTer[centerRow][leftCol];
-        }
-        else{
-            isWest = false;
-            westTer = null;
-        }
-        if(mapTer[centerRow][rightCol].isBlocked()){  //east
-            isEast = true;
-            eastTer = mapTer[centerRow][rightCol];
-        }
-        else{
-            isEast = false;
-            eastTer = null;
-        }
     }
 
     @Override

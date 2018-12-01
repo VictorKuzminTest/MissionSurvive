@@ -70,12 +70,7 @@ public class PlayScript {
      * @param mapEditor
      */
     public void resurrectHero(MapTer currentMapTer, MapEditor mapEditor, Hero hero) {
-        if(currentMapTer != null){
-            gameScreen.putPlayer(getXYToResurrect(currentMapTer.getCol(), 20,
-                                mapEditor.getScrollLevel1Map().getWorldOffsetX()),
-                                getXYToResurrect(currentMapTer.getRow(), hero.getSpriteHeight(),
-                                        mapEditor.getScrollLevel1Map().getWorldOffsetY()));
-        }
+        ...
     }
 
     /**
@@ -95,25 +90,7 @@ public class PlayScript {
      * to tiles width and height. If not - we set width and height to 0, for it couldn't be visible.
      */
     public void setLivesIcon(){
-        if(lives >= 9){
-            int assetCol = (lives + 1) / 10;
-            controlPanel.getIcon(2).setAssetStartX(1 + assetCol * (16 + 2));
-            controlPanel.getIcon(2).setAssetStartY(1);
-
-            assetCol = (lives + 1) % 10;
-            controlPanel.getIcon(3).setAssetStartX(1 + assetCol * (16 + 2));
-            controlPanel.getIcon(3).setAssetStartY(1);
-            controlPanel.getIcon(3).setAssetWidth(16);
-            controlPanel.getIcon(3).setAssetHeight(16);
-        }
-        else{
-            int assetCol = lives + 1;
-            controlPanel.getIcon(2).setAssetStartX(1 + assetCol * (16 + 2));
-            controlPanel.getIcon(2).setAssetStartY(1);
-
-            controlPanel.getIcon(3).setAssetWidth(0);
-            controlPanel.getIcon(3).setAssetHeight(0);
-        }
+        ...
     }
 
     /**

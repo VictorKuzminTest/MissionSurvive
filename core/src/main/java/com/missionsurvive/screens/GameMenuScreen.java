@@ -29,22 +29,7 @@ public class GameMenuScreen implements Screen {
     private float scaleY;
 
     public GameMenuScreen(MSGame game, PlayScript playScript){
-        this.game = game;
-        this.playScript = playScript;
-        this.playScript.newLives();
-        Sounds.disposeMusic();
-        Sounds.stopBossMusic();
-
-        gameCam = new OrthographicCamera();
-        gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
-
-        texture = Assets.getTextures()[Assets.getWhichTexture("art")];
-
-        scaleX = (float)480 / Gdx.graphics.getBackBufferWidth();
-        scaleY = (float)320 / Gdx.graphics.getBackBufferHeight();
-        Progress.loadProgress();
-
-        controlScenario = new GameMenuCS();
+        ...
     }
 
     public void update(float delta){

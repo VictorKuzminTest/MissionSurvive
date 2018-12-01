@@ -28,10 +28,8 @@ public class FlyingHero implements GameObject{
         if(assetName != null){
             texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
         }
-        spriteWidth = 88;
-        spriteHeight = 50;
-        spritesetSpriteWidth = spriteWidth + 2;
-        spritesetSpriteHeight = spriteHeight + 2;
+
+        ...
 
         spritesRows = new int[1];
         spritesRows[0] = 4;

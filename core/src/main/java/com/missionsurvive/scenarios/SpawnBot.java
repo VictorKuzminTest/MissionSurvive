@@ -38,117 +38,19 @@ public class SpawnBot implements Spawn{
 
     @Override
     public void spawnBot(Scenario scenario, MapEditor mapEditor, float deltaTime){
-        switch (whichBot) {
-            case ZOMBIE:
-                spawnZombie(scenario, mapEditor, deltaTime, col * 16 - 20, row * 16 - 53);
-                break;
-            case SHOTGUN_ZOMBIE:
-                if(isFirstTimeSpawn){ //so we generate only one time
-                    scenario.addBot(
-                            new ShotgunZombie("shotgunzombie", mapEditor, col * 16 - 20, row * 16 - 70,
-                                    direction),
-                            SHOTGUN_ZOMBIE);
-                    isFirstTimeSpawn = false;
-                }
-                break;
-            case SOLDIER_ZOMBIE:
-                if(isFirstTimeSpawn){ //so we generate only one time
-                    scenario.addBot(
-                            new SoldierZombie("soldierzombie", mapEditor, col * 16 - 20, row * 16 - 70,
-                                    direction),
-                            SHOTGUN_ZOMBIE);
-                    isFirstTimeSpawn = false;
-                }
-                break;
-            case POWER_UP_LIFE:
-                if(isFirstTimeSpawn){ //so we generate only one time
-                    spawnPowerUp(scenario, mapEditor);
-                    isFirstTimeSpawn = false;
-                }
-                break;
-            case POWER_UP_GUN:
-                if(isFirstTimeSpawn){ //so we generate only one time
-                    spawnPowerUp(scenario, mapEditor);
-                    isFirstTimeSpawn = false;
-                }
-                break;
-            case WRECKAGE:
-                if(isFirstTimeSpawn){ //so we generate only one time
-                    scenario.addBot(new Wreckage("wreckage", mapEditor,
-                                    col * 16,
-                                    row * 16),
-                            WRECKAGE);
-                    isFirstTimeSpawn = false;
-                }
-                break;
-            default:
-                break;
-        }
+        ...
     }
 
     public void spawnPowerUp(Scenario scenario, MapEditor mapEditor){
-        if(direction == PowerUp.DIRECTION_EAST){
-            if(whichBot == POWER_UP_LIFE){
-                scenario.addBot(new PowerUp("cuadcopter", mapEditor,
-                                col * 16 - 480, row * 16, PowerUp.POWER_LIFE, direction),
-                        0);
-            }
-            else{
-                scenario.addBot(new PowerUp("cuadcopter", mapEditor,
-                                col * 16 - 480, row * 16, PowerUp.POWER_GUN, direction),
-                        0);
-            }
-        }
-        else {
-            if(whichBot == POWER_UP_LIFE){
-                scenario.addBot(new PowerUp("cuadcopter", mapEditor,
-                                col * 16, row * 16 + 320, PowerUp.POWER_LIFE, direction),
-                        0);
-            }
-            else{
-                scenario.addBot(new PowerUp("cuadcopter", mapEditor,
-                                col * 16, row * 16 + 320, PowerUp.POWER_GUN, direction),
-                        0);
-            }
-        }
+        ...
     }
 
     public void spawnZombie(Scenario scenario, MapEditor mapEditor, float deltaTime, int x, int y){
-        if(isFirstTimeSpawn){
-            checkAndAddZombie(scenario, mapEditor, x, y);
-        }
-        else {
-            spawnTickTime += deltaTime;
-            while (spawnTickTime > spawnTick) {
-                spawnTickTime -= spawnTick;
-                checkAndAddZombie(scenario, mapEditor, x, y);
-            }
-        }
+        ...
     }
 
     public void checkAndAddZombie(Scenario scenario, MapEditor mapEditor, int x, int y){
-        if(scenario.getBots(ZOMBIE).size() < PlatformerScenario.MAX_NUM_ZOMBIES){
-            int whichAsset = random.nextInt(3);
-            switch (whichAsset){
-                case 0:
-                    scenario.addBot(new Zombie("zombie",
-                                    mapEditor, x , y, direction, getSpeed()),
-                            ZOMBIE);
-                    break;
-                case 1:
-                    scenario.addBot(new Zombie("zsuit",
-                                    mapEditor,
-                                    x , y, direction, getSpeed()),
-                            ZOMBIE);
-                    break;
-                case 2:
-                    scenario.addBot(new Zombie("zgirl",
-                                    mapEditor, x , y, direction, getSpeed()),
-                            ZOMBIE);
-                    break;
-            }
-            isFirstTimeSpawn = false;
-        }
+        ...
     }
 
     private int getSpeed(){

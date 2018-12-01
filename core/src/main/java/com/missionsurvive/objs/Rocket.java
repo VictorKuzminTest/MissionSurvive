@@ -39,17 +39,7 @@ public class Rocket extends EnemyBullet {
             explosionTexture = Assets.getTextures()[Assets.getWhichTexture("explosion")];
         }
 
-        width = 25;
-        height = 12;
-        spriteWidth = 45;
-        spriteHeight = 12;
-        spritesetSpriteWidth = spriteWidth + 2;
-        spritesetSpriteHeight = spriteHeight + 2;
-
-        explWidth = 45;
-        explHeight = 36;
-        spritesetExplWidth = explWidth + 2;
-        spritesetExplHeight = explHeight + 2;
+        ...
 
         setAnimation();
     }

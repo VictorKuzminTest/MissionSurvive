@@ -41,8 +41,6 @@ public class L1B implements Bot{
     private PlatformerScenario platformerScenario;
     private Texture texture;
 
-    //"half...", because basically we need to know the half of "real" object width-height
-    //to calculate bounding (colliding) points.
     private int halfHeroHeight;
     private int halfHeroWidth;
     private int centerX, centerY, top, bottom, left, right;
@@ -96,11 +94,7 @@ public class L1B implements Bot{
         numDirections = 2;
         numActions = 3;
         actions = new int[numDirections * numActions];
-        for(int whichAction = 0; whichAction < actions.length; whichAction++){
-            if(whichAction >= SPRITES_IDLE * numDirections && whichAction <= SPRITES_IDLE * numDirections + 1) actions[whichAction] = 1;
-            else if(whichAction >= SPRITES_RUN * numDirections && whichAction <= SPRITES_RUN * numDirections + 1) actions[whichAction] = 10;
-            else if(whichAction >= SPRITES_DYING * numDirections && whichAction <= SPRITES_DYING * numDirections + 1) actions[whichAction] = 4;
-        }
+
         animation = new ObjAnimation(actions, spriteWidth, spriteHeight);
     }
 
@@ -137,7 +131,6 @@ public class L1B implements Bot{
 
     }
 
-    ///////////////////////////////THESE ARE MAIN METHODS FOR MOVING AND ANIMATING/////////////////////////////////////////////
     @Override
     public void moving(float deltaTime, MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
         if(isAction == ACTION_DEAD){
@@ -195,7 +188,6 @@ public class L1B implements Bot{
             }
         }
     }
-    ///////////////////////////////THESE ARE MAIN METHODS FOR MOVING AND ANIMATING/////////////////////////////////////////////
 
     @Override
     public void collide(Hero hero){
@@ -205,86 +197,12 @@ public class L1B implements Bot{
     }
 
     public void calculateVectorX(int direction, int speedInPixels, MapEditor mapEditor){
-        if(direction == 0){  //east
-            if(!isEast){
-                vectorX = speedInPixels;
-                return;
-            }
-            else{
-                if(eastTer != null){
-                    int eastTerLeft = eastTer.getLeft(mapEditor.getScrollLevel1Map());
-                    if((right + speedInPixels) > eastTerLeft){  //если при runningSpeed герой окажется внутри тайла... В данном случае - это (right + runningSpeed) > eastTerLeft.
-                        vectorX = eastTerLeft - right;  //vectorX изменит свое значение ровно до позиции столкновения с тайлом.
-                        return;
-                    }
-                    else{  //в ином случае: пусть герой ещо пробежит со своей "крейсерской" скоростью.
-                        vectorX = speedInPixels;
-                        return;
-                    }
-                }
-            }
-        }
-        else if(direction == 1){ //west
-            if(!isWest){
-                vectorX = speedInPixels;
-                return;
-            }
-            else{
-                if(westTer != null){ //на всякий случай сначала проверяем на null.
-                    int westTerRight = westTer.getRight(mapEditor.getScrollLevel1Map());
-                    if((left - speedInPixels) <= westTerRight){  //если при runningSpeed герой окажется внутри тайла... В данном случае - это (left - runningSpeed) > westTerRight.
-                        vectorX = left - westTerRight;  //vectorX изменит свое значение ровно до позиции столкновения с тайлом.
-                        return;
-                    }
-                    else{  //в ином случае: пусть герой ещо пробежит со своей "крейсерской" скоростью.
-                        vectorX = speedInPixels;
-                        return;
-                    }
-                }
-            }
-        }
+        ...
     }
 
 
     public void calculateVectorY(int direction, int speedInPixels, MapEditor mapEditor){
-        if(direction == 0){  //north
-            if(!isNorth){
-                vectorY = speedInPixels;
-                return;
-            }
-            else{
-                if(northTer != null){
-                    int northTerBottom = northTer.getBottom(mapEditor.getScrollLevel1Map());
-                    if((top - speedInPixels) < northTerBottom){  //если при runningSpeed герой окажется внутри тайла... В данном случае - это (top - speedInPixels) < northTerBottom).
-                        vectorY = top - northTerBottom;  //vectorY изменит свое значение ровно до позиции столкновения с тайлом.
-                        return;
-                    }
-                    else{  //в ином случае: пусть герой ещо пробежит со своей "крейсерской" скоростью.
-                        vectorY = speedInPixels;
-                        return;
-                    }
-                }
-            }
-        }
-        if(direction == 1){  //south
-            if(!isSouth){
-                vectorY = speedInPixels;
-                return;
-            }
-            else{
-                if(southTer != null){
-                    int southTerTop = southTer.getTop(mapEditor.getScrollLevel1Map());
-                    if((bottom + speedInPixels) > southTerTop){  //если при runningSpeed герой окажется внутри тайла... В данном случае - это (bottom + speedInPixels) > southTerTop).
-                        vectorY = southTerTop - bottom;  //vectorX изменит свое значение ровно до позиции столкновения с тайлом.
-                        return;
-                    }
-                    else{  //в ином случае: пусть герой ещо пробежит со своей "крейсерской" скоростью.
-                        vectorY = speedInPixels;
-                        return;
-                    }
-                }
-            }
-        }
+        ...
     }
 
     public void die(){
@@ -392,25 +310,7 @@ public class L1B implements Bot{
     }
 
     public void running(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
-        if((x + 31) < targetX){
-            calculateVectorX(0, runningSpeed, mapEditor);
-            x += vectorX;
-            if((x + 31) >= targetX){
-                stopRunning();
-                return;
-            }
-            return;
-        }
-        if((x + 31) > targetX){
-            calculateVectorX(1, runningSpeed, mapEditor);
-            x -= vectorX;
-            if((x + 31) <= targetX){
-                stopRunning();
-                return;
-            }
-            return;
-        }
-        stopRunning();
+        ...
     }
 
     public void runningAnimation(){
@@ -439,16 +339,6 @@ public class L1B implements Bot{
         }
     }
 
-    public void setPos(){
-        left = (x + 23) - mapEditor.getScrollLevel1Map().getWorldOffsetX(); //+23 means, that I calculated approximately the x coordinate of hitbox: (spriteWidth - hitboxWidth) / 2.
-        top = (y + 10) - mapEditor.getScrollLevel1Map().getWorldOffsetY(); //+10 means, that I calculated approximately the y coordinate of hitbox: (spriteHeight - hitboxHeight) / 2.
-        bottom = top + hitboxHeight;
-        right = left + hitboxWidth;
-
-        centerX = left + halfHeroWidth;
-        centerY = top + halfHeroHeight;
-    }
-
     public void setSetOfFrames(int setOfFrames){
         animation.setSetOfFrames(setOfFrames);
     }
@@ -456,60 +346,6 @@ public class L1B implements Bot{
     public void stopRunning(){
         isRunning = false;
         isAction = ACTION_FALLING;
-    }
-
-    public  void tilemapCollision(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
-        int tileWidth = 16;
-        int tileHeight = 16;
-
-        int centerCol = ((centerX) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth;
-        int leftCol = ((left) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth;
-        int rightCol = ((right) + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth;
-
-        int centerRow = ((centerY) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight;
-        int topRow = ((top) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight;
-        int bottomRow = ((bottom) + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight;
-
-        if(topRow >= 0) {  //to the north
-            if(mapTer[topRow][centerCol].isBlocked()){
-                isNorth = true;
-                northTer = mapTer[topRow][centerCol];
-            }
-            else{
-                isNorth = false;
-                northTer = null;
-            }
-        }
-        if(bottomRow < worldHeight){  //south
-            if(mapTer[bottomRow][centerCol].isBlocked()){
-                isSouth = true;
-                southTer = mapTer[bottomRow][centerCol];
-            }
-            else{
-                isSouth = false;
-                southTer = null;
-            }
-        }
-        if(leftCol >= 0 ){   //west
-            if(mapTer[centerRow][leftCol].isBlocked()){
-                isWest = true;
-                westTer = mapTer[centerRow][leftCol];
-            }
-            else{
-                isWest = false;
-                westTer = null;
-            }
-        }
-        if(rightCol >= 0 ){   //east
-            if(mapTer[centerRow][rightCol].isBlocked()){
-                isEast = true;
-                eastTer = mapTer[centerRow][rightCol];
-            }
-            else{
-                isEast = false;
-                eastTer = null;
-            }
-        }
     }
 
     @Override
@@ -577,5 +413,4 @@ public class L1B implements Bot{
             run();
         }
     }
-
 }

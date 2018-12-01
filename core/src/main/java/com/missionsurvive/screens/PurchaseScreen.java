@@ -36,9 +36,6 @@ public class PurchaseScreen implements Screen {
     //which screen to go (Platformer or main menu).
     private String action;
 
-    private int adsWidth = 102;
-    private int adsHeight = 90;
-
     //for transforming real pixel touch coords into logic pixel coords:
     private float scaleX;
     private float scaleY;
@@ -46,22 +43,7 @@ public class PurchaseScreen implements Screen {
     private float getPurchaseTickTime;
 
     public PurchaseScreen(MSGame game, PlayScript playScript, String action){
-        this.game = game;
-        this.playScript = playScript;
-        this.action = action;
-        parseAction();
-
-        gameCam = new OrthographicCamera();
-        gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
-
-        texture = Assets.getTextures()[Assets.getWhichTexture("art")];
-
-        scaleX = (float)480 / Gdx.graphics.getBackBufferWidth();
-        scaleY = (float)320 / Gdx.graphics.getBackBufferHeight();
-
-        adsPics = new ListAds(10, 80, 115, 320, 100);
-        populateAdsPics();
-        controlScenario = new PurchaseCS();
+       ...
     }
 
     /**
@@ -69,34 +51,11 @@ public class PurchaseScreen implements Screen {
      * separate "ToLevel4Beginner" from "purchase" and assign the new value to action.
      */
     private void parseAction(){
-        if(action != null){
-            if(!action.equalsIgnoreCase("")){
-                String fragmentDelims = "\\:";
-
-                String[] fragmentTokens = action.split(fragmentDelims);
-                int len = (fragmentTokens.length);
-
-                for(int whichChar = 0; whichChar < len; whichChar++) {
-                    if (fragmentTokens[whichChar].contains("\n")) {
-                        fragmentTokens[whichChar] = fragmentTokens[whichChar].replaceAll("\n", "");
-                    }
-                    if(fragmentTokens[whichChar].equalsIgnoreCase("purchase")){
-                        action = fragmentTokens[whichChar + 1];
-                    }
-                }
-            }
-        }
+        ...
     }
 
     public void populateAdsPics(){
-        adsPics.addNewButton("ads", 0, 0,
-                1, 1, adsWidth, adsHeight, null);
-        adsPics.addNewButton("ads", 1, 0,
-                1 + (adsWidth + 2) * 1, 1, adsWidth, adsHeight, null);
-        adsPics.addNewButton("ads", 2, 0,
-                1, 1 + (adsHeight + 2) * 1, adsWidth, adsHeight, null);
-        adsPics.addNewButton("ads", 3, 0,
-                1 + (adsWidth + 2) * 1, 1 + (adsHeight + 2) * 1, adsWidth, adsHeight, null);
+       ...
     }
 
     @Override
@@ -111,27 +70,7 @@ public class PurchaseScreen implements Screen {
     }
 
     private void getPurchase(float delta){
-        getPurchaseTickTime += delta;
-        while(getPurchaseTickTime > GET_PURCHASE_TICK){
-            getPurchaseTickTime -= GET_PURCHASE_TICK;
-
-            if(Progress.isPurchased()){
-                if(action == null){
-                    game.getScreenFactory().newScreen("GameMenuScreen", null, null);
-                }
-                else{
-                    Assets.setCurrentLevel(this.action);
-                    if(action.equalsIgnoreCase("ToLevel4Beginner")){
-                        game.setScreen(game.getScreenFactory().newScreen("ScrollerScreen",
-                                null, Progress.BEGINNER));
-                    }
-                    else if(action.equalsIgnoreCase("ToLevel4Experienced")){
-                        game.setScreen(game.getScreenFactory().newScreen("ScrollerScreen",
-                                null, Progress.EXPERIENCED));
-                    }
-                }
-            }
-        }
+        ...
     }
 
     private void scroll(float delta){
@@ -189,106 +128,5 @@ public class PurchaseScreen implements Screen {
     @Override
     public void dispose() {
 
-    }
-
-    private class ListAds{
-        private ArrayList<Button> buttons;
-
-        //listing startX & Y
-        private int startX;
-        private int startY;
-        private int listingWidth;
-        private int listingHeight;
-        //space between buttons in pixels
-        private int spaceBetweenButtons;
-        private int endOfListX;
-
-        public ListAds(int spaceBetweenButtons,
-                           int startX, int startY,
-                           int listingWidth, int listingHeight){
-            buttons = new ArrayList<Button>();
-
-            this.startX = startX;
-            this.startY = startY;
-            this.listingWidth = listingWidth;
-            this.listingHeight = listingHeight;
-
-            this.spaceBetweenButtons = spaceBetweenButtons;
-        }
-
-        public void addNewButton(String assetName,
-                                 int col, int row, int assetStartX, int assetStartY,
-                                 int buttonWidth, int buttonHeight, Command command){
-            int startX;
-            int startY;
-
-            startX = this.startX + this.buttons.size() * (buttonWidth + spaceBetweenButtons);
-            startY = this.startY;
-
-            Button button = new ActionButton(assetName,
-                    startX, startY, assetStartX, assetStartY, buttonWidth, buttonHeight, command);
-            buttons.add(button);
-
-            endOfListX  = startX + button.getButtonWidth();
-        }
-
-        public void drawAds(SpriteBatch batch){
-            int numbuttons = buttons.size();
-            for(int whichButton = 0; whichButton < numbuttons; whichButton++){
-                Button button = buttons.get(whichButton);
-
-                int buttonStartX = button.getStartX();
-                int buttonAssetWidth = button.getButtonWidth();
-                int buttonStartY = button.getStartY();
-                int buttonAssetHeight = button.getButtonHeight();
-
-                if(!GeoHelper.overlapRectangles(buttonStartX, buttonStartY, buttonAssetWidth, buttonAssetHeight,
-                        this.startX, this.startY, this.listingWidth, this.listingHeight)){
-                    //button is absolutely beyond listing
-                    continue;
-                }
-                else{
-                    int offsetX = 0;
-                    int offsetY = 0;
-                    int offsetWidth = 0;
-                    int offsetHeight = 0;
-
-                    if(buttonStartX <= this.startX){ //часть иконки за пределами листинга левой части листинга.
-                        offsetX = this.startX - buttonStartX;
-                        offsetWidth = -offsetX;
-                    }
-                    if(buttonStartX + buttonAssetWidth > this.startX + listingWidth){
-                        offsetWidth = ((buttonStartX + buttonAssetWidth) - (this.startX  + listingWidth)) * -1;
-                    }
-                    if(buttonStartY <= this.startY){
-                        offsetY = this.startY - buttonStartY;
-                        offsetHeight = -offsetY;
-                    }
-                    if(buttonStartY + buttonAssetHeight > this.startY + listingHeight){
-                        offsetHeight = ((buttonStartY + buttonAssetHeight) - (this.startY  + listingHeight)) * -1;
-                    }
-                    //drawing button with offset
-                    button.drawButton(batch, offsetX, offsetY, offsetWidth, offsetHeight);
-                }
-            }
-        }
-
-        public void scroll(float distanceX, float distanceY){
-            endOfListX += distanceX;
-
-            int len = buttons.size();
-            for(int whichButton = 0; whichButton < len; whichButton++){
-                Button button = buttons.get(whichButton);
-
-                button.setStartX(distanceX);
-                button.setStartY(distanceY);
-
-                if((button.getStartX() + button.getButtonWidth() + spaceBetweenButtons) <= startX){
-                    button.setStartX((endOfListX + spaceBetweenButtons) - button.getStartX());
-
-                    endOfListX = button.getStartX() + button.getButtonWidth();
-                }
-            }
-        }
     }
 }

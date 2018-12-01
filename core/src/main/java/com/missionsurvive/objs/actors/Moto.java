@@ -16,17 +16,29 @@ import com.missionsurvive.utils.Assets;
 
 public class Moto implements GameObject{
 
-    public static final int RIGHT = 0, DOWN = 1, LEFT = 2, TOP = 3;
-    public static final int STRAIGHT_SPRITES = 0, GODOWN_SPRITES = 1, GOUP_SPRITES = 2,
-            JUMPING_START_SPRITES = 3, JUMPING_PEAK_SPRITES = 4, SMASHING_SPRITES = 5;
+    public static final int RIGHT = 0;
+    public static final int DOWN = 1;
+    public static final int LEFT = 2;
+    public static final int TOP = 3;
+    public static final int STRAIGHT_SPRITES = 0;
+    public static final int GODOWN_SPRITES = 1;
+    public static final int GOUP_SPRITES = 2;
+    public static final int JUMPING_START_SPRITES = 3;
+    public static final int JUMPING_PEAK_SPRITES = 4;
+    public static final int SMASHING_SPRITES = 5;
 
-    public static final int FALLING_ACTION = 0, RUNNING_ACTION = 1, JUMPING_ACTION = 2,
-            SMASHING_ACTION = 3;
+    public static final int FALLING_ACTION = 0;
+    public static final int RUNNING_ACTION = 1;
+    public static final int JUMPING_ACTION = 2;
+    public static final int SMASHING_ACTION = 3;
     public static final int JUMPING_HEIGHT= 77;
 
-    public static final int MOVING_STRAIGHT = 0, MOVING_TILT = 1, JUMPING_START = 2, SMASHED = 3;
+    public static final int MOVING_STRAIGHT = 0;
+    public static final int MOVING_TILT = 1;
+    public static final int JUMPING_START = 2;
+    public static final int SMASHED = 3;
 
-    private int screenX, screenY, limitTop = 120, limitBottom = 300, screenWidth;
+    private int screenX, screenY;
     private int hitOffsX;
     private int touchX, touchY;
     private int spriteWidth, spriteHeight;
@@ -69,28 +81,13 @@ public class Moto implements GameObject{
         spritesetSpriteWidth = spriteWidth + 2;
         spritesetSpriteHeight = spriteHeight + 2;
 
-        //hitbox = new Hitbox(screenX, screenY, 75, 40, 15, 30);
-        hitbox = new Hitbox(screenX, screenY, 75, 30, 15, 40);
-        if(scenario instanceof ScrollerScenario){
-            this.scenario = ((ScrollerScenario)scenario);
-        }
-
         numDirections = 1;
         numActions = 6;
         spritesRows = new int[numDirections * numActions];
-        for(int whichAction = 0; whichAction < spritesRows.length; whichAction++){
-            if(whichAction == STRAIGHT_SPRITES) spritesRows[whichAction] = 3;
-            else if(whichAction == GODOWN_SPRITES) spritesRows[whichAction] = 3;
-            else if(whichAction == GOUP_SPRITES) spritesRows[whichAction] = 3;
-            else if(whichAction == JUMPING_START_SPRITES) spritesRows[whichAction] = 3;
-            else if(whichAction == JUMPING_PEAK_SPRITES) spritesRows[whichAction] = 3;
-            else if(whichAction == SMASHING_SPRITES) spritesRows[whichAction] = 1;
-        }
+
         animation = new ObjAnimation(spritesRows, spriteWidth, spriteHeight);
 
         flyingHero = new FlyingHero("motorcycle", this.screenX, this.screenY + 20);
-
-        screenWidth = MSGame.SCREEN_WIDTH;
     }
 
     @Override
@@ -238,17 +235,7 @@ public class Moto implements GameObject{
     }
 
     public void falling(float deltaTime){
-        fallingTickTime += deltaTime;
-
-        while(fallingTickTime > fallingTick) {
-            fallingTickTime -= fallingTick;
-
-            screenY += 5;
-
-            if (screenY > screenWidth){
-                isDead = true;
-            }
-        }
+        ...
     }
 
     /**
@@ -267,37 +254,7 @@ public class Moto implements GameObject{
     }
 
     public void jumping(float deltaTime, int jumpingSpeed){
-        jumpingTickTime += deltaTime;
-        while(jumpingTickTime > jumpingTick) {
-            jumpingTickTime -= jumpingTick;
-
-            startJumping ++;
-
-            if(isJumpingUp){
-                if(screenY > jumpingHeight){ //go up
-                    screenY -= jumpingSpeed;
-                    setPos();
-                }
-                else{
-                    isJumpingUp = false;
-                }
-
-                if(startJumping > 7){
-                    animation.setSetOfFrames(JUMPING_PEAK_SPRITES);
-                }
-            }
-            else{ //go down
-                if(screenY < startJumpingPos){
-                    screenY += jumpingSpeed;
-                    setPos();
-                }
-                else{
-                    isAction = RUNNING_ACTION;
-                    setPos();
-                    runningTickTime = 0;
-                }
-            }
-        }
+        ...
     }
 
     public void setPos(){

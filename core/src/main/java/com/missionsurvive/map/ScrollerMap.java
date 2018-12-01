@@ -13,12 +13,6 @@ public class ScrollerMap implements Map{
     private ScrollMap scrollMap;
     private Random random = new Random();
 
-    private int numRows = 3;
-    private int numCols = 100;
-    private int tileWidth = 73;
-    private int tileHeight = 128;
-    private int numColsInTileset = 7;
-
     private float scrollingTickTime = 0;
 
     public ScrollerMap(){

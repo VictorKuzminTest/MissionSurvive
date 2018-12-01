@@ -23,15 +23,15 @@ import java.util.List;
 public class L3B implements Bot {
 
     private final int SHOOTING_SPRITES = 0, DYING_SPRITES = 1;
-    public static final int IDLE_ACTION = 0, FALLING_ACTION = 1, SHOOTING_ACTION = 2, START_DYING_ACTION = 3,
-            BETWEEN_DYING_ACTION = 4, END_DYING_ACTION = 5, DEAD = 6;
+    public static final int IDLE_ACTION = 0;
+    public static final int FALLING_ACTION = 1;
+    public static final int SHOOTING_ACTION = 2;
+    public static final int START_DYING_ACTION = 3;
+    public static final int BETWEEN_DYING_ACTION = 4;
+    public static final int END_DYING_ACTION = 5;
+    public static final int DEAD = 6;
 
-    private int x;
-    private int y;
-    private int spritesetSpriteWidth;
-    private int spritesetSpriteHeight;
-    private int spriteWidth;
-    private int spriteHeight;
+
     private Hitbox hitbox;
     private List<EnemyBullet> bullets = new ArrayList<EnemyBullet>();
     private int numBullets;
@@ -75,10 +75,7 @@ public class L3B implements Bot {
         if(assetName != null){
             texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
         }
-        spriteWidth = 140;
-        spriteHeight = 110;
-        spritesetSpriteWidth = spriteWidth + 2;
-        spritesetSpriteHeight = spriteHeight + 2;
+
         this.hp = hp;
 
         hitbox = new Hitbox(x, y, 40, 80, 20, 17);
@@ -136,7 +133,6 @@ public class L3B implements Bot {
 
     }
 
-    ///////////////////////////////THESE ARE MAIN METHODS FOR MOVING AND ANIMATING/////////////////////////////////////////////
     @Override
     public void moving(float deltaTime, MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
         for(int whichBullet = 0; whichBullet < numBullets; whichBullet++){
@@ -198,7 +194,6 @@ public class L3B implements Bot {
             }
         }
     }
-    ///////////////////////////////THESE ARE MAIN METHODS FOR MOVING AND ANIMATING/////////////////////////////////////////////
 
     @Override
     public void collide(Hero hero){
@@ -411,60 +406,6 @@ public class L3B implements Bot {
             }
             if(animation.getCurrentFrame() == spritesRows[SHOOTING_SPRITES * numDirections] - 1){
                 isAction = IDLE_ACTION;
-            }
-        }
-    }
-
-    public  void tilemapCollision(MapTer[][] mapTer, MapEditor mapEditor, int worldWidth, int worldHeight){
-        int tileWidth = 16;
-        int tileHeight = 16;
-
-        int centerCol = ((hitbox.getCenterX() + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth);
-        int leftCol = ((hitbox.getLeft() + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth);
-        int rightCol = ((hitbox.getRight() + mapEditor.getScrollLevel1Map().getWorldOffsetX()) / tileWidth);
-
-        int centerRow = ((hitbox.getCenterY() + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight);
-        int topRow = ((hitbox.getTop() + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight);
-        int bottomRow = ((hitbox.getBottom() + mapEditor.getScrollLevel1Map().getWorldOffsetY()) / tileHeight);
-
-        if(topRow >= 0) {  //to the north
-            if(mapTer[topRow][centerCol].isBlocked()){
-                isNorth = true;
-                northTer = mapTer[topRow][centerCol];
-            }
-            else{
-                isNorth = false;
-                northTer = null;
-            }
-        }
-        if(bottomRow < worldHeight){  //south
-            if(mapTer[bottomRow][centerCol].isBlocked()){
-                isSouth = true;
-                southTer = mapTer[bottomRow][centerCol];
-            }
-            else{
-                isSouth = false;
-                southTer = null;
-            }
-        }
-        if(leftCol >= 0 ){   //west
-            if(mapTer[centerRow][leftCol].isBlocked()){
-                isWest = true;
-                westTer = mapTer[centerRow][leftCol];
-            }
-            else{
-                isWest = false;
-                westTer = null;
-            }
-        }
-        if(rightCol >= 0 ){   //east
-            if(mapTer[centerRow][rightCol].isBlocked()){
-                isEast = true;
-                eastTer = mapTer[centerRow][rightCol];
-            }
-            else{
-                isEast = false;
-                eastTer = null;
             }
         }
     }

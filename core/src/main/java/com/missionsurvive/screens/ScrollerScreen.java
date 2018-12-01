@@ -63,45 +63,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
     private boolean onPause;
 
     public ScrollerScreen(MSGame game, PlayScript playScript, String difficulty) {
-        this.game = game;
-        this.playScript = playScript;
-
-        scaleX = (float) MSGame.SCREEN_WIDTH / Gdx.graphics.getBackBufferWidth();
-        scaleY = (float)MSGame.SCREEN_HEIGHT / Gdx.graphics.getBackBufferHeight();
-
-        scaleToDrawX = (float)Gdx.graphics.getBackBufferWidth()
-                / MSGame.SCREEN_WIDTH;
-        scaleToDrawY = (float)Gdx.graphics.getBackBufferHeight()
-                / MSGame.SCREEN_HEIGHT;
-        hitBoxRect = new ShapeRenderer();
-        hitBoxRect.setColor(0, 0, 0, 0.5f);
-
-        scrollerScenario = new ScrollerScenario(this, this.playScript,
-                500, 220, difficulty);
-        map = new ScrollerMap();
-        touchControl = new TouchControl(scaleX, scaleY);
-        controlScenario = new GameCS(this);
-        scrollerScenario.setControlScenario(controlScenario);
-
-        bgTexture = Assets.getTextures()[Assets.getWhichTexture("ocean")];
-        texture = Assets.getTextures()[Assets.getWhichTexture("bridge")];
-
-        screenWidth = MSGame.SCREEN_WIDTH;
-
-        gameCam = new ParallaxCamera(480, 320); //extends OrthographicCamera
-        gamePort = new StretchViewport(480, 320, gameCam);
-        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-
-        bgTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        TextureRegion bg = new TextureRegion(bgTexture, 0, 0, 480, 320);
-        background = new ParallaxBackground(new ParallaxLayer[]{
-                new ParallaxLayer(bg, new Vector2(1, 1), new Vector2(0, 0)),
-        }, 480, 320, new Vector2(50, 0));
-
-        this.playScript.setScreen(this, "gameControls");
-        putPlayer(100, 150);
-        Sounds.loadMusic("rush.mp3");
-        Sounds.playMusic();
+        ...
     }
 
     public void update(float deltaTime) {
@@ -173,39 +135,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
      * @param obstacles
      */
     public void drawObstacles(ArrayList<Obstacle> obstacles, SpriteBatch batch){
-        boolean isMotoDrawn = false;
-
-        for(Obstacle obstacle : obstacles) {
-            if(obstacle.isPlaced()){
-                if(screenWidth < obstacle.getScreenX()){ //if obstacle is beyond the screen.
-                    if(blink) { //we draw blinking obstacle on the right side of the screen.
-                        obstacle.drawObject(batch, screenWidth - obstacle.getSpriteWidth(), 0);
-                    }
-                }
-                else{ //if obstacle is on the screen
-                    if(obstacle.getScreenY() > (moto.getScreenY() + 30)){
-                        //then draw moto and set isMotoDrawn to true.
-                        // + 30 because sprite height of moto is greater then car's about
-                        // 30 pixels (90 - 64 = 26).
-                        if(!isMotoDrawn){
-                            moto.drawObject(batch, 0, 0, 0, 0);
-                            isMotoDrawn = true;
-                            /*drawing moto hitbox:
-                            drawMotoHitBox();*/
-                        }
-                        obstacle.drawObject(batch, 0, 0, 0, 0);
-                    }
-                    else{
-                        obstacle.drawObject(batch, 0, 0, 0, 0);
-                    }
-                }
-            }
-        }
-        if(!isMotoDrawn){
-            moto.drawObject(batch, 0, 0, 0, 0);
-            /*drawing moto hitbox:
-			drawMotoHitBox();*/
-        }
+        ...
     }
 
     /**
@@ -213,84 +143,11 @@ public class ScrollerScreen extends GameScreen implements Screen {
      * @param obstacles
      */
     public void drawTear(ArrayList<Obstacle> obstacles, SpriteBatch batch){
-        for(Obstacle obstacle : obstacles) {
-            if(obstacle.isPlaced()){
-                if(screenWidth < obstacle.getScreenX()){ //if obstacle is beyond the screen.
-                    if(blink) { //we draw blinking obstacle on the right side of the screen.
-                        obstacle.drawObject(batch, screenWidth - obstacle.getSpriteWidth(), 0);
-                    }
-                }
-                obstacle.drawObject(batch, 0, 0, 0, 0);
-            }
-            /*drawing tear hitbox:
-            drawHitBox(obstacle);*/
-        }
-    }
-
-    public void drawHitBox(Obstacle obstacle){
-        Hitbox hitbox = obstacle.getHitbox();
-        int left = hitbox.getLeft();
-        int top = hitbox.getTop();
-        int width = hitbox.getHitboxWidth();
-        int height = hitbox.getHitboxHeight();
-
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-        hitBoxRect.begin(ShapeRenderer.ShapeType.Filled);
-        hitBoxRect.rect(left * scaleToDrawX,
-                GeoHelper.transformCanvasYCoordToGL(top,
-                        MSGame.SCREEN_HEIGHT, height) * scaleToDrawY,
-                width * scaleToDrawX, height * scaleToDrawY);
-        hitBoxRect.end();
-    }
-
-    public void drawMotoHitBox(){
-        Hitbox hitbox = moto.getHitbox();
-        int left = hitbox.getLeft();
-        int top = hitbox.getTop();
-        int width = hitbox.getHitboxWidth();
-        int height = hitbox.getHitboxHeight();
-
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-        hitBoxRect.begin(ShapeRenderer.ShapeType.Filled);
-        hitBoxRect.rect(left * scaleToDrawX,
-                GeoHelper.transformCanvasYCoordToGL(top,
-                        MSGame.SCREEN_HEIGHT, height) * scaleToDrawY,
-                width * scaleToDrawX, height * scaleToDrawY);
-        hitBoxRect.end();
+        ...
     }
 
     public void drawRoundedTileset(SpriteBatch batch, ScrollMap scrollMap){
-        int startColOffset = scrollMap.getStartColOffset(); //Колонка, с которой начинается отрисовка тайлов.
-        int endColOffset = scrollMap.getEndColOffset();  //Колонка, которой заканчивается отрисовка тайлов.
-
-        for(int row = 0; row < map.getLevel1Ter().length; row++){
-
-            for(int col = startColOffset; col < endColOffset; col++){
-
-                //we check if we can or cannot draw row (col) when tiles are teared:
-                if(col >= noStartCol && col <= noEndCol){
-                    continue;
-                }
-
-                int colToDraw = col;
-                if(col >= map.getLevel1Ter()[0].length) colToDraw = col % (map.getLevel1Ter()[0].length - 1);
-
-                batch.begin();
-                batch.draw(texture, ((MSGame.SCREEN_OFFSET_X + col * 73) - scrollMap.getWorldOffsetX()),
-                        MSGame.SCREEN_OFFSET_Y +
-                                GeoHelper.transformCanvasYCoordToGL(row * 128 - scrollMap.getWorldOffsetY(),
-                                        MSGame.SCREEN_HEIGHT,
-                                        128),
-                        map.getLevel1Ter()[row][colToDraw].getSrcX(),
-                        map.getLevel1Ter()[row][colToDraw].getSrcY(),
-                        73, 128);
-                batch.end();
-            }
-        }
+        ...
     }
 
     private void drawInterfaces(){
@@ -306,18 +163,6 @@ public class ScrollerScreen extends GameScreen implements Screen {
     @Override
     public boolean onPause(){
         return onPause;
-    }
-
-    public void setPause(boolean onPause){
-        /*if(isHeroControl()){
-            Sounds.theme4.stop();
-        }
-        else{
-            Sounds.theme4.setLooping(true);
-            Sounds.theme4.setVolume(1);
-            Sounds.theme4.play();
-        }*/
-        this.onPause = onPause;
     }
 
     public Map getMap(){
@@ -355,9 +200,7 @@ public class ScrollerScreen extends GameScreen implements Screen {
     }
 
     @Override
-    public void dispose() {
-        /*Sounds.theme4.stop();*/
-    }
+    public void dispose() {}
 
     public Scenario getScenario() {
         return null;

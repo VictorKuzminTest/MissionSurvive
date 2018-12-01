@@ -31,83 +31,12 @@ public class LoadingLevelScreen implements Screen {
     private String assetName;
     private PlayScript playScript;
 
-    private int iconX = 330;
-    private int iconY = 290;
-    private int assetStartX = 0;
-    private int assetStartY = 459;
-    private int assetWidth = 148;
-    private int assetHeight = 26;
-
     public LoadingLevelScreen(MSGame game, PlayScript playScript, String assetName){
-        this.game = game;
-        this.playScript = playScript;
-
-        gameCam = new OrthographicCamera();
-        gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
-
-        texture = Assets.getTextures()[Assets.getWhichTexture("art")];
-        loadMapCommand = new LoadFromAssetsLibGdx();
-        setAssetName(assetName);
-
-        map = new MapEditor();
+        ...
     }
 
     public void setAssetName(String assetName){
-        if(assetName.equalsIgnoreCase("NextLevel")){
-            if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level11")){
-                this.assetName = "levs/level21";
-                Progress.setProgress(Progress.BEGINNER, 1);
-            }
-            else if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level21")){
-                this.assetName = "levs/level31";
-                Progress.setProgress(Progress.BEGINNER, 2);
-            }
-            else if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level31")){
-                if(Progress.isPurchased()){
-                    this.assetName = "ToLevel4Beginner";
-                    Progress.setProgress(Progress.BEGINNER, 3);
-                }
-                else{
-                    this.assetName = ":purchase:ToLevel4Beginner:";
-                }
-            }
-            else if(Assets.getCurrentLevel().equalsIgnoreCase("ToLevel4Beginner")){
-                this.assetName = "levs/level51";
-                Progress.setProgress(Progress.BEGINNER, 4);
-            }
-            if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level12")){
-                this.assetName = "levs/level22";
-                Progress.setProgress(Progress.EXPERIENCED, 1);
-            }
-            else if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level22")){
-                this.assetName = "levs/level32";
-                Progress.setProgress(Progress.EXPERIENCED, 2);
-            }
-            else if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level32")){
-                if(Progress.isPurchased()){
-                    this.assetName = "ToLevel4Experienced";
-                    Progress.setProgress(Progress.EXPERIENCED, 3);
-                }
-                else{
-                    this.assetName = ":purchase:ToLevel4Experienced:";
-                }
-            }
-            else if(Assets.getCurrentLevel().equalsIgnoreCase("ToLevel4Experienced")){
-                this.assetName = "levs/level52";
-                Progress.setProgress(Progress.EXPERIENCED, 4);
-            }
-            else if(Assets.getCurrentLevel().equalsIgnoreCase("levs/level52")){
-                this.assetName = "levs/level6";
-                Progress.setProgress(Progress.EXPERIENCED, 5);
-            }
-            else if(Assets.getCurrentLevel().equalsIgnoreCase("EditorScreen")){
-                this.assetName = "EditorScreen";
-            }
-        }
-        else{
-            this.assetName = assetName;
-        }
-        Assets.setCurrentLevel(this.assetName);
+        ...
     }
 
     @Override
@@ -116,26 +45,7 @@ public class LoadingLevelScreen implements Screen {
     }
 
     public void update(float delta){
-        if(assetName.equalsIgnoreCase("EditorScreen")){
-            game.setScreen(game.getScreenFactory().newScreen("EditorScreen", null, null));
-        }
-        else if(assetName.equalsIgnoreCase("ToLevel4Beginner")){
-            game.setScreen(game.getScreenFactory().newScreen("ScrollerScreen", null, Progress.BEGINNER));
-        }
-        else if(assetName.equalsIgnoreCase("ToLevel4Experienced")){
-            game.setScreen(game.getScreenFactory().newScreen("ScrollerScreen", null, Progress.EXPERIENCED));
-        }
-        else if(assetName.equalsIgnoreCase(":purchase:ToLevel4Beginner:")){
-            game.setScreen(game.getScreenFactory().newScreen("PurchaseScreen", null, ":purchase:ToLevel4Beginner:"));
-        }
-        else if(assetName.equalsIgnoreCase(":purchase:ToLevel4Experienced:")){
-            game.setScreen(game.getScreenFactory().newScreen("PurchaseScreen", null, ":purchase:ToLevel4Experienced:"));
-        }
-        else{
-            if(map.loadMap(loadMapCommand.execute(null, assetName))){
-                game.setScreen(game.getScreenFactory().newScreen("PlatformerScreen", map, null));
-            }
-        }
+       ...
     }
 
     @Override

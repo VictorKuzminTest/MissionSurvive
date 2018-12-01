@@ -39,13 +39,6 @@ public class MSGame extends Game {
 		Sounds.loadSounds();
 		Sounds.loadBossMusic();
 
-		//test screens:
-		//setScreen(new TestScreen(this));
-		//setScreen(new ButtonsTestScreen(this));
-
-		//start editor screen:
-        //setScreen(screenFactory.newScreen("LoadingLevelScreen", null, "EditorScreen"));
-
 		//start game screen:
 		setScreen(screenFactory.newScreen("GameMenuScreen",null, null));
 	}

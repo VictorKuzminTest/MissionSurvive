@@ -20,11 +20,16 @@ public class PowerUp implements Bot{
     public static final int DIRECTION_EAST = 0;
     public static final int DIRECTION_NORTH = 1;
 
-    public static final int ACTION_FLY = 0, ACTION_EXPLODE = 1, ACTION_POWER_UP = 2,
-            ACTION_PICKED_UP = 3;
-    public static final int POWER_LIFE = 0, POWER_GUN = 1;
-    public static final int SPRITES_CUADCOPTER = 0, SPRITES_EXPLOSION = 1,
-            SPRITES_LIFE = 2, SPRITES_GUN = 3;
+    public static final int ACTION_FLY = 0;
+    public static final int ACTION_EXPLODE = 1;
+    public static final int ACTION_POWER_UP = 2;
+    public static final int ACTION_PICKED_UP = 3;
+    public static final int POWER_LIFE = 0;
+    public static final int POWER_GUN = 1;
+    public static final int SPRITES_CUADCOPTER = 0;
+    public static final int SPRITES_EXPLOSION = 1;
+    public static final int SPRITES_LIFE = 2;
+    public static final int SPRITES_GUN = 3;
 
     public static final float COLOR_STEP = 0.03f;
 

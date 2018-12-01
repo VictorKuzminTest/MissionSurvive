@@ -48,36 +48,7 @@ public class PlatformerScreen extends GameScreen implements Screen {
     private boolean onPause;
 
     public PlatformerScreen(MSGame game, PlayScript playScript, Map map){
-        this.game = game;
-        this.playScript = playScript;
-
-        scaleX = (float) MSGame.SCREEN_WIDTH / Gdx.graphics.getBackBufferWidth();
-        scaleY = (float)MSGame.SCREEN_HEIGHT / Gdx.graphics.getBackBufferHeight();
-
-        drawerFacade = new DrawerFacade();
-
-        this.map = map;
-        worldHeight = map.getLevel1Ter().length;
-        worldWidth = map.getLevel1Ter()[0].length;
-        lev2 = map.getBackground("lev2");
-        lev3 = map.getBackground("lev3");
-
-        gameCam = new ParallaxCamera(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT); //extends OrthographicCamera
-        gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
-        renderer = new OrthogonalTiledMapRenderer(((MapEditor)map).getMap());
-        ((MapEditor)map).setGameCam(gameCam);
-
-        touchControl = new TouchControl(scaleX, scaleY);
-        platformerScenario = new PlatformerScenario(this, (MapEditor)map,
-                playScript, touchControl);
-        controlScenario = new GameCS(this);
-        platformerScenario.setControlScenario(controlScenario);
-        setScreenPos(map.getScrollMap().getWorldOffsetX(), map.getScrollMap().getWorldOffsetY());
-
-        putPlayer(50, 220);
-        this.playScript.setScreen(this, "gameControls");
-        this.playScript.setWeapon(hero);
-        Sounds.playMusic();
+        ...
     }
 
     public void update(float deltaTime) {
@@ -173,12 +144,6 @@ public class PlatformerScreen extends GameScreen implements Screen {
 
     @Override
     public void setScreenPos(int x, int y) {
-        map.getScrollMap().setWorldOffsetX(x);
-        map.getScrollMap().setWorldOffsetY(y);
-        map.getScrollMap().setColOffset();
-        map.getScrollMap().setRowOffset();
-        gameCam.position.x = -MSGame.SCREEN_OFFSET_X + map.getScrollMap().getWorldOffsetX();
-        gameCam.position.y = worldHeight * 16 + MSGame.SCREEN_OFFSET_Y - map.getScrollMap().getWorldOffsetY();
-        gameCam.position.z = 0;
+       ...
     }
 }

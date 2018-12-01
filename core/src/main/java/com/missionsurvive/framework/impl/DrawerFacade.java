@@ -20,15 +20,6 @@ import java.util.List;
 
 public class DrawerFacade {
 
-    private Texture zombieTexture = Assets.getTextures()[Assets.getWhichTexture("zombie")];
-    private Texture shotgunZombieTexture = Assets.getTextures()[Assets.getWhichTexture("shotgunzombie")];
-    private Texture soldierZombieTexture = Assets.getTextures()[Assets.getWhichTexture("soldierzombie")];
-    private Texture powerUpTexture = Assets.getTextures()[Assets.getWhichTexture("powerup")];
-    private Texture l1bTexture = Assets.getTextures()[Assets.getWhichTexture("l1b")];
-    private Texture l3bTexture = Assets.getTextures()[Assets.getWhichTexture("l3b")];
-    private Texture l5bTexture = Assets.getTextures()[Assets.getWhichTexture("l5b")];
-    private Texture l6bTexture = Assets.getTextures()[Assets.getWhichTexture("l6b")];
-
     private ShapeRenderer hitBox;
     private ShapeRenderer heroHitbox;
 
@@ -74,8 +65,6 @@ public class DrawerFacade {
             }
             //drawing wreckage on the ground:
             wreckage.drawObject(batch, 0, 0);
-            //draw hitbox:
-            //drawHitBox(wreckage);
         }
     }
 
@@ -83,8 +72,6 @@ public class DrawerFacade {
         int numBots = bots.size();
         for(int i = 0; i < numBots; i++){
             bots.get(i).drawObject(batch, 0, 0, 0, 0);
-            //draw hitbox:
-            //drawHitBox(bots.get(i));
         }
     }
 
@@ -98,72 +85,7 @@ public class DrawerFacade {
      * @param col
      */
     public void showBotPos(SpriteBatch batch, Spawn spawn, Map map, int row, int col){
-        switch(spawn.getBotId()){
-            case SpawnBot.ZOMBIE:{
-                drawBot(batch, zombieTexture,
-                        col * tileWidth - map.getScrollMap().getWorldOffsetX() - 20,
-                        row * tileHeight - map.getScrollMap().getWorldOffsetY() - 70,
-                        1, 1,
-                        54, 70);
-                break;
-            }
-            case SpawnBot.SHOTGUN_ZOMBIE:
-                drawBot(batch, shotgunZombieTexture,
-                        col * tileWidth - map.getScrollMap().getWorldOffsetX() - 20,
-                        row * tileHeight - map.getScrollMap().getWorldOffsetY() - 70,
-                        1, 1,
-                        54, 70);
-                break;
-            case SpawnBot.SOLDIER_ZOMBIE:
-                drawBot(batch, soldierZombieTexture,
-                        col * tileWidth - map.getScrollMap().getWorldOffsetX() - 20,
-                        row * tileHeight - map.getScrollMap().getWorldOffsetY() - 70,
-                        1, 1,
-                        54, 70);
-                break;
-            case SpawnBot.POWER_UP_GUN:
-                drawBot(batch, powerUpTexture,
-                        col * tileWidth - map.getScrollMap().getWorldOffsetX(),
-                        row * tileHeight - map.getScrollMap().getWorldOffsetY(),
-                        1, 35,
-                        32, 32);
-                break;
-            case SpawnBot.POWER_UP_LIFE:
-                drawBot(batch, powerUpTexture,
-                        col * tileWidth - map.getScrollMap().getWorldOffsetX(),
-                        row * tileHeight - map.getScrollMap().getWorldOffsetY(),
-                        1, 1,
-                        32, 32);
-                break;
-            case SpawnScenario.LEVEL_1_SCENE:
-                drawBot(batch, l1bTexture,
-                        col * tileWidth - map.getScrollMap().getWorldOffsetX(),
-                        row * tileHeight - map.getScrollMap().getWorldOffsetY(),
-                        1, 1,
-                        60, 70);
-                break;
-            case SpawnScenario.LEVEL_3_SCENE:
-                drawBot(batch, l3bTexture,
-                        col * tileWidth - map.getScrollMap().getWorldOffsetX(),
-                        row * tileHeight - map.getScrollMap().getWorldOffsetY(),
-                        1, 1,
-                        140, 110);
-                break;
-            case SpawnScenario.LEVEL_5_SCENE:
-                drawBot(batch, l5bTexture,
-                        col * tileWidth - map.getScrollMap().getWorldOffsetX(),
-                        row * tileHeight - map.getScrollMap().getWorldOffsetY(),
-                        1, 1,
-                        60, 70);
-                break;
-            case SpawnScenario.LEVEL_6_SCENE:
-                drawBot(batch, l6bTexture,
-                        col * tileWidth - map.getScrollMap().getWorldOffsetX(),
-                        row * tileHeight - map.getScrollMap().getWorldOffsetY(),
-                        1, 1,
-                        100, 110);
-                break;
-        }
+        ...
     }
 
     public void drawBot(SpriteBatch batch, Texture texture,

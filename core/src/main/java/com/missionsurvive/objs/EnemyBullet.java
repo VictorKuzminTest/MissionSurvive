@@ -10,10 +10,6 @@ import com.missionsurvive.utils.Assets;
 
 public class EnemyBullet implements GameObject{
 
-    public static final int DIRECTION_NONE = 0, DIRECTION_DOWN_RIGHT = 1, DIRECTION_RIGHT = 2,
-            DIRECTION_UP_RIGHT = 3, DIRECTION_UP = 4, DIRECTION_UP_LEFT = 5, DIRECTION_LEFT = 6,
-            DIRECTION_DOWN_LEFT = 7, DIRECTION_DOWN = 8;
-
     public Texture texture;
 
     private int screenX = 0, screenY = 0, worldX = 0, worldY = 0;
@@ -107,30 +103,7 @@ public class EnemyBullet implements GameObject{
      * Depending on direction changes the x and y coords.
      */
     public void setXY(){
-        switch(direction){
-            case DIRECTION_NONE: break;  //goes no where.
-            case DIRECTION_RIGHT: worldX += speed;
-                break;
-            case DIRECTION_UP_RIGHT: worldX += speed;
-                worldY -= speed;
-                break;
-            case DIRECTION_UP: worldY -= speed;
-                break;
-            case DIRECTION_UP_LEFT: worldX -= speed;
-                worldY -= speed;
-                break;
-            case DIRECTION_LEFT: worldX -= speed;
-                break;
-            case DIRECTION_DOWN_LEFT: worldX -= speed;
-                worldY += speed;
-                break;
-            case DIRECTION_DOWN: worldY += speed;
-                break;
-            case DIRECTION_DOWN_RIGHT: worldX += speed;
-                worldY += speed;
-                break;
-            default: break;
-        }
+        ...
     }
 
     /**
@@ -218,9 +191,7 @@ public class EnemyBullet implements GameObject{
      * method (Rocket doesn't have its own implementation).
      */
     public void setDrawingParams(){
-        drawingWidth = 4;
-        drawingHeight = 4;
-        absoluteValueX = 0;
+        ...
     }
 
     /**

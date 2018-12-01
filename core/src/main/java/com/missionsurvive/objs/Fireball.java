@@ -160,45 +160,8 @@ public class Fireball implements Weapon{
         while(movingTickTime > MOVING_TICK){
             movingTickTime -= MOVING_TICK;
 
-            switch(direction){
-                case DIRECTION_NONE: break;  //goes nowhere.
-                case DIRECTION_R:
-                    x += speed;
-                    spread(true);
-                    break;
-                case DIRECTION_UR:
-                    x += speed;
-                    y -= speed;
-                    spread(true);
-                    break;
-                case DIRECTION_U:
-                    y -= speed;
-                    spread(false);
-                    break;
-                case DIRECTION_UL:
-                    x -= speed;
-                    y -= speed;
-                    spread(true);
-                    break;
-                case DIRECTION_L:
-                    x -= speed;
-                    spread(true);
-                    break;
-                case DIRECTION_DL:
-                    x -= speed;
-                    y += speed;
-                    spread(true);
-                    break;
-                case DIRECTION_D:
-                    y += speed;
-                    spread(false);
-                    break;
-                case DIRECTION_DR:
-                    x += speed;
-                    y += speed;
-                    spread(true);
-                    break;
-                default: break;
+            ...
+
             }
             setScreenXY(worldOffsetX, worldOffsetY);
             hitbox.setPos(screenX, screenY);
@@ -206,7 +169,6 @@ public class Fireball implements Weapon{
             if(direction != DIRECTION_NONE){ //if our bullet is going somewhere, we  check it for intersections with the objects.
                 platformerScenario.shotEnemy(this);
             }
-        }
     }
 
     /**
@@ -389,16 +351,4 @@ public class Fireball implements Weapon{
     public int getHP() {
         return hp;
     }
-
-    /** The cases for fireball moving direction:
-     *
-     * [4]  [3]  [2]
-     * [5]  [0]  [1]
-     * [6]  [7]  [8]
-     *
-     * case 0 means that fireball goes nowhere.
-     * case 1: to the right.
-     * case 2: up-right....
-     * and so on.
-     */
 }

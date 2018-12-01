@@ -56,16 +56,6 @@ public class Wreckage implements Bot {
     public Wreckage(){}
 
     public Wreckage(String assetName, MapEditor mapEditor, int x, int y){
-        this.x = x;
-        this.y = y;
-        initialY = y;
-        spriteWidth = 70;
-        spriteHeight = 50;
-        spritesetSpriteWidth = spriteWidth + 2;
-        spritesetSpriteHeight = spriteHeight + 2;
-        if(assetName != null){
-            texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
-        }
         hitbox = new Hitbox(x, y, hitboxWidth, hitboxHeight, 20, 9);
         this.mapEditor = mapEditor;
 

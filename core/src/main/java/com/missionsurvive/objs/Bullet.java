@@ -111,41 +111,7 @@ public class Bullet implements Weapon{
     }
 
     public void move(float deltaTime, int worldOffsetX, int worldOffsetY){
-        movingTickTime += deltaTime;
-
-        while(movingTickTime > movingTick) {
-            movingTickTime -= movingTick;
-
-            switch(direction){
-                case 0: break;  //goes nowhere.
-                case 1: x += speed;
-                    break;
-                case 2: x += speed;
-                    y -= speed;
-                    break;
-                case 3: y -= speed;
-                    break;
-                case 4: x -= speed;
-                    y -= speed;
-                    break;
-                case 5: x -= speed;
-                    break;
-                case 6: x -= speed;
-                    y += speed;
-                    break;
-                case 7: y += speed;
-                    break;
-                case 8: x += speed;
-                    y += speed;
-                    break;
-                default: break;
-            }
-            setScreenXY(worldOffsetX, worldOffsetY);
-            goAway();
-            if(direction != 0){ //if our bullet is going somewhere, we  check it for intersections with the objects.
-                platformerScenario.shotEnemy(this);
-            }
-        }
+       ...
     }
 
     public void burst(float deltaTime){  //the burst of a bullet when it gets an aim.
@@ -201,18 +167,7 @@ public class Bullet implements Weapon{
     @Override
     public boolean shoot(int x, int y,
                          int worldOffsetX, int worldOffsetY, int direction){
-        if(action == ACTION_NONE){
-            Sounds.playSound(Sounds.gun);
-            this.x = x;
-            this.y = y;
-            this.direction = direction % 10;
-            drawingWidth = 4;
-            drawingHeight = 4;
-            absoluteValueX = 0;
-            setAction(direction);
-            setScreenXY(worldOffsetX, worldOffsetY);
-            return true;
-        }
+        ...
         return false;
     }
 

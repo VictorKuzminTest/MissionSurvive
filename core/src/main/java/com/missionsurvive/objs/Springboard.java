@@ -22,11 +22,7 @@ public class Springboard extends Obstacle {
         if(assetName != null){
             texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
         }
-        this.spriteWidth = spriteWidth;
-        this.spriteHeight = spriteHeight;
-        spritesetSpriteWidth = spriteWidth + 2;
-        spritesetSpriteHeight = spriteHeight + 2;
-        this.absoluteY = absoluteY;
+        ...
     }
 
     @Override

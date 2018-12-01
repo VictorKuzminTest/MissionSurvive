@@ -37,21 +37,11 @@ public class RocketL6B extends EnemyBullet {
     public RocketL6B(String assetName, int screenWidth, int screenHeight){
         super(assetName, screenWidth, screenHeight);
 
-        if(assetName != null){
+        if(assetName != null) {
             explosionTexture = Assets.getTextures()[Assets.getWhichTexture("explosion")];
         }
-        width = 25;
-        height = 12;
-        spriteWidth = 45;
-        spriteHeight = 12;
-        spritesetSpriteWidth = spriteWidth + 2;
-        spritesetSpriteHeight = spriteHeight + 2;
-        speed = 3;
 
-        explWidth = 45;
-        explHeight = 36;
-        spritesetExplWidth = explWidth + 2;
-        spritesetExplHeight = explHeight + 2;
+        ...
 
         setAnimation();
     }
@@ -139,30 +129,7 @@ public class RocketL6B extends EnemyBullet {
      * Depending on direction changes the x and y coords.
      */
     public void setXY(){
-        switch(direction){
-            case DIRECTION_NONE: break;  //goes no where.
-            case DIRECTION_RIGHT: worldX += speed;
-                break;
-            case DIRECTION_UP_RIGHT: worldX += speed;
-                worldY -= speed;
-                break;
-            case DIRECTION_UP: worldY -= speed;
-                break;
-            case DIRECTION_UP_LEFT: worldX -= speed;
-                worldY -= speed;
-                break;
-            case DIRECTION_LEFT: worldX -= speed;
-                break;
-            case DIRECTION_DOWN_LEFT: worldX -= speed;
-                worldY += speed;
-                break;
-            case DIRECTION_DOWN: worldY += speed;
-                break;
-            case DIRECTION_DOWN_RIGHT: worldX += speed;
-                worldY += speed;
-                break;
-            default: break;
-        }
+        ...
     }
 
     /**
@@ -257,6 +224,4 @@ public class RocketL6B extends EnemyBullet {
     public int getHeight(){
         return height;
     }
-
-
 }

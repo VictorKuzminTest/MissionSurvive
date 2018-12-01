@@ -102,56 +102,11 @@ public class L6B implements Bot {
 
     @Override
     public void drawObject(SpriteBatch batch, int col, int row, int offsetX, int offsetY) {
-
-        Animation currentAnimation = animation.getChildren().get(frames);
-
-        batch.begin();
-        batch.draw(texture, MSGame.SCREEN_OFFSET_X + worldX - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
-                MSGame.SCREEN_OFFSET_Y +
-                        GeoHelper.transformCanvasYCoordToGL(worldY - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
-                                MSGame.SCREEN_HEIGHT, spriteHeight),
-                currentAnimation.getChildren().get(currentAnimation.getCurrentFrame()).getX(),
-                currentAnimation.getChildren().get(currentAnimation.getCurrentFrame()).getY(),
-                spriteWidth, spriteHeight);
-        batch.end();
-
-        drawTale(batch);
-
-        if(isBurning){
-            batch.begin();
-            batch.draw(texture, MSGame.SCREEN_OFFSET_X + worldX - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
-                    MSGame.SCREEN_OFFSET_Y +
-                            GeoHelper.transformCanvasYCoordToGL(worldY - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
-                                    MSGame.SCREEN_HEIGHT, spriteHeight),
-                    burstAnimation.getChildren().get(burstAnimation.getCurrentFrame()).getX(),
-                    burstAnimation.getChildren().get(burstAnimation.getCurrentFrame()).getY(),
-                    spriteWidth, spriteHeight);
-            batch.end();
-        }
-        rocketLauncher.draw(batch);
+        ...
     }
 
     public void drawTale(SpriteBatch batch){
-        //first part of a tale:
-        batch.begin();
-        batch.draw(texture, MSGame.SCREEN_OFFSET_X + worldX - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
-                MSGame.SCREEN_OFFSET_Y +
-                        GeoHelper.transformCanvasYCoordToGL((worldY + 1 - spriteHeight) - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
-                                MSGame.SCREEN_HEIGHT, spriteHeight),
-                1 + 1 * spritesetSpriteWidth,
-                1 + 2 * spritesetSpriteHeight,
-                spriteWidth, spriteHeight);
-        batch.end();
-        //second second part:
-        batch.begin();
-        batch.draw(texture, MSGame.SCREEN_OFFSET_X + worldX - mapEditor.getScrollLevel1Map().getWorldOffsetX(),
-                MSGame.SCREEN_OFFSET_Y +
-                        GeoHelper.transformCanvasYCoordToGL((worldY + 2 - spriteHeight * 2) - mapEditor.getScrollLevel1Map().getWorldOffsetY(),
-                                MSGame.SCREEN_HEIGHT, spriteHeight),
-                1 + 1 * spritesetSpriteWidth,
-                1 + 2 * spritesetSpriteHeight,
-                spriteWidth, spriteHeight);
-        batch.end();
+        ...
     }
 
     @Override

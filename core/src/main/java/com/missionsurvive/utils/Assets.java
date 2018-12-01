@@ -16,26 +16,7 @@ public class Assets {
     private static String currentLevel;
 
     public static void setMapAssets(MSGame game){
-        xml = game.getXMLParser();
-
-        XmlReader.Element root = xml.getRoot("xml/assets.xml");
-        XmlReader.Element[] assets = xml.getChildNodes(root, "asset");
-        int assetsCount = assets.length;
-
-        textures = new Texture[assetsCount];
-        texNames = new String[assetsCount];
-
-        for(int i = 0; i < assetsCount; i++){
-            String path;
-            String name;
-
-            path = xml.getAttrValue(assets[i], "path");
-            name = xml.getAttrValue(assets[i], "name");
-
-            textures[i] = new Texture(Gdx.files.internal(path), true);
-            textures[i].setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-            texNames[i] = name;
-        }
+        ...
     }
 
     public static Texture[] getTextures(){

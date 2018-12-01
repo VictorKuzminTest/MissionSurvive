@@ -59,77 +59,7 @@ public class PutBotCommand implements Command{
      * @param direction
      */
     public void setBot(String direction){
-        if(bot != null){
-            if(bot.equalsIgnoreCase("zombie")){
-                if(direction.equalsIgnoreCase("east")){
-                    putBot(SpawnBot.ZOMBIE, Zombie.EAST);
-                }
-                else if(direction.equalsIgnoreCase("west")){
-                    putBot(SpawnBot.ZOMBIE, Zombie.WEST);
-                }
-                else{
-                    putBot(SpawnBot.ZOMBIE, Zombie.EAST);
-                }
-            }
-            else if(bot.equalsIgnoreCase("shotgunzombie")){
-                if(direction.equalsIgnoreCase("east")){
-                    putBot(SpawnBot.SHOTGUN_ZOMBIE, Zombie.EAST);
-                }
-                else if(direction.equalsIgnoreCase("west")){
-                    putBot(SpawnBot.SHOTGUN_ZOMBIE, Zombie.WEST);
-                }
-                else{
-                    putBot(SpawnBot.SHOTGUN_ZOMBIE, Zombie.EAST);
-                }
-            }
-            else if(bot.equalsIgnoreCase("soldierzombie")){
-                if(direction.equalsIgnoreCase("east")){
-                    putBot(SpawnBot.SOLDIER_ZOMBIE, Zombie.EAST);
-                }
-                else if(direction.equalsIgnoreCase("west")){
-                    putBot(SpawnBot.SOLDIER_ZOMBIE, Zombie.WEST);
-                }
-                else{
-                    putBot(SpawnBot.SOLDIER_ZOMBIE, Zombie.EAST);
-                }
-            }
-            else if(bot.equalsIgnoreCase("l1b")){
-                putBot(SpawnScenario.LEVEL_1_SCENE, 0);
-            }
-            else if(bot.equalsIgnoreCase("helicopter")){
-                putBot(SpawnScenario.LEVEL_2_SCENE, 0);
-            }
-            else if(bot.equalsIgnoreCase("l3b")){
-                putBot(SpawnScenario.LEVEL_3_SCENE, Zombie.EAST);
-            }
-            else if(bot.equalsIgnoreCase("l5b")){
-                putBot(SpawnScenario.LEVEL_5_SCENE, Zombie.EAST);
-            }
-            else if(bot.equalsIgnoreCase("powerup")){
-                if(direction.equalsIgnoreCase("eastlife")){
-                    putBot(SpawnBot.POWER_UP_LIFE, PowerUp.DIRECTION_EAST);
-                }
-                else if(direction.equalsIgnoreCase("eastgun")){
-                    putBot(SpawnBot.POWER_UP_GUN, PowerUp.DIRECTION_EAST);
-                }
-                else if(direction.equalsIgnoreCase("northlife")){
-                    putBot(SpawnBot.POWER_UP_LIFE, PowerUp.DIRECTION_NORTH);
-                }
-                else if(direction.equalsIgnoreCase("northgun")){
-                    putBot(SpawnBot.POWER_UP_GUN, PowerUp.DIRECTION_NORTH);
-                }
-            }
-            else if(bot.equalsIgnoreCase("wreckage")){
-                putBot(SpawnBot.WRECKAGE, 0);
-            }
-            else if(bot.equalsIgnoreCase("l6b")){
-                putBot(SpawnScenario.LEVEL_6_SCENE, 0);
-            }
-            else if(bot.equalsIgnoreCase("endGame")){
-                putBot(SpawnScenario.END_GAME_SCENE, 0);
-            }
-        }
-        setBotToNull();
+        ...
     }
 
     /**

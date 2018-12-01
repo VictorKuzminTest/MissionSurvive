@@ -48,17 +48,7 @@ public class Tank implements Bot{
     private float correctionTickTime;
 
     public Tank(String assetName, MapEditor mapEditor, int x, int y){
-        worldX = x;
-        worldY = y;
-        assetStartX = 199;
-        spriteWidth = 173;
-        spriteHeight = 138;
-        spritesetSpriteWidth = spriteWidth + 2;
-        spritesetSpriteHeight = spriteHeight + 2;
-        dstWidth = spriteWidth;
-        dstHeight = spriteHeight;
-        scaleIncrementX = 1;
-        scaleIncrementY = (float)spriteHeight / (float)spriteWidth;
+        ...
         this.mapEditor = mapEditor;
 
         if(assetName != null){

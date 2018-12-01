@@ -40,28 +40,7 @@ public class EndScreen extends GameScreen implements Screen {
     private float scaleX, scaleY;
 
     public EndScreen(MSGame game, PlayScript playScript, Map map){
-        this.game = game;
-        this.playScript = playScript;
-        drawerFacade = new DrawerFacade();
-
-        scaleX = (float) MSGame.SCREEN_WIDTH / Gdx.graphics.getBackBufferWidth();
-        scaleY = (float)MSGame.SCREEN_HEIGHT / Gdx.graphics.getBackBufferHeight();
-
-        this.map = map;
-        worldHeight = map.getLevel1Ter().length;
-        worldWidth = map.getLevel1Ter()[0].length;
-        lev2 = map.getBackground("lev2");
-        lev3 = map.getBackground("lev3");
-
-        gameCam = new ParallaxCamera(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT); //extends OrthographicCamera
-        gamePort = new StretchViewport(MSGame.SCREEN_WIDTH, MSGame.SCREEN_HEIGHT, gameCam);
-        gameCam.position.x = -MSGame.SCREEN_OFFSET_X + map.getScrollMap().getWorldOffsetX();
-        gameCam.position.y = worldHeight * 16 + MSGame.SCREEN_OFFSET_Y - map.getScrollMap().getWorldOffsetY();
-        gameCam.position.z = 0;
-        renderer = new OrthogonalTiledMapRenderer(((MapEditor)map).getMap());
-        ((MapEditor)map).setGameCam(gameCam);
-        controlScenario = new EndCS();
-        endGameScenario = new EndGameScenario((MapEditor) map, controlScenario);
+        ...
     }
 
     public void update(float deltaTime) {

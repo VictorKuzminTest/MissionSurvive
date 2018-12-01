@@ -29,13 +29,26 @@ public class Hero implements GameObject {
     public static final int FROM_POWERUP = 0;
     public static final int FROM_PLAYSCRIPT = 1;
 
-    public static final int DIRECTION_RIGHT = 0, DIRECTION_LEFT = 1;
-    public static final int SPRITES_IDLE = 0, SPRITES_RUN = 1, SPRITES_JUMPING = 2,
-            SPRITES_IDLE_SHOOTING = 3, SPRITES_IDLE_BACK = 4,
-            SPRITES_FALLING = 5, SPRITES_DYING = 6;
-    public static final int ACTION_IDLE = 0, ACTION_FALLING = 1, ACTION_RUNNING = 2,
-            ACTION_JUMPING = 3, ACTION_SHOOTING = 4, ACTION_DYING = 5, ACTION_DEAD = 6,
-            ACTION_BEYOND_SCREEN = 7, ACTION_IDLE_BACK = 8;
+    public static final int DIRECTION_RIGHT = 0;
+    public static final int DIRECTION_LEFT = 1;
+
+    public static final int SPRITES_IDLE = 0;
+    public static final int SPRITES_RUN = 1;
+    public static final int SPRITES_JUMPING = 2;
+    public static final int SPRITES_IDLE_SHOOTING = 3;
+    public static final int SPRITES_IDLE_BACK = 4;
+    public static final int SPRITES_FALLING = 5;
+    public static final int SPRITES_DYING = 6;
+
+    public static final int ACTION_IDLE = 0;
+    public static final int ACTION_FALLING = 1;
+    public static final int ACTION_RUNNING = 2;
+    public static final int ACTION_JUMPING = 3;
+    public static final int ACTION_SHOOTING = 4;
+    public static final int ACTION_DYING = 5;
+    public static final int ACTION_DEAD = 6;
+    public static final int ACTION_BEYOND_SCREEN = 7;
+    public static final int ACTION_IDLE_BACK = 8;
 
     //correction for shooting relatively y axis:
     public static final int SHOOT_CORRECTION_Y = 13;
@@ -105,9 +118,7 @@ public class Hero implements GameObject {
         if(assetName != null){
             texture = Assets.getTextures()[Assets.getWhichTexture(assetName)];
         }
-        //offsetX (20) and offsetY (17) I calculated approximately:
-        // (spriteHeight(Width) - hitboxHeight(Width)) / 2.
-        hitbox = new Hitbox(x, y, 10, 48, 20, 17);
+
         this.platformerScenario = scenario;
         numBullets = 10;
         setWeapon(new Gun(platformerScenario, Gun.WEAPON_HANDGUN));
@@ -117,8 +128,6 @@ public class Hero implements GameObject {
 
     /**for testing*/
     public Hero(String assetName, int x, int y, int direction){
-        //offsetX (20) and offsetY (17) I calculated approximately:
-        // (spriteHeight(Width) - hitboxHeight(Width)) / 2.
         hitbox = new Hitbox(x, y, 10, 48, 20, 17);
         setHero(x, y, direction);
     }
@@ -140,15 +149,7 @@ public class Hero implements GameObject {
         numDirections = 2;
         numActions = 7;
         actions = new int[numDirections * numActions];
-        for(int whichAction = 0; whichAction < actions.length; whichAction++){
-            if(whichAction >= SPRITES_IDLE * numDirections && whichAction <= SPRITES_IDLE * numDirections + 1) actions[whichAction] = 1;
-            else if(whichAction >= SPRITES_RUN * numDirections && whichAction <= SPRITES_RUN * numDirections + 1) actions[whichAction] = 10;
-            else if(whichAction >= SPRITES_JUMPING * numDirections && whichAction <= SPRITES_JUMPING * numDirections + 1) actions[whichAction] = 8;
-            else if(whichAction >= SPRITES_IDLE_SHOOTING * numDirections && whichAction <= SPRITES_IDLE_SHOOTING * numDirections + 1) actions[whichAction] = 20;
-            else if(whichAction >= SPRITES_IDLE_BACK * numDirections && whichAction <= SPRITES_IDLE_BACK * numDirections + 1) actions[whichAction] = 4;
-            else if(whichAction >= SPRITES_FALLING * numDirections && whichAction <= SPRITES_FALLING * numDirections + 1) actions[whichAction] = 3;
-            else if(whichAction >= SPRITES_DYING * numDirections && whichAction <= SPRITES_DYING * numDirections + 1) actions[whichAction] = 5;
-        }
+
         heroAnimation = new ObjAnimation(actions, spriteWidth, spriteHeight);
 
         decorator = new BlinkingDecorator(this);
@@ -350,15 +351,7 @@ public class Hero implements GameObject {
 
     public void collideBullet(EnemyBullet bullet){
         //if a hero is not dying or dead:
-        if(isAction < ACTION_DYING){
-            if(bullet.getDirection() > 0 && bullet.getDirection() < 4){
-                direction = DIRECTION_LEFT;
-            }
-            else if(bullet.getDirection() > 4 && bullet.getDirection() < 8){
-                direction = DIRECTION_RIGHT;
-            }
-            setActionAndAnimationFrames(ACTION_DYING, SPRITES_DYING, 0);
-        }
+        ...
     }
 
 
@@ -367,35 +360,7 @@ public class Hero implements GameObject {
             //with this "if" we check whether hero is still on the ground (if not
             // we can assign speed falling x),
             //otherwise it could fall into between tiles gap:
-            if(isAction != ACTION_FALLING){
-                physics.calculateVector(map, scrollMap,
-                        hitbox.getCenterX(), hitbox.getBottom(),
-                        fallingVector.set(0, speedFallingY),
-                        tileSize, ACTION_JUMPING);
-            }
-            else{
-                physics.calculateVector(map, scrollMap,
-                        hitbox.getCenterX(), hitbox.getBottom(),
-                        fallingVector.set(speedFallingX, speedFallingY),
-                        tileSize, ACTION_JUMPING);
-            }
-            //if hero is not on the ground (falling):
-            if(fallingVector.getY() > 0){
-                setActionAndAnimationFrames(ACTION_FALLING, SPRITES_FALLING, 0);
-                movingVector.set(fallingVector);
-            }
-            else{
-                if(isAction != ACTION_SHOOTING){
-                    if(isRunning){
-                        setActionAndAnimationFrames(ACTION_RUNNING,
-                                SPRITES_RUN, 0);
-                    }
-                    else{
-                        setActionAndAnimationFrames(ACTION_IDLE, SPRITES_IDLE,
-                                0);
-                    }
-                }
-            }
+            ...
         }
     }
 
@@ -547,15 +512,6 @@ public class Hero implements GameObject {
                 checkLeftScreen();
             }
         }
-        else{
-            x += movingVector.getX();
-            if(x < 0){
-                x = 0;
-            }
-            else if((x + spriteWidth) > MSGame.SCREEN_WIDTH){
-                x = MSGame.SCREEN_WIDTH - spriteWidth;
-            }
-        }
     }
 
     /**
@@ -563,21 +519,16 @@ public class Hero implements GameObject {
      * @param mapEditor
      */
     public void scrollVerticalMap(MapEditor mapEditor){
-        if(isVerticalScroll){
-            if(movingVector.getY() < 0){ //moves up...
-                if(hitbox.getCenterY() < mapEditor.getScrollLevel1Map().getScreenHeight() - (mapEditor.getScrollLevel1Map().getScreenHeight() / 2)){
+        if(isVerticalScroll) {
+            if (movingVector.getY() < 0) { //moves up...
+                if (hitbox.getCenterY() < mapEditor.getScrollLevel1Map().getScreenHeight() - (mapEditor.getScrollLevel1Map().getScreenHeight() / 2)) {
                     mapEditor.verticalScroll(movingVector.getY());
-                }
-                else{
+                } else {
                     y += movingVector.getY();
                 }
-            }
-            else{
+            } else {
                 y += movingVector.getY();
             }
-        }
-        else{
-            y += movingVector.getY();
         }
     }
 
@@ -755,93 +706,7 @@ public class Hero implements GameObject {
         jumpingVector.set(x, y);
     }
 
-    public void setStartShootingFrame(int left, int top, int right, int bottom){
-        int xPos = GeoHelper.inBoundsSpaceX(hitbox.getCenterX(), left, right);
-        int yPos = GeoHelper.inBoundsSpaceY(hitbox.getCenterY() - SHOOT_CORRECTION_Y,
-                top, bottom);
 
-        if(xPos == 1 && yPos == 1){    //up-straight right
-            startShootingFrame = 4;
-
-            bulletX = x + 39;
-            bulletY = y + 9;
-            bulletDirection = 2;
-            direction = DIRECTION_RIGHT;
-        }
-        else if(xPos == 1 && yPos == 0){   //down-straight right
-            startShootingFrame = 12;
-
-            bulletX = x + 40;
-            bulletY = y + 35;
-            bulletDirection = 8;
-            direction = DIRECTION_RIGHT;
-        }
-        else if(xPos == 1 && yPos == 2){  //straight right
-            startShootingFrame = 8;
-
-            bulletX = x + 45;
-            bulletY = y + 22;
-            bulletDirection = 1;
-            direction = DIRECTION_RIGHT;
-        }
-        else if(xPos == 2 && yPos == 1){  //up right
-            startShootingFrame = 0;
-
-            bulletX = x + 31;
-            bulletY = y + 5;
-            bulletDirection = 3;
-            direction = DIRECTION_RIGHT;
-        }
-        else if(xPos == 2 && yPos == 0){  //down right
-            startShootingFrame = 16;
-
-            bulletX = x + 28;
-            bulletY = y + 48;
-            bulletDirection = 7;
-            direction = DIRECTION_RIGHT;
-        }
-        else if(xPos == 0 && yPos == 1){   //up-straight left
-            startShootingFrame = 4;
-
-            bulletX = x + 15;
-            bulletY = y + 9;
-            bulletDirection = 4;
-            direction = DIRECTION_LEFT;
-        }
-        else if(xPos == 0 && yPos == 2){  //straight left
-            startShootingFrame = 8;
-
-            bulletX = x + 9;
-            bulletY = y + 22;
-            bulletDirection = 5;
-            direction = DIRECTION_LEFT;
-        }
-        else if(xPos == 0 && yPos == 0){  //down-straight left
-            startShootingFrame = 12;
-
-            bulletX = x + 13;
-            bulletY = y + 35;
-            bulletDirection = 6;
-            direction = DIRECTION_LEFT;
-        }
-        else if(xPos == 2 && yPos == 2){ //hero is inside object
-            if(direction == DIRECTION_RIGHT){
-                startShootingFrame = 8;
-
-                bulletX = x + 45;
-                bulletY = y + 22;
-                bulletDirection = 1;
-            }
-            else{     //left
-                startShootingFrame = 8;
-
-                bulletX = x + 9;
-                bulletY = y + 22;
-                bulletDirection = 5;
-                direction = DIRECTION_LEFT;
-            }
-        }
-    }
 
     public void die() {
         setActionAndAnimationFrames(ACTION_DYING, SPRITES_DYING, 0);

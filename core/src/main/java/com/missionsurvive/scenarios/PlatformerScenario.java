@@ -224,31 +224,7 @@ public class PlatformerScenario implements Scenario {
     }
 
     public void resurrectHero(MapEditor mapEditor){
-        if(playScript.getLives() >= 0){
-            playScript.subtractLife();
-            currentMapTer = hero.getPreviosMapTer();
-            playScript.resurrectHero(currentMapTer, mapEditor, hero);
-        }
-        else{
-            //start level from the beginning:
-            Sounds.replayMusic();
-            removeAllBots();
-            playScript.subtractLife();
-            playScript.newLives();
-            setFirstTimeSpawned();
-            screen.setScreenPos(startScreenX, startScreenY);
-            switch(scrollId){
-                case HORIZONTAL_ONLY:
-                    isHorizontal = true;
-                    isVertical = false;
-                    break;
-                case VERTICAL_ONLY:
-                    isHorizontal = false;
-                    isVertical = true;
-                    break;
-            }
-            screen.putPlayer(100, 150);
-        }
+        ...
     }
 
     public void updateHero(MapEditor mapEditor, int worldWidth, int worldHeight,
